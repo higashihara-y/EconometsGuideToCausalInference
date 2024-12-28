@@ -1,0 +1,412 @@
+---
+title: "第2章"
+format: html
+editor: visual
+# 以下設定追加
+number-sections: true
+toc: true
+toc-depth: 3
+toc-location: left
+theme: spacelab
+code-fold: show #code-fold:showでコードの折り畳みが可能
+date: "最終更新: `r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache = FALSE, echo = TRUE, fig.align = "center")
+library(foreach)
+library(magrittr)
+library(ggplot2)
+library(kableExtra)
+library(CausalInferenceTextbook)
+color_main <- scales::viridis_pal(option = "C")(1)
+```
+
+# フィッシャーのp値
+
+参照：[因果推論の計量経済学（川口、澤田）：第2章　無作為化実験](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/randomization_fisher_pvalue.html)
+
+## シミュレーションデータの生成
+
+### 定数とパラメータの設定
+
+```{r}
+set.seed(1)
+N <- 1000 　#個体数
+R <- 1000   #モンテカルロのドロー数
+N_1 <- 500　#処置群のサイズ
+
+tau_population <- 0.2 #母集団における平均処置効果
+```
+
+### データの生成
+
+```{r}
+outcome_potential <- 
+  tibble::tibble(
+    y_0 = rnorm(N, mean = 0, sd = 1),
+    y_1 = rnorm(N, mean = tau_population, sd = 1)
+  )
+
+tau <- outcome_potential |> 
+  dplyr::summarise(
+    tau = mean(y_1 - y_0)
+  ) |> 
+  dplyr::pull(tau)
+
+outcome_potential |> 
+  head() |> 
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling()
+
+outcome_potential |> 
+  modelsummary::datasummary_skim()
+
+# サンプルにおける平均処置効果
+tau
+
+# 観測データ（顕在結果）の生成
+data_realized <- 
+  generate_data_randomized(
+    outcome_potential = outcome_potential,
+    N_1 = N_1,
+    seed = 1
+  )
+
+data_realized |> 
+  head() |> 
+  kbl() |> 
+  kable_styling()
+
+data_realized |> 
+  modelsummary::datasummary_skim()
+```
+
+## 分析と推定
+
+```{r}
+t <- 
+  calculate_difference_in_means(
+    data_realized = data_realized
+    )
+t
+```
+
+```{r}
+outcome_potential_null <- 
+  data_realized |> 
+  dplyr::mutate(
+    y_0 = y,
+    y_1 = y
+  )
+
+t_distribution <- 
+  1:R %>%
+  purrr::map(
+    .,
+    ~ generate_data_randomized(
+        outcome_potential = outcome_potential_null,
+        N_1 = N_1,
+        seed = .
+        ) |> 
+      calculate_difference_in_means()
+  ) |> 
+  purrr::reduce(c) #purrr::reduce(c)でリストを1つのベクトルに統合
+
+pvalue <- 
+ mean(abs(t_distribution) > abs(t)) 
+
+format(pvalue, nsmall = 4)
+```
+
+tau = 0の帰無仮説の元で、tau（平均値の差）の実現値が発生する確率は 1%であり、1%有意水準で帰無仮説は棄却される。 また、tauの絶対値の分布は以下のようになる。
+
+```{r}
+ggplot(tibble::tibble(t_distribution)) +
+  geom_line(aes(x = abs(t_distribution)),
+            stat = "density")
+```
+
+# 平均処置効果の推定
+
+参照：[因果推論の計量経済学（川口、澤田）：第2章　無作為化実験](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/randomization_average_treatment_effect.html)
+
+## シミュレーションデータの生成
+
+### 定数とパラメータの設定
+
+```{r}
+set.seed(1)
+N <- 1000
+R <- 1000
+N_1 <- 500
+
+tau_population <- 0.2 #母集団における平均処置効果
+```
+
+### データの生成
+
+```{r}
+# 標本の潜在結果の生成
+outcome_potential <- 
+  tibble::tibble(
+    y_0 = rnorm(N, mean = 0, sd = 1),
+    y_1 = rnorm(N, mean = tau_population, sd = 1)
+  )
+
+tau <- outcome_potential |> 
+  dplyr::summarise(
+    tau = mean(y_1 - y_0)
+  ) |> 
+  dplyr::pull(tau)
+
+outcome_potential |> 
+  head() |> 
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling()
+```
+
+```{r}
+outcome_potential |> 
+  modelsummary::datasummary_skim()
+```
+
+```{r}
+# 処置ベクトルと顕在結果の生成
+data_realized <- 
+  generate_data_randomized(
+    outcome_potential = outcome_potential,
+    N_1 = N_1,
+    seed = 1
+  )
+
+data_realized |> 
+  head() |> 
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling()
+```
+
+```{r}
+data_realized |> 
+  modelsummary::datasummary_skim()
+```
+
+## 分析と推定
+
+```{r}
+# 平均の差（=平均処置効果）の算出
+mean_1 <- 
+  data_realized |> 
+  dplyr::filter(z == 1) |> 
+  dplyr::summarise(y = mean(y)) |> 
+  dplyr::pull(y)
+
+mean_0 <- 
+  data_realized |> 
+  dplyr::filter(z == 0) |> 
+  dplyr::summarise(y = mean(y)) |> 
+  dplyr::pull(y)
+
+n_1 <- 
+  data_realized |> 
+  dplyr::filter(z == 1) |> 
+  nrow()
+
+n_0 <- 
+  data_realized |> 
+  dplyr::filter(z == 0) |> 
+  nrow()
+
+tau_hat <- mean_1 - mean_0
+tau_hat
+```
+
+```{r}
+# ネイマンによる平均処置効果の標準誤差の推定
+var_1 <- 
+  data_realized |> 
+  dplyr::filter(z == 1) |> 
+  dplyr::summarise(
+    y = sum((y - mean_1)^2 / (n_1 - 1))
+  ) |> 
+  dplyr::pull(y)
+
+var_0 <- 
+  data_realized |> 
+  dplyr::filter(z == 0) |> 
+  dplyr::summarise(
+    y = (sum(y - mean_0)^2 / (n_0 - 1))
+  ) |> 
+  dplyr::pull(y)
+
+var_hat <- 
+  (var_1 / n_1) + (var_0 / n_0)
+var_hat
+```
+
+```{r}
+se_hat <- sqrt(var_hat)
+se_hat
+```
+
+```{r}
+data.frame(   #tibbleではset_rownames関数が使用できない
+  tau_hat,
+  se_hat,
+  tau,
+  tau_population
+  ) |> 
+  magrittr::set_rownames("Average treatment effect") |> 
+  kableExtra::kbl(
+    col.names = c(
+      "Estimate", "S.E.", "True(sample)", "True(Population)"
+    )
+  ) |> 
+  kableExtra::kable_styling()
+```
+
+# 共変量の統制と回帰分析
+
+：[因果推論の計量経済学（川口、澤田）：第2章　無作為化実験](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/randomization_regression.html)
+
+## シミュレーションデータの生成
+
+### 定数とパラメータの設定
+
+```{r}
+set.seed(1)
+N <- 10000
+N_1 <- 5000
+tau_population <- 0.2 #母集団の平均処置効果
+```
+
+### データの生成
+
+```{r}
+outcome_potential <- 
+  tibble::tibble(
+    x = rnorm(N),
+    y_0 = rnorm(N, mean = (exp(x) - exp(1/2)), sd = 1),
+    y_1 = rnorm(N, mean = tau_population, sd = 1)
+  )
+
+tau <- outcome_potential |> 
+  dplyr::summarise(
+    tau = mean(y_1 - y_0)
+  ) |> 
+  dplyr::pull(tau)
+
+outcome_potential |> 
+  head() |> 
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling()
+```
+
+```{r}
+outcome_potential |> 
+  modelsummary::datasummary_skim()
+```
+
+```{r}
+tau
+```
+
+```{r}
+# 処置ベクトルと顕在結果の生成
+data_realized <- 
+  generate_data_randomized(
+    outcome_potential = outcome_potential,
+    N_1 = N_1,
+    seed = 1
+  )
+
+data_realized |> 
+  head() |> 
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling()
+```
+
+```{r}
+data_realized |> 
+  modelsummary::datasummary_skim()
+```
+
+## 分析と推定
+
+### 回帰分析
+
+モデル①：共変量の情報を無視
+
+モデル②③：Xに関して線形な、不正確なモデル
+
+モデル④：正しいモデル $Y_i = - \exp(1/2) + Z_i\tau + \dot{X}_i - Z_i \dot{x}_i + \epsilon_i.$
+
+```{r}
+results_ols <- 
+  c(
+    "y ~ z",
+    "y ~ z + x",
+    "y ~ z + exp(x)",
+    "y ~ z + x_dot + z:x_dot"
+  ) |> 
+  purrr::map(as.formula) %>%
+  purrr::map(
+    .,
+    ~ lm(
+      formula = .,
+      data = data_realized |> 
+        dplyr::mutate(x_dot = exp(x) - exp(1/2))
+    )
+  )
+```
+
+### 推定結果
+
+不均一分散を仮定した推定に対し、均一分散を仮定した推定では、標準誤差を過少推定している（特に共変量Xを含む変数）
+
+```{r}
+# 不均一分散を仮定した場合
+results_ols |> 
+  modelsummary::modelsummary(
+    vcov = "HC1" #HC1 ~ HC4のいずれのtypeでも大きな差分なし
+  )
+
+# 均一分散を仮定した場合
+results_ols |> 
+  modelsummary::modelsummary(
+    vcov = "constant"
+  )
+```
+
+```{r}
+# 標準誤差の手動計算
+se_hetero <- 
+  results_ols %>%
+  purrr::map(
+    .,
+    ~ data.frame(
+      data_realized,
+      residual = .$residuals,
+      df = .$df.residual
+    ) |> 
+      dplyr::mutate(
+        z_bar = mean(z)
+      ) |> 
+      dplyr::summarise(
+        v = sum((z - z_bar)^2 * residual^2 / (z_bar * (1 - z_bar))^2) /
+          (length(z) * mean(df))
+      ) |> 
+      dplyr::ungroup() |> 
+      sqrt()
+  ) |> 
+  dplyr::bind_rows()
+```
+
+```{r}
+data.frame(
+  model = c("共変量なし", "線形共変量", "指数共変量", "正しいモデル"),
+  "不均一分散頑健分散推定量" = se_hetero$v
+) |> 
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling()
+```
