@@ -494,7 +494,7 @@ data_realized |>
   modelsummary::datasummary_skim()
 ```
 
-### 検定統計量の計算
+## 検定統計量の計算
 観測データにおける検定統計量の計算
 
 ```{r}
@@ -507,7 +507,7 @@ t <-
 t
 ```
 
-### p値の計算
+## p値の計算
 ```{r}
 outcome_potential_null <- 
   data_realized |> 
@@ -546,6 +546,285 @@ t_distribution |>
             stat = "density", color = "darkblue") +
   geom_vline(xintercept = t, lty = "dashed")
 ```
+
+
+# クラスター化無作為化実験
+
+参照：[因果推論の計量経済学（川口、澤田）：第2章　無作為化実験](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/randomization_cluster.html)
+
+## シミュレーションデータの生成
+
+### 定数とパラメータの設定
+```{r}
+set.seed(1)
+G <- 100　　　　　　　　 #クラスター数
+N_g <- rpois(G, 99) + 1　#各クラスターの標本数
+N <- sum(N_g)　　　　　　#全体の標本数
+G_1 <- 50　　　　　　　　#処置を割り当てるクラスター数
+```
+
+母集団における各クラスターの平均処置効果
+```{r}
+tau_g_polulation <- 
+  abs(rnorm(G))
+
+head(tau_g_polulation)
+```
+
+母集団全体における平均処置効果
+（クラスターの標本数で重み付け）
+```{r}
+tau_population <- 
+  sum(tau_g_polulation * N_g / N)
+
+tau_population
+```
+
+各クラスターを1個体とみなした単純平均効果
+```{r}
+tau_c_polulation <- mean(tau_g_polulation)
+tau_c_polulation
+```
+
+
+## データの生成
+```{r}
+# 潜在結果の生成
+outcome_potential <- 
+  1:G %>%
+  purrr::map(
+    .,
+     ~ tibble::tibble(
+        g = .,
+        y_0 = rnorm(N_g[.], mean = 0, sd = 1),
+        y_1 = rnorm(N_g[.], mean = tau_population, sd = 1)
+    )
+  ) |> 
+  dplyr::bind_rows()
+
+outcome_potential |> 
+  head() |> 
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling()
+```
+
+```{r}
+outcome_potential |> 
+  modelsummary::datasummary_skim()
+```
+
+```{r}
+# 無作為抽出された標本における各クラスターの平均処置効果
+tau_g <- 
+  outcome_potential |> 
+  dplyr::group_by(g) |> 
+  dplyr::summarise(
+    tau = mean(y_1 - y_0)
+  ) |> 
+  dplyr::pull(tau)
+
+head(tau_g)
+```
+
+```{r}
+# 無作為抽出された標本全体における平均処置効果
+tau <- 
+  outcome_potential |> 
+  dplyr::summarise(
+    tau = mean(y_1 - y_0)
+  ) |> 
+  dplyr::pull(tau)
+
+tau
+```
+
+```{r}
+# 無作為抽出された標本における単純平均効果
+tau_c <- mean(tau_g)
+tau_c
+```
+
+```{r}
+# 処置ベクトルと潜在結果から、顕在結果を計算
+data_realized <- 
+  generate_data_cluster(
+    outcome_potential = outcome_potential,
+    G_1 = G_1,
+    seed = 1
+  )
+
+data_realized |> 
+  head() |> 
+  kableExtra::kbl() |> 
+  kableExtra::kable_styling()
+```
+
+
+## 分析と推定
+
+### 平均の差による$\hat{\tau}_c$の推定
+$\hat{\tau}_c$の推定
+```{r}
+tau_c_hat <- 
+  data_realized |> 
+  dplyr::group_by(g) |> 
+  dplyr::summarise(
+    z = mean(z),
+    y = mean(y)
+  ) |> 
+  dplyr::ungroup() |> 
+  dplyr::summarise(
+    tau = sum(y * z) / sum(z) - 
+      sum(y * (1 - z)) / sum(1 - z)
+  )
+
+tau_c_hat
+```
+
+$\hat{\tau}_c$標準誤差
+```{r}
+tau_c_hat_se <- 
+  data_realized |> 
+  dplyr::group_by(g) |> 　#クラスター＝個体と定義
+  dplyr::summarise(
+    z = mean(z),
+    y = mean(y)
+  ) |> 
+  dplyr::ungroup() |> 
+  dplyr::group_by(z) |> 　#処置の有無で2つのクラスター
+  dplyr::summarise(
+    G_z = length(y),
+    variance = sum((y - mean(y))^2) / (G_z - 1)
+  ) |> 
+  dplyr::ungroup() |> 
+  dplyr::summarise(
+    se = sum(variance / G_z) |> sqrt()
+  )
+
+tau_c_hat_se
+```
+
+
+### 回帰分析による$\hat{\tau}_c$の推定
+```{r}
+tau_c_hat_regression <- 
+  data_realized |> 
+  dplyr::group_by(g) |> 
+  dplyr::summarise(
+    z = mean(z),
+    y = mean(y)
+  ) |> 
+  dplyr::ungroup() %>%
+  lm(data = ., formula = y ~ z)
+
+tau_c_hat_regression |> 
+  modelsummary::modelsummary(
+    fmt = 6
+  )
+```
+
+
+### 平均の差による$\hat{\tau}$の推定
+```{r}
+tau_hat <- 
+  data_realized |> 
+  dplyr::summarise(
+    tau = sum(y * z) / sum(z) -
+      sum(y * (1 -z)) / sum(1 - z)
+  )
+
+tau_hat
+```
+
+### 回帰分析による$\hat{\tau}$の推定
+```{r}
+tau_hat_regression <- 
+  data_realized %>%
+  # dplyr::mutate(
+  #   z = z |> as.integer()
+  # ) %>%
+  lm(data = ., formula = y ~ z)
+
+tau_hat_regression |> 
+  modelsummary::modelsummary(
+    vcov = ~ g, #data_realizedにおけるクラスター番号
+    fmt = 6,
+    output = "gt"
+  )
+```
+
+### $\hat{\tau}$の標準誤差の手動計算
+```{r}
+se_cluster_robust <- 
+  data_realized |> 
+  dplyr::mutate(
+    constant = 1,
+    epsilon = tau_hat_regression$residuals
+  )
+
+term_1 <- 
+  se_cluster_robust |> 
+  dplyr::select(constant, z) |> 
+  as.matrix()
+
+term_1 <- 
+  crossprod(term_1, term_1)
+```
+
+```{r}
+term_2 <- 
+  se_cluster_robust |> 
+  dplyr::group_split(g) %>%
+  purrr::map(
+    .,
+    function(df) {
+      df <- 
+        df |> 
+        dplyr::mutate(z_epsilon = z * epsilon) |> 
+        dplyr::select(epsilon, z_epsilon) |> 
+        dplyr::summarise_all(sum) |> 
+        as.matrix()
+      df <- crossprod(df, df)
+    }
+  ) |> 
+  purrr::reduce(`+`)
+```
+
+```{r}
+se_cluster_robust <- 
+  solve(term_1, term_2) * solve(term_1)
+
+se_cluster_robust |> 
+  diag() |> 
+  sqrt()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

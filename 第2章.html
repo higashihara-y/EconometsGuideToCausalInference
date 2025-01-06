@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-12-28">
+<meta name="dcterms.date" content="2025-01-06">
 
 <title>第2章</title>
 <style>
@@ -144,6 +144,32 @@ window.Quarto = {
   <li><a href="#推定結果" id="toc-推定結果" class="nav-link" data-scroll-target="#推定結果"><span class="header-section-number">3.2.2</span> 推定結果</a></li>
   </ul></li>
   </ul></li>
+  <li><a href="#層化無作為化実験" id="toc-層化無作為化実験" class="nav-link" data-scroll-target="#層化無作為化実験"><span class="header-section-number">4</span> 層化無作為化実験</a>
+  <ul class="collapse">
+  <li><a href="#シミュレーションデータの生成-3" id="toc-シミュレーションデータの生成-3" class="nav-link" data-scroll-target="#シミュレーションデータの生成-3"><span class="header-section-number">4.1</span> シミュレーションデータの生成</a>
+  <ul class="collapse">
+  <li><a href="#定数とパラメータの設定-3" id="toc-定数とパラメータの設定-3" class="nav-link" data-scroll-target="#定数とパラメータの設定-3"><span class="header-section-number">4.1.1</span> 定数とパラメータの設定</a></li>
+  <li><a href="#データの生成-3" id="toc-データの生成-3" class="nav-link" data-scroll-target="#データの生成-3"><span class="header-section-number">4.1.2</span> データの生成</a></li>
+  </ul></li>
+  <li><a href="#検定統計量の計算" id="toc-検定統計量の計算" class="nav-link" data-scroll-target="#検定統計量の計算"><span class="header-section-number">4.2</span> 検定統計量の計算</a></li>
+  <li><a href="#p値の計算" id="toc-p値の計算" class="nav-link" data-scroll-target="#p値の計算"><span class="header-section-number">4.3</span> p値の計算</a></li>
+  </ul></li>
+  <li><a href="#クラスター化無作為化実験" id="toc-クラスター化無作為化実験" class="nav-link" data-scroll-target="#クラスター化無作為化実験"><span class="header-section-number">5</span> クラスター化無作為化実験</a>
+  <ul class="collapse">
+  <li><a href="#シミュレーションデータの生成-4" id="toc-シミュレーションデータの生成-4" class="nav-link" data-scroll-target="#シミュレーションデータの生成-4"><span class="header-section-number">5.1</span> シミュレーションデータの生成</a>
+  <ul class="collapse">
+  <li><a href="#定数とパラメータの設定-4" id="toc-定数とパラメータの設定-4" class="nav-link" data-scroll-target="#定数とパラメータの設定-4"><span class="header-section-number">5.1.1</span> 定数とパラメータの設定</a></li>
+  </ul></li>
+  <li><a href="#データの生成-4" id="toc-データの生成-4" class="nav-link" data-scroll-target="#データの生成-4"><span class="header-section-number">5.2</span> データの生成</a></li>
+  <li><a href="#分析と推定-3" id="toc-分析と推定-3" class="nav-link" data-scroll-target="#分析と推定-3"><span class="header-section-number">5.3</span> 分析と推定</a>
+  <ul class="collapse">
+  <li><a href="#平均の差によるhattau_cの推定" id="toc-平均の差によるhattau_cの推定" class="nav-link" data-scroll-target="#平均の差によるhattau_cの推定"><span class="header-section-number">5.3.1</span> 平均の差による<span class="math inline">\(\hat{\tau}_c\)</span>の推定</a></li>
+  <li><a href="#回帰分析によるhattau_cの推定" id="toc-回帰分析によるhattau_cの推定" class="nav-link" data-scroll-target="#回帰分析によるhattau_cの推定"><span class="header-section-number">5.3.2</span> 回帰分析による<span class="math inline">\(\hat{\tau}_c\)</span>の推定</a></li>
+  <li><a href="#平均の差によるhattauの推定" id="toc-平均の差によるhattauの推定" class="nav-link" data-scroll-target="#平均の差によるhattauの推定"><span class="header-section-number">5.3.3</span> 平均の差による<span class="math inline">\(\hat{\tau}\)</span>の推定</a></li>
+  <li><a href="#回帰分析によるhattauの推定" id="toc-回帰分析によるhattauの推定" class="nav-link" data-scroll-target="#回帰分析によるhattauの推定"><span class="header-section-number">5.3.4</span> 回帰分析による<span class="math inline">\(\hat{\tau}\)</span>の推定</a></li>
+  <li><a href="#hattauの標準誤差の手動計算" id="toc-hattauの標準誤差の手動計算" class="nav-link" data-scroll-target="#hattauの標準誤差の手動計算"><span class="header-section-number">5.3.5</span> <span class="math inline">\(\hat{\tau}\)</span>の標準誤差の手動計算</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -164,7 +190,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">December 28, 2024</p>
+      <p class="date">January 6, 2025</p>
     </div>
   </div>
   
@@ -1145,7 +1171,7 @@ window.Quarto = {
 </section>
 <section id="共変量の統制と回帰分析" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> 共変量の統制と回帰分析</h1>
-<p>：<a href="https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/randomization_regression.html">因果推論の計量経済学（川口、澤田）：第2章　無作為化実験</a></p>
+<p>参照：<a href="https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/randomization_regression.html">因果推論の計量経済学（川口、澤田）：第2章　無作為化実験</a></p>
 <section id="シミュレーションデータの生成-2" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="シミュレーションデータの生成-2"><span class="header-section-number">3.1</span> シミュレーションデータの生成</h2>
 <section id="定数とパラメータの設定-2" class="level3" data-number="3.1.1">
@@ -2195,6 +2221,1885 @@ window.Quarto = {
 </table>
 
 
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="層化無作為化実験" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> 層化無作為化実験</h1>
+<p>参照：<a href="https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/randomization_stratified.html">因果推論の計量経済学（川口、澤田）：第2章　無作為化実験</a></p>
+<section id="シミュレーションデータの生成-3" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="シミュレーションデータの生成-3"><span class="header-section-number">4.1</span> シミュレーションデータの生成</h2>
+<section id="定数とパラメータの設定-3" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="定数とパラメータの設定-3"><span class="header-section-number">4.1.1</span> 定数とパラメータの設定</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">2000</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.4</span>) <span class="co">#二つの層の個体数比率</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>e <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>) <span class="co">#二つの層の傾向スコア</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>N_1 <span class="ot">&lt;-</span> N <span class="sc">*</span> q <span class="sc">*</span> e <span class="co">#二つの層の処置群のサイズ</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>tau_population <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.3</span>) <span class="co">#母集団における平均処置効果</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="データの生成-3" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="データの生成-3"><span class="header-section-number">4.1.2</span> データの生成</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>outcome_potential <span class="ot">&lt;-</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span> <span class="sc">|&gt;</span> </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(<span class="cf">function</span>(g) {</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">g =</span> g,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">y_0 =</span> <span class="fu">rnorm</span>(N <span class="sc">*</span> q[g], <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="fl">0.1</span>),</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">y_1 =</span> <span class="fu">rnorm</span>(N <span class="sc">*</span> q[g], <span class="at">mean =</span> tau_population, <span class="at">sd =</span> <span class="fl">0.1</span>))</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  }) <span class="sc">|&gt;</span> </span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  outcome_potential <span class="sc">|&gt;</span> </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(g) <span class="sc">|&gt;</span> </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">mean</span>(y_1 <span class="sc">-</span> y_0)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(tau)</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>outcome_potential <span class="sc">|&gt;</span> </span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kbl</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">g</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y_0</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y_1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.0626454</td>
+<td style="text-align: right;">0.0442964</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0183643</td>
+<td style="text-align: right;">0.4923164</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.0835629</td>
+<td style="text-align: right;">0.0143170</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.1595281</td>
+<td style="text-align: right;">0.0893882</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0329508</td>
+<td style="text-align: right;">0.2697649</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.0820468</td>
+<td style="text-align: right;">0.3907444</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>outcome_potential <span class="sc">|&gt;</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">datasummary_skim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_trqg4fojpewvs106kiyo(i, j, css_id) {
+          var table = document.getElementById("tinytable_trqg4fojpewvs106kiyo");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_trqg4fojpewvs106kiyo');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_trqg4fojpewvs106kiyo(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_trqg4fojpewvs106kiyo");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 1, j: 0 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 1, j: 3 }, { i: 2, j: 3 }, { i: 2, j: 0 }, { i: 1, j: 7 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 2, j: 1 }, { i: 1, j: 8 }, { i: 1, j: 5 }, { i: 2, j: 5 }, { i: 1, j: 6 }, { i: 2, j: 6 }, { i: 2, j: 7 }, { i: 2, j: 8 },  ], css_id: 'tinytable_css_md8orkymr3vn3yf8zpqf',}, 
+          { positions: [ { i: 3, j: 5 }, { i: 3, j: 2 }, { i: 3, j: 6 }, { i: 3, j: 3 }, { i: 3, j: 0 }, { i: 3, j: 7 }, { i: 3, j: 4 }, { i: 3, j: 1 }, { i: 3, j: 8 },  ], css_id: 'tinytable_css_inbh48t9fg51116uk2cb',}, 
+          { positions: [ { i: 0, j: 0 }, { i: 0, j: 7 }, { i: 0, j: 4 }, { i: 0, j: 1 }, { i: 0, j: 8 }, { i: 0, j: 5 }, { i: 0, j: 2 }, { i: 0, j: 6 }, { i: 0, j: 3 },  ], css_id: 'tinytable_css_e4dkgf3wicqs8oo8hd2v',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_trqg4fojpewvs106kiyo(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_md8orkymr3vn3yf8zpqf, .table th.tinytable_css_md8orkymr3vn3yf8zpqf { text-align: left; }
+      .table td.tinytable_css_inbh48t9fg51116uk2cb, .table th.tinytable_css_inbh48t9fg51116uk2cb { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_e4dkgf3wicqs8oo8hd2v, .table th.tinytable_css_e4dkgf3wicqs8oo8hd2v { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_trqg4fojpewvs106kiyo" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">Unique</th>
+                <th scope="col">Missing Pct.</th>
+                <th scope="col">Mean</th>
+                <th scope="col">SD</th>
+                <th scope="col">Min</th>
+                <th scope="col">Median</th>
+                <th scope="col">Max</th>
+                <th scope="col">Histogram</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>g</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>1.4</td>
+                  <td>0.5</td>
+                  <td>1.0</td>
+                  <td>1.0</td>
+                  <td>2.0</td>
+                  <td><img src="./tinytable_assets/idi2gx9gl3uy0dow1uwb6o.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>y_0</td>
+                  <td>2000</td>
+                  <td>0</td>
+                  <td>0.0</td>
+                  <td>0.1</td>
+                  <td>-0.4</td>
+                  <td>0.0</td>
+                  <td>0.4</td>
+                  <td><img src="./tinytable_assets/idne3dmmxr3je9w81dri4h.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>y_1</td>
+                  <td>2000</td>
+                  <td>0</td>
+                  <td>0.2</td>
+                  <td>0.1</td>
+                  <td>-0.1</td>
+                  <td>0.3</td>
+                  <td>0.6</td>
+                  <td><img src="./tinytable_assets/idi5f17jjofpr1jrlhy0u6.png" style="height: 1em;"></td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>tau</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2522689 0.2435481</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 観測されるデータの生成</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>data_realized <span class="ot">&lt;-</span> </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_data_stratified</span>(</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">outcome_potential =</span> outcome_potential,</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_1 =</span> N_1,</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">1</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>data_realized <span class="sc">|&gt;</span> </span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kbl</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">g</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">z</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.0626454</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0183643</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0143170</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.1595281</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0329508</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.0820468</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>data_realized <span class="sc">|&gt;</span> </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(g <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">datasummary_skim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_s83phy0kdt0miq6dvdrj(i, j, css_id) {
+          var table = document.getElementById("tinytable_s83phy0kdt0miq6dvdrj");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_s83phy0kdt0miq6dvdrj');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_s83phy0kdt0miq6dvdrj(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_s83phy0kdt0miq6dvdrj");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 3, j: 5 }, { i: 3, j: 2 }, { i: 3, j: 6 }, { i: 3, j: 3 }, { i: 3, j: 0 }, { i: 3, j: 7 }, { i: 3, j: 4 }, { i: 3, j: 1 }, { i: 3, j: 8 },  ], css_id: 'tinytable_css_xwffv3iys844na9kk648',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 1, j: 3 }, { i: 2, j: 3 }, { i: 2, j: 0 }, { i: 1, j: 7 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 2, j: 1 }, { i: 1, j: 8 }, { i: 1, j: 5 }, { i: 2, j: 5 }, { i: 1, j: 6 }, { i: 2, j: 6 }, { i: 2, j: 7 }, { i: 2, j: 8 },  ], css_id: 'tinytable_css_c2ahe2izeca74sswqlwz',}, 
+          { positions: [ { i: 0, j: 0 }, { i: 0, j: 7 }, { i: 0, j: 4 }, { i: 0, j: 1 }, { i: 0, j: 8 }, { i: 0, j: 5 }, { i: 0, j: 2 }, { i: 0, j: 6 }, { i: 0, j: 3 },  ], css_id: 'tinytable_css_06rnptnrmse9yo8dipfu',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_s83phy0kdt0miq6dvdrj(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_xwffv3iys844na9kk648, .table th.tinytable_css_xwffv3iys844na9kk648 { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_c2ahe2izeca74sswqlwz, .table th.tinytable_css_c2ahe2izeca74sswqlwz { text-align: left; }
+      .table td.tinytable_css_06rnptnrmse9yo8dipfu, .table th.tinytable_css_06rnptnrmse9yo8dipfu { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_s83phy0kdt0miq6dvdrj" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">Unique</th>
+                <th scope="col">Missing Pct.</th>
+                <th scope="col">Mean</th>
+                <th scope="col">SD</th>
+                <th scope="col">Min</th>
+                <th scope="col">Median</th>
+                <th scope="col">Max</th>
+                <th scope="col">Histogram</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>g</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>1.0</td>
+                  <td>0.0</td>
+                  <td>1.0</td>
+                  <td>1.0</td>
+                  <td>1.0</td>
+                  <td><img src="./tinytable_assets/id3dafoz4quq1vmj54ihxk.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>z</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>0.3</td>
+                  <td>0.5</td>
+                  <td>0.0</td>
+                  <td>0.0</td>
+                  <td>1.0</td>
+                  <td><img src="./tinytable_assets/idjpv9akcj6sg7vn5m9a9d.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>y</td>
+                  <td>1200</td>
+                  <td>0</td>
+                  <td>0.1</td>
+                  <td>0.2</td>
+                  <td>-0.3</td>
+                  <td>0.1</td>
+                  <td>0.5</td>
+                  <td><img src="./tinytable_assets/idfq03mvfj38fu9wgcoho9.png" style="height: 1em;"></td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>data_realized <span class="sc">|&gt;</span> </span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(g <span class="sc">==</span> <span class="dv">2</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">datasummary_skim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_6rnu1t45hsof5abujl82(i, j, css_id) {
+          var table = document.getElementById("tinytable_6rnu1t45hsof5abujl82");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_6rnu1t45hsof5abujl82');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_6rnu1t45hsof5abujl82(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_6rnu1t45hsof5abujl82");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 3, j: 5 }, { i: 3, j: 2 }, { i: 3, j: 6 }, { i: 3, j: 3 }, { i: 3, j: 0 }, { i: 3, j: 7 }, { i: 3, j: 4 }, { i: 3, j: 1 }, { i: 3, j: 8 },  ], css_id: 'tinytable_css_uwpt39q69ewzckv5pjme',}, 
+          { positions: [ { i: 0, j: 0 }, { i: 0, j: 7 }, { i: 0, j: 4 }, { i: 0, j: 1 }, { i: 0, j: 8 }, { i: 0, j: 5 }, { i: 0, j: 2 }, { i: 0, j: 6 }, { i: 0, j: 3 },  ], css_id: 'tinytable_css_l2jppvjval3qj7c88ldk',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 1, j: 3 }, { i: 2, j: 3 }, { i: 2, j: 0 }, { i: 1, j: 7 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 2, j: 1 }, { i: 1, j: 8 }, { i: 1, j: 5 }, { i: 2, j: 5 }, { i: 1, j: 6 }, { i: 2, j: 6 }, { i: 2, j: 7 }, { i: 2, j: 8 },  ], css_id: 'tinytable_css_ga2eoxfcn5yqflh1zmmf',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_6rnu1t45hsof5abujl82(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_uwpt39q69ewzckv5pjme, .table th.tinytable_css_uwpt39q69ewzckv5pjme { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_l2jppvjval3qj7c88ldk, .table th.tinytable_css_l2jppvjval3qj7c88ldk { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_ga2eoxfcn5yqflh1zmmf, .table th.tinytable_css_ga2eoxfcn5yqflh1zmmf { text-align: left; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_6rnu1t45hsof5abujl82" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">Unique</th>
+                <th scope="col">Missing Pct.</th>
+                <th scope="col">Mean</th>
+                <th scope="col">SD</th>
+                <th scope="col">Min</th>
+                <th scope="col">Median</th>
+                <th scope="col">Max</th>
+                <th scope="col">Histogram</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>g</td>
+                  <td>1</td>
+                  <td>0</td>
+                  <td>2.0</td>
+                  <td>0.0</td>
+                  <td>2.0</td>
+                  <td>2.0</td>
+                  <td>2.0</td>
+                  <td><img src="./tinytable_assets/ideudug9725ocwb9o09rwu.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>z</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>0.7</td>
+                  <td>0.5</td>
+                  <td>0.0</td>
+                  <td>1.0</td>
+                  <td>1.0</td>
+                  <td><img src="./tinytable_assets/id7161ot5l1w4w25zkjyvf.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>y</td>
+                  <td>800</td>
+                  <td>0</td>
+                  <td>0.2</td>
+                  <td>0.2</td>
+                  <td>-0.4</td>
+                  <td>0.2</td>
+                  <td>0.6</td>
+                  <td><img src="./tinytable_assets/id2gv0hna1aawvy16pjgq6.png" style="height: 1em;"></td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</section>
+</section>
+<section id="検定統計量の計算" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="検定統計量の計算"><span class="header-section-number">4.2</span> 検定統計量の計算</h2>
+<p>観測データにおける検定統計量の計算</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> q <span class="sc">*</span> e <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> e)　<span class="co">#各層に付与するウェイト</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">calculate_difference_in_means_stratified</span>(</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">data_realized =</span> data_realized,</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">lambda =</span> lambda</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>t</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0526794</code></pre>
+</div>
+</div>
+</section>
+<section id="p値の計算" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="p値の計算"><span class="header-section-number">4.3</span> p値の計算</h2>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>outcome_potential_null <span class="ot">&lt;-</span> </span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  data_realized <span class="sc">|&gt;</span> </span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_0 =</span> y,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y_1 =</span> y</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>t_distribution <span class="ot">&lt;-</span> </span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">:</span>R <span class="sc">%&gt;%</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>    .,</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>    <span class="sc">~</span> <span class="fu">generate_data_stratified</span>(</span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">outcome_potential =</span> outcome_potential_null,</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">N_1 =</span> N_1,</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">seed =</span> .</span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">calculate_difference_in_means_stratified</span>(</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">data_realized =</span> .,</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">lambda =</span> lambda</span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">reduce</span>(c)</span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a>pvalue <span class="ot">&lt;-</span> </span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="fu">abs</span>(t_distribution) <span class="sc">&gt;</span> <span class="fu">abs</span>(t))</span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-27"><a href="#cb48-27" aria-hidden="true" tabindex="-1"></a>pvalue</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>t_distribution <span class="sc">|&gt;</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">tibble</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">abs</span>(t_distribution)),</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">stat =</span> <span class="st">"density"</span>, <span class="at">color =</span> <span class="st">"darkblue"</span>) <span class="sc">+</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> t, <span class="at">lty =</span> <span class="st">"dashed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第2章_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="クラスター化無作為化実験" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> クラスター化無作為化実験</h1>
+<p>参照：<a href="https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/randomization_cluster.html">因果推論の計量経済学（川口、澤田）：第2章　無作為化実験</a></p>
+<section id="シミュレーションデータの生成-4" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="シミュレーションデータの生成-4"><span class="header-section-number">5.1</span> シミュレーションデータの生成</h2>
+<section id="定数とパラメータの設定-4" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="定数とパラメータの設定-4"><span class="header-section-number">5.1.1</span> 定数とパラメータの設定</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>G <span class="ot">&lt;-</span> <span class="dv">100</span>　　　　　　　　 <span class="co">#クラスター数</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>N_g <span class="ot">&lt;-</span> <span class="fu">rpois</span>(G, <span class="dv">99</span>) <span class="sc">+</span> <span class="dv">1</span>　<span class="co">#各クラスターの標本数</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">sum</span>(N_g)　　　　　　<span class="co">#全体の標本数</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>G_1 <span class="ot">&lt;-</span> <span class="dv">50</span>　　　　　　　　<span class="co">#処置を割り当てるクラスター数</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>母集団における各クラスターの平均処置効果</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>tau_g_polulation <span class="ot">&lt;-</span> </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abs</span>(<span class="fu">rnorm</span>(G))</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tau_g_polulation)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1187920 0.1976843 1.0686927 0.8032132 1.1137651 1.5800917</code></pre>
+</div>
+</div>
+<p>母集団全体における平均処置効果 （クラスターの標本数で重み付け）</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>tau_population <span class="ot">&lt;-</span> </span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(tau_g_polulation <span class="sc">*</span> N_g <span class="sc">/</span> N)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>tau_population</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7998756</code></pre>
+</div>
+</div>
+<p>各クラスターを1個体とみなした単純平均効果</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>tau_c_polulation <span class="ot">&lt;-</span> <span class="fu">mean</span>(tau_g_polulation)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>tau_c_polulation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8044622</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="データの生成-4" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="データの生成-4"><span class="header-section-number">5.2</span> データの生成</h2>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 潜在結果の生成</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>outcome_potential <span class="ot">&lt;-</span> </span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">:</span>G <span class="sc">%&gt;%</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    .,</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>     <span class="sc">~</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">g =</span> .,</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">y_0 =</span> <span class="fu">rnorm</span>(N_g[.], <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>),</span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">y_1 =</span> <span class="fu">rnorm</span>(N_g[.], <span class="at">mean =</span> tau_population, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb58-12"><a href="#cb58-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>()</span>
+<span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>outcome_potential <span class="sc">|&gt;</span> </span>
+<span id="cb58-15"><a href="#cb58-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb58-16"><a href="#cb58-16" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kbl</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb58-17"><a href="#cb58-17" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">g</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y_0</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y_1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.4085634</td>
+<td style="text-align: right;">1.1081844</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.5417604</td>
+<td style="text-align: right;">1.1446708</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.2786647</td>
+<td style="text-align: right;">2.3395237</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-0.1939727</td>
+<td style="text-align: right;">0.4703614</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.5761582</td>
+<td style="text-align: right;">1.7482650</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-1.4755476</td>
+<td style="text-align: right;">0.3206201</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>outcome_potential <span class="sc">|&gt;</span> </span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">datasummary_skim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_7h3mk6v6618spksxeksh(i, j, css_id) {
+          var table = document.getElementById("tinytable_7h3mk6v6618spksxeksh");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_7h3mk6v6618spksxeksh');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_7h3mk6v6618spksxeksh(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_7h3mk6v6618spksxeksh");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 1, j: 0 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 2, j: 2 }, { i: 1, j: 3 }, { i: 2, j: 3 }, { i: 2, j: 0 }, { i: 1, j: 7 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 2, j: 1 }, { i: 1, j: 8 }, { i: 1, j: 5 }, { i: 2, j: 5 }, { i: 1, j: 6 }, { i: 2, j: 6 }, { i: 2, j: 7 }, { i: 2, j: 8 },  ], css_id: 'tinytable_css_tl7714eeb6338cxwf088',}, 
+          { positions: [ { i: 0, j: 0 }, { i: 0, j: 7 }, { i: 0, j: 4 }, { i: 0, j: 1 }, { i: 0, j: 8 }, { i: 0, j: 5 }, { i: 0, j: 2 }, { i: 0, j: 6 }, { i: 0, j: 3 },  ], css_id: 'tinytable_css_5j6cavfk6zuez1jzlawu',}, 
+          { positions: [ { i: 3, j: 5 }, { i: 3, j: 2 }, { i: 3, j: 6 }, { i: 3, j: 3 }, { i: 3, j: 0 }, { i: 3, j: 7 }, { i: 3, j: 4 }, { i: 3, j: 1 }, { i: 3, j: 8 },  ], css_id: 'tinytable_css_392uu109dftsly9k2f32',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_7h3mk6v6618spksxeksh(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_tl7714eeb6338cxwf088, .table th.tinytable_css_tl7714eeb6338cxwf088 { text-align: left; }
+      .table td.tinytable_css_5j6cavfk6zuez1jzlawu, .table th.tinytable_css_5j6cavfk6zuez1jzlawu { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_392uu109dftsly9k2f32, .table th.tinytable_css_392uu109dftsly9k2f32 { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_7h3mk6v6618spksxeksh" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">Unique</th>
+                <th scope="col">Missing Pct.</th>
+                <th scope="col">Mean</th>
+                <th scope="col">SD</th>
+                <th scope="col">Min</th>
+                <th scope="col">Median</th>
+                <th scope="col">Max</th>
+                <th scope="col">Histogram</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>g</td>
+                  <td>100</td>
+                  <td>0</td>
+                  <td>50.7</td>
+                  <td>28.8</td>
+                  <td>1.0</td>
+                  <td>51.0</td>
+                  <td>100.0</td>
+                  <td><img src="./tinytable_assets/id3fezeui54df179vnio9y.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>y_0</td>
+                  <td>10116</td>
+                  <td>0</td>
+                  <td>0.0</td>
+                  <td>1.0</td>
+                  <td>-3.5</td>
+                  <td>0.0</td>
+                  <td>3.5</td>
+                  <td><img src="./tinytable_assets/idacub07e3hm2y26e1tlvk.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>y_1</td>
+                  <td>10116</td>
+                  <td>0</td>
+                  <td>0.8</td>
+                  <td>1.0</td>
+                  <td>-2.9</td>
+                  <td>0.8</td>
+                  <td>4.4</td>
+                  <td><img src="./tinytable_assets/id5v0yoddxppwt8hcyzay0.png" style="height: 1em;"></td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 無作為抽出された標本における各クラスターの平均処置効果</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>tau_g <span class="ot">&lt;-</span> </span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  outcome_potential <span class="sc">|&gt;</span> </span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(g) <span class="sc">|&gt;</span> </span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">mean</span>(y_1 <span class="sc">-</span> y_0)</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(tau)</span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tau_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7826583 0.6042309 0.9442067 0.7697802 1.0558021 0.8105814</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 無作為抽出された標本全体における平均処置効果</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> </span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  outcome_potential <span class="sc">|&gt;</span> </span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">mean</span>(y_1 <span class="sc">-</span> y_0)</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(tau)</span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>tau</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7909974</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 無作為抽出された標本における単純平均効果</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>tau_c <span class="ot">&lt;-</span> <span class="fu">mean</span>(tau_g)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>tau_c</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.789667</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 処置ベクトルと潜在結果から、顕在結果を計算</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>data_realized <span class="ot">&lt;-</span> </span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_data_cluster</span>(</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">outcome_potential =</span> outcome_potential,</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">G_1 =</span> G_1,</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">1</span></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>data_realized <span class="sc">|&gt;</span> </span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kbl</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">g</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">z</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.1081844</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.1446708</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.3395237</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.4703614</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.7482650</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.3206201</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="分析と推定-3" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="分析と推定-3"><span class="header-section-number">5.3</span> 分析と推定</h2>
+<section id="平均の差によるhattau_cの推定" class="level3" data-number="5.3.1">
+<h3 data-number="5.3.1" class="anchored" data-anchor-id="平均の差によるhattau_cの推定"><span class="header-section-number">5.3.1</span> 平均の差による<span class="math inline">\(\hat{\tau}_c\)</span>の推定</h3>
+<p><span class="math inline">\(\hat{\tau}_c\)</span>の推定</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>tau_c_hat <span class="ot">&lt;-</span> </span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  data_realized <span class="sc">|&gt;</span> </span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(g) <span class="sc">|&gt;</span> </span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">z =</span> <span class="fu">mean</span>(z),</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">mean</span>(y)</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">sum</span>(y <span class="sc">*</span> z) <span class="sc">/</span> <span class="fu">sum</span>(z) <span class="sc">-</span> </span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(y <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> z)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="dv">1</span> <span class="sc">-</span> z)</span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a>tau_c_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+    tau
+  &lt;dbl&gt;
+1 0.791</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(\hat{\tau}_c\)</span>標準誤差</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>tau_c_hat_se <span class="ot">&lt;-</span> </span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  data_realized <span class="sc">|&gt;</span> </span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(g) <span class="sc">|&gt;</span> 　<span class="co">#クラスター＝個体と定義</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">z =</span> <span class="fu">mean</span>(z),</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">mean</span>(y)</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(z) <span class="sc">|&gt;</span> 　<span class="co">#処置の有無で2つのクラスター</span></span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">G_z =</span> <span class="fu">length</span>(y),</span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">variance =</span> <span class="fu">sum</span>((y <span class="sc">-</span> <span class="fu">mean</span>(y))<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> (G_z <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb69-15"><a href="#cb69-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb69-16"><a href="#cb69-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">se =</span> <span class="fu">sum</span>(variance <span class="sc">/</span> G_z) <span class="sc">|&gt;</span> <span class="fu">sqrt</span>()</span>
+<span id="cb69-17"><a href="#cb69-17" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb69-18"><a href="#cb69-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-19"><a href="#cb69-19" aria-hidden="true" tabindex="-1"></a>tau_c_hat_se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+      se
+   &lt;dbl&gt;
+1 0.0221</code></pre>
+</div>
+</div>
+</section>
+<section id="回帰分析によるhattau_cの推定" class="level3" data-number="5.3.2">
+<h3 data-number="5.3.2" class="anchored" data-anchor-id="回帰分析によるhattau_cの推定"><span class="header-section-number">5.3.2</span> 回帰分析による<span class="math inline">\(\hat{\tau}_c\)</span>の推定</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>tau_c_hat_regression <span class="ot">&lt;-</span> </span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  data_realized <span class="sc">|&gt;</span> </span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(g) <span class="sc">|&gt;</span> </span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">z =</span> <span class="fu">mean</span>(z),</span>
+<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">mean</span>(y)</span>
+<span id="cb71-7"><a href="#cb71-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb71-8"><a href="#cb71-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb71-9"><a href="#cb71-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(<span class="at">data =</span> ., <span class="at">formula =</span> y <span class="sc">~</span> z)</span>
+<span id="cb71-10"><a href="#cb71-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-11"><a href="#cb71-11" aria-hidden="true" tabindex="-1"></a>tau_c_hat_regression <span class="sc">|&gt;</span> </span>
+<span id="cb71-12"><a href="#cb71-12" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(</span>
+<span id="cb71-13"><a href="#cb71-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">fmt =</span> <span class="dv">6</span></span>
+<span id="cb71-14"><a href="#cb71-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_py0sdl5r2ly6yq6jnfiz(i, j, css_id) {
+          var table = document.getElementById("tinytable_py0sdl5r2ly6yq6jnfiz");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_py0sdl5r2ly6yq6jnfiz');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_py0sdl5r2ly6yq6jnfiz(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_py0sdl5r2ly6yq6jnfiz");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 0, j: 1 },  ], css_id: 'tinytable_css_xpw3lonedghwv76q8jxs',}, 
+          { positions: [ { i: 4, j: 1 },  ], css_id: 'tinytable_css_sy95wmwyacppx3ogn8t8',}, 
+          { positions: [ { i: 4, j: 0 },  ], css_id: 'tinytable_css_k0jnlfts17dzp76zz8qe',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 8, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 7, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 },  ], css_id: 'tinytable_css_evusbdfe1028gj4qu7zs',}, 
+          { positions: [ { i: 11, j: 1 },  ], css_id: 'tinytable_css_alv2iw3c04ymsyz8yyjl',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 8, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 7, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 },  ], css_id: 'tinytable_css_a12er4rdg0pwipm3fqfx',}, 
+          { positions: [ { i: 11, j: 0 },  ], css_id: 'tinytable_css_53yyc6ourrjs0rdubsf9',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_10cpx1igxauyyiaf8rn9',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_py0sdl5r2ly6yq6jnfiz(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_xpw3lonedghwv76q8jxs, .table th.tinytable_css_xpw3lonedghwv76q8jxs { text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_sy95wmwyacppx3ogn8t8, .table th.tinytable_css_sy95wmwyacppx3ogn8t8 { text-align: center; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_k0jnlfts17dzp76zz8qe, .table th.tinytable_css_k0jnlfts17dzp76zz8qe { text-align: left; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_evusbdfe1028gj4qu7zs, .table th.tinytable_css_evusbdfe1028gj4qu7zs { text-align: left; }
+      .table td.tinytable_css_alv2iw3c04ymsyz8yyjl, .table th.tinytable_css_alv2iw3c04ymsyz8yyjl { text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_a12er4rdg0pwipm3fqfx, .table th.tinytable_css_a12er4rdg0pwipm3fqfx { text-align: center; }
+      .table td.tinytable_css_53yyc6ourrjs0rdubsf9, .table th.tinytable_css_53yyc6ourrjs0rdubsf9 { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_10cpx1igxauyyiaf8rn9, .table th.tinytable_css_10cpx1igxauyyiaf8rn9 { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_py0sdl5r2ly6yq6jnfiz" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">(1)</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>(Intercept)</td>
+                  <td>0.000097  </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.015654)</td>
+                </tr>
+                <tr>
+                  <td>z          </td>
+                  <td>0.791077  </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.022138)</td>
+                </tr>
+                <tr>
+                  <td>Num.Obs.   </td>
+                  <td>100       </td>
+                </tr>
+                <tr>
+                  <td>R2         </td>
+                  <td>0.929     </td>
+                </tr>
+                <tr>
+                  <td>R2 Adj.    </td>
+                  <td>0.928     </td>
+                </tr>
+                <tr>
+                  <td>AIC        </td>
+                  <td>-152.4    </td>
+                </tr>
+                <tr>
+                  <td>BIC        </td>
+                  <td>-144.6    </td>
+                </tr>
+                <tr>
+                  <td>Log.Lik.   </td>
+                  <td>79.218    </td>
+                </tr>
+                <tr>
+                  <td>RMSE       </td>
+                  <td>0.11      </td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</section>
+<section id="平均の差によるhattauの推定" class="level3" data-number="5.3.3">
+<h3 data-number="5.3.3" class="anchored" data-anchor-id="平均の差によるhattauの推定"><span class="header-section-number">5.3.3</span> 平均の差による<span class="math inline">\(\hat{\tau}\)</span>の推定</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>tau_hat <span class="ot">&lt;-</span> </span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  data_realized <span class="sc">|&gt;</span> </span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">sum</span>(y <span class="sc">*</span> z) <span class="sc">/</span> <span class="fu">sum</span>(z) <span class="sc">-</span></span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(y <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span>z)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="dv">1</span> <span class="sc">-</span> z)</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>tau_hat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+    tau
+  &lt;dbl&gt;
+1 0.792</code></pre>
+</div>
+</div>
+</section>
+<section id="回帰分析によるhattauの推定" class="level3" data-number="5.3.4">
+<h3 data-number="5.3.4" class="anchored" data-anchor-id="回帰分析によるhattauの推定"><span class="header-section-number">5.3.4</span> 回帰分析による<span class="math inline">\(\hat{\tau}\)</span>の推定</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>tau_hat_regression <span class="ot">&lt;-</span> </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  data_realized <span class="sc">%&gt;%</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># dplyr::mutate(</span></span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   z = z |&gt; as.integer()</span></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ) %&gt;%</span></span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(<span class="at">data =</span> ., <span class="at">formula =</span> y <span class="sc">~</span> z)</span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>tau_hat_regression <span class="sc">|&gt;</span> </span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(</span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">vcov =</span> <span class="sc">~</span> g, <span class="co">#data_realizedにおけるクラスター番号</span></span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">fmt =</span> <span class="dv">6</span>,</span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">output =</span> <span class="st">"gt"</span></span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="yivslrlgds" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#yivslrlgds table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#yivslrlgds thead, #yivslrlgds tbody, #yivslrlgds tfoot, #yivslrlgds tr, #yivslrlgds td, #yivslrlgds th {
+  border-style: none;
+}
+
+#yivslrlgds p {
+  margin: 0;
+  padding: 0;
+}
+
+#yivslrlgds .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#yivslrlgds .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#yivslrlgds .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#yivslrlgds .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#yivslrlgds .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yivslrlgds .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yivslrlgds .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yivslrlgds .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#yivslrlgds .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#yivslrlgds .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#yivslrlgds .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#yivslrlgds .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#yivslrlgds .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#yivslrlgds .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#yivslrlgds .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#yivslrlgds .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#yivslrlgds .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#yivslrlgds .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#yivslrlgds .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yivslrlgds .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#yivslrlgds .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#yivslrlgds .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#yivslrlgds .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yivslrlgds .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#yivslrlgds .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#yivslrlgds .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yivslrlgds .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yivslrlgds .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#yivslrlgds .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yivslrlgds .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#yivslrlgds .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yivslrlgds .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yivslrlgds .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yivslrlgds .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yivslrlgds .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yivslrlgds .gt_left {
+  text-align: left;
+}
+
+#yivslrlgds .gt_center {
+  text-align: center;
+}
+
+#yivslrlgds .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#yivslrlgds .gt_font_normal {
+  font-weight: normal;
+}
+
+#yivslrlgds .gt_font_bold {
+  font-weight: bold;
+}
+
+#yivslrlgds .gt_font_italic {
+  font-style: italic;
+}
+
+#yivslrlgds .gt_super {
+  font-size: 65%;
+}
+
+#yivslrlgds .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#yivslrlgds .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#yivslrlgds .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#yivslrlgds .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#yivslrlgds .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#yivslrlgds .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#yivslrlgds .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#yivslrlgds .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#yivslrlgds div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="header gt_col_headings">
+<th id=" " class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"></th>
+<th id="(1)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">(1)</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers=" ">(Intercept)</td>
+<td class="gt_row gt_center" headers="(1)">0.001135</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers=" "></td>
+<td class="gt_row gt_center" headers="(1)">(0.016369)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers=" ">z</td>
+<td class="gt_row gt_center" headers="(1)">0.791739</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers=" " style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000"></td>
+<td class="gt_row gt_center" headers="(1)" style="border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #000000">(0.021964)</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers=" ">Num.Obs.</td>
+<td class="gt_row gt_center" headers="(1)">10116</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers=" ">R2</td>
+<td class="gt_row gt_center" headers="(1)">0.137</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers=" ">R2 Adj.</td>
+<td class="gt_row gt_center" headers="(1)">0.137</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers=" ">AIC</td>
+<td class="gt_row gt_center" headers="(1)">28581.3</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers=" ">BIC</td>
+<td class="gt_row gt_center" headers="(1)">28603.0</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers=" ">Log.Lik.</td>
+<td class="gt_row gt_center" headers="(1)">-14287.661</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers=" ">RMSE</td>
+<td class="gt_row gt_center" headers="(1)">0.99</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers=" ">Std.Errors</td>
+<td class="gt_row gt_center" headers="(1)">by: g</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="hattauの標準誤差の手動計算" class="level3" data-number="5.3.5">
+<h3 data-number="5.3.5" class="anchored" data-anchor-id="hattauの標準誤差の手動計算"><span class="header-section-number">5.3.5</span> <span class="math inline">\(\hat{\tau}\)</span>の標準誤差の手動計算</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>se_cluster_robust <span class="ot">&lt;-</span> </span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  data_realized <span class="sc">|&gt;</span> </span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">constant =</span> <span class="dv">1</span>,</span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">epsilon =</span> tau_hat_regression<span class="sc">$</span>residuals</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>term_1 <span class="ot">&lt;-</span> </span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a>  se_cluster_robust <span class="sc">|&gt;</span> </span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(constant, z) <span class="sc">|&gt;</span> </span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a>term_1 <span class="ot">&lt;-</span> </span>
+<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">crossprod</span>(term_1, term_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>term_2 <span class="ot">&lt;-</span> </span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  se_cluster_robust <span class="sc">|&gt;</span> </span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_split</span>(g) <span class="sc">%&gt;%</span></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>    .,</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(df) {</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>      df <span class="ot">&lt;-</span> </span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>        df <span class="sc">|&gt;</span> </span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">z_epsilon =</span> z <span class="sc">*</span> epsilon) <span class="sc">|&gt;</span> </span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">select</span>(epsilon, z_epsilon) <span class="sc">|&gt;</span> </span>
+<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>        dplyr<span class="sc">::</span><span class="fu">summarise_all</span>(sum) <span class="sc">|&gt;</span> </span>
+<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">as.matrix</span>()</span>
+<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>      df <span class="ot">&lt;-</span> <span class="fu">crossprod</span>(df, df)</span>
+<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">reduce</span>(<span class="st">`</span><span class="at">+</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>se_cluster_robust <span class="ot">&lt;-</span> </span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">solve</span>(term_1, term_2) <span class="sc">*</span> <span class="fu">solve</span>(term_1)</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>se_cluster_robust <span class="sc">|&gt;</span> </span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diag</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.01628632 0.02054540</code></pre>
 </div>
 </div>
 </section>
