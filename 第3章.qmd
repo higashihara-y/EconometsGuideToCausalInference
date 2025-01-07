@@ -3,5 +3,498 @@ title: "第3章"
 format: html
 editor: visual
 # 以下設定追加
-
+number-sections: true
+toc: true
+toc-depth: 3
+toc-location: left
+theme: cosmo
+code-fold: show #code-fold:showでコードの折り畳みが可能
+date: "最終更新: `r Sys.Date()`"
 ---
+
+```{r setup, include=FALSE}
+rm(list = ls()) #knitで正しく結果を得るため最初に全て消去
+knitr::opts_chunk$set(cache = FALSE, echo = TRUE, fig.align = "center", warning = FALSE)
+library(ggplot2)
+library(tictoc)
+library(CausalInferenceTextbook)
+library(clubSandwich)
+color_main <- scales::viridis_pal(option = "C")(1)
+```
+
+```{r include=FALSE}
+# CRANから削除されているため、GitHubからインストール
+# Sys.setenv(GITHUB_PAT = "...")
+# devtools::install_github("s3alfisc/fwildclusterboot@v.0.12")
+library(fwildclusterboot)
+```
+
+# クラスターブートストラップ
+
+## クラスターの数が少なくないケース
+
+### データの生成
+
+```{r}
+# seedの固定
+set.seed(1)
+dqrng::dqset.seed(1)
+
+# 定数の設定
+N <- 50      #観測数
+N_C <- 100　 #クラスター数1　
+N_M <- 500   #クラスター数2 5000→500に減らして対応
+N_B <- 999   #クラスター数3 9999→999に減らして対応
+
+# データの生成
+data_large_cluster <- 
+  return_dgp_cluster(
+    N = N,
+    N_C = N_C
+  )
+```
+
+### 統計量の計算
+参照サイトではlmサマリのt値をそのまま使用しているが、不均一分散頑強標準誤差による推計のため、sandwich::vcovHCで分散を出し、不均一分散頑強標準誤差によるt値を手動で算出。
+```{r}
+lm_fit <- 
+  lm(Y ~ X, data = data_large_cluster)
+
+t_HC <-
+  summary(lm_fit)$coefficients[2,1] / 
+  sqrt(sandwich::vcovHC(lm_fit, type = "HC"))[2, 2]
+
+cat("Heteroskedasticity-robust t-statistics",
+    t_HC,
+    "\n")
+```
+
+clubSandwichパッケージでクラスター頑健分散推定を行う。
+HC,HACに対応した分散推定を行うsandwichパッケージとは異なる。
+```{r}
+vc_cr0 <- 
+  clubSandwich::vcovCR(
+    lm_fit,
+    cluster = data_large_cluster$C,
+    type = "CR0" #補正なし
+  )
+
+vc_cr3 <- 
+  clubSandwich::vcovCR(
+    lm_fit,
+    cluster = data_large_cluster$C,
+    type = "CR3" #ジャックナイフ分散推定
+  )
+
+cat(
+  "Cluster-robust t-statistics, CR0",
+  clubSandwich::coef_test(
+    lm_fit,
+    vc_cr0,
+    coefs = "X"
+  )$tstat,
+  "\n"
+)
+```
+
+```{r}
+cat(
+  "Cluster-robust t-statistics, CR3",
+  clubSandwich::coef_test(
+    lm_fit,
+    vc_cr3,
+    coefs = "X"
+  )$tstat,
+  "\n"
+)
+```
+
+ワイルドブートストラップによる推計
+```{r cache=TRUE}
+p_val_w <- 
+  fwildclusterboot::boottest(
+    object = lm_fit,
+    clustid = "C",
+    param = "X",
+    B = N_B,
+    type = "webb"
+  )$p_val
+cat("Wild cluster-bootstrap p-value", p_val_w, "\n")
+```
+
+
+### シミュレーション比較
+```{r cache=TRUE}
+t_w <- rep(NA, N_M)
+t_cr0 <- rep(NA, N_M)
+t_cr3 <- rep(NA, N_M)
+p_cr_w <- rep(NA, N_M)
+
+for(i in 1:N_M) {
+  data_large_cluster <- 
+    return_dgp_cluster(
+      N = N,
+      N_C = N_C
+    )
+  
+  lm_fit <- 
+    lm(Y ~ X, data = data_large_cluster)
+  
+  t_w[i] <- summary(lm_fit)$coefficients[2,3]
+  
+  vc_cr0 <- 
+    clubSandwich::vcovCR(
+      lm_fit,
+      cluster = data_large_cluster$C,
+      type = "CR0"
+    )
+  
+  vc_cr3 <- 
+    clubSandwich::vcovCR(
+      lm_fit,
+      cluster = data_large_cluster$C,
+      type = "CR3"
+    )
+  
+  t_cr0[i] <- 
+    clubSandwich::coef_test(
+      lm_fit,
+      vc_cr0,
+      coefs = "X"
+    )$tstat
+  
+  t_cr3[i] <- 
+    clubSandwich::coef_test(
+      lm_fit,
+      vc_cr3,
+      coefs = "X"
+    )$tstat
+  
+  invisible(
+    capture.output(
+      boot_lm <- 
+        fwildclusterboot::boottest(
+          object = lm_fit,
+          clustid = "C",
+          param = "X",
+          B = N_B,
+          type = "webb"
+        )
+    )
+  )
+  
+  invisible(
+    capture.output(
+      p_cr_w[i] <- boot_lm$p_val
+    )
+  )
+}
+```
+
+各分散推定における棄却確率
+```{r}
+result_large <- 
+  tibble::tibble(
+    specifications = c(
+      "Heteroskedasticity-robust",
+      "Cluster-robust CR0",
+      "Cluster-robust CR3",
+      "Wild Cluster Bootstrap"
+    ),
+    rejection_probability = c(
+      mean(abs(t_w) >= 1.965, na.rm = TRUE),
+      mean(abs(t_cr0) >= 1.965, na.rm = TRUE),
+      mean(abs(t_cr3) >= 1.965, na.rm = TRUE),
+      mean(p_cr_w < 0.05, na.rm = TRUE)
+    )
+  )
+result_large
+```
+
+
+## クラスターの数が少ないケース
+
+### データの生成
+```{r}
+# seedの固定
+set.seed(1)
+dqrng::dqset.seed(1)
+
+# 定数の再設定
+N <- 50
+N_C <- 20
+N_M <- 500
+N_B <- 999
+```
+
+### シミュレーション比較
+```{r}
+t_w <- rep(NA, N_M)
+t_cr0 <- rep(NA, N_M)
+t_cr3 <- rep(NA, N_M)
+p_cr_w <- rep(NA, N_M)
+
+for(i in 1:N_M) {
+  data_small_cluster <- 
+    return_dgp_cluster(
+      N = N,
+      N_C = N_C
+    )
+  
+  lm_fit <- 
+    lm(Y ~ X, data = data_small_cluster)
+  
+  t_w[i] <- summary(lm_fit)$coefficients[2,3]
+  
+  vc_cr0 <- 
+    clubSandwich::vcovCR(
+      obj = lm_fit,
+      cluster = data_small_cluster$C,
+      type = "CR0"
+    )
+  
+  vc_cr3 <- 
+    clubSandwich::vcovCR(
+      obj = lm_fit,
+      cluster = data_small_cluster$C,
+      type = "CR3"
+    )
+  
+  t_cr0[i] <- 
+    clubSandwich::coef_test(
+      obj = lm_fit,
+      vcov = vc_cr0,
+      coefs = "X",
+    )$tstat
+  
+  t_cr3[i] <- 
+    clubSandwich::coef_test(
+      obj = lm_fit,
+      vcov = vc_cr3,
+      coefs = "X"
+    )$tstat
+  
+  invisible(
+    capture.output(
+      boot_lm <- 
+        fwildclusterboot::boottest(
+          object = lm_fit,
+          clustid = "C",
+          param = "X",
+          B = N_B,
+          type = "webb"
+        )
+    )
+  )
+  
+  invisible(
+    capture.output(
+      p_cr_w[i] <- boot_lm$p_val
+    )
+  )
+}
+
+```
+
+各分散推定における棄却確率
+```{r}
+result_small <- 
+  tibble::tibble(
+    specifications = c(
+      "Heteroskedasticity-robust",
+      "Cluster-robust CR0",
+      "Cluster-robust CR3",
+      "Wild Cluster Bootstrap"
+    ),
+    rejection_probability = c(
+      mean(abs(t_w) >= 1.965, na.rm = TRUE),
+      mean(abs(t_cr0) >= 1.965, na.rm = TRUE),
+      mean(abs(t_cr3) >= 1.965, na.rm = TRUE),
+      mean(p_cr_w < 0.05, na.rm = TRUE)
+      )
+  )
+result_small
+```
+
+
+## クラスターの数が極端に少ないケース
+
+### データの生成
+```{r}
+# seedの再固定
+set.seed(1)
+dqrng::dqset.seed(1)
+
+# 定数の再設定
+N <- 100
+N_C <- 8
+N_M <- 500
+N_B <- 999
+```
+
+
+### シミュレーション比較
+```{r}
+t_w <- rep(NA, N_M)
+t_cr0 <- rep(NA, N_M)
+t_cr3 <- rep(NA, N_M)
+p_cr_w <- rep(NA, N_M)
+
+for(i in 1:N_M) {
+  data_extremely_small_cluster <- 
+    return_dgp_cluster(
+      N = N,
+      N_C = N_C
+    )
+  
+  lm_fit <- 
+    lm(Y ~ X, data = data_extremely_small_cluster)
+  
+  t_w[i] <- summary(lm_fit)$coefficients[2,3]
+  
+  vc_cr0 <- 
+    clubSandwich::vcovCR(
+      obj = lm_fit,
+      cluster = data_extremely_small_cluster$C,
+      type = "CR0"
+    )
+  
+  vc_cr3 <- 
+    clubSandwich::vcovCR(
+      obj = lm_fit,
+      cluster = data_extremely_small_cluster$C,
+      type = "CR3"
+    )
+  
+  t_cr0[i] <- 
+    clubSandwich::coef_test(
+      obj = lm_fit,
+      vcov = vc_cr0,
+      coefs = "X",
+    )$tstat
+  
+  t_cr3[i] <- 
+    clubSandwich::coef_test(
+      obj = lm_fit,
+      vcov = vc_cr3,
+      coefs = "X"
+    )$tstat
+  
+  invisible(
+    capture.output(
+      boot_lm <- 
+        fwildclusterboot::boottest(
+          object = lm_fit,
+          clustid = "C",
+          param = "X",
+          B = N_B,
+          type = "webb"
+        )
+    )
+  )
+  
+  invisible(
+    capture.output(
+      p_cr_w[i] <- boot_lm$p_val
+    )
+  )
+}
+```
+
+```{r}
+result_extremely_small <- 
+  tibble::tibble(
+    specifications = c(
+      "Heteroskedasticity-robust",
+      "Cluster-robust CR0",
+      "Cluster-robust CR3",
+      "Wild Cluster Bootstrap"
+    ),
+    rejection_probability = c(
+      mean(abs(t_w) >= 1.965, na.rm = TRUE),
+      mean(abs(t_cr0) >= 1.965, na.rm = TRUE),
+      mean(abs(t_cr3) >= 1.965, na.rm = TRUE),
+      mean(p_cr_w < 0.05, na.rm = TRUE)
+      )
+  )
+result_extremely_small
+```
+
+
+### クラスター数が極端に少ない場合のfwildbootstrap
+取りうる値の数が少ないことが警告として出される
+```{r warning=TRUE}
+# 前段の結果を一旦消去
+rm(list = c("data_extremely_small_cluster", "boot_lm"))
+
+# seedを再設定
+set.seed(1)
+dqrng::dqset.seed(1)
+
+data_extremely_small_cluster <- 
+  return_dgp_cluster(
+    N = N,
+    N_C = N_C
+  )
+
+lm_fit <- 
+  lm(Y ~ X, data = data_extremely_small_cluster)
+
+boot_lm <- 
+  fwildclusterboot::boottest(
+    object = lm_fit,
+    clustid = "C",
+    param = "X",
+    B = N_B
+  )
+```
+
+```{r}
+summary(boot_lm)$statistic
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

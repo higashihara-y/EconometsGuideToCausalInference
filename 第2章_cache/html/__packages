@@ -1,0 +1,5 @@
+foreach
+magrittr
+ggplot2
+kableExtra
+CausalInferenceTextbook

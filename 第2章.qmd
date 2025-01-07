@@ -13,13 +13,13 @@ date: "最終更新: `r Sys.Date()`"
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(cache = FALSE, echo = TRUE, fig.align = "center")
+knitr::opts_chunk$set(cache = FALSE, echo = TRUE, fig.align = 'right')
 library(foreach)
 library(magrittr)
 library(ggplot2)
 library(kableExtra)
 library(CausalInferenceTextbook)
-color_main <- scales::viridis_pal(option = "C")(1)
+color_main <- scales::viridis_pal(option = 'C')(1)
 ```
 
 # フィッシャーのp値
@@ -411,7 +411,6 @@ data.frame(
   kableExtra::kable_styling()
 ```
 
-
 # 層化無作為化実験
 
 参照：[因果推論の計量経済学（川口、澤田）：第2章　無作為化実験](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/randomization_stratified.html)
@@ -419,6 +418,7 @@ data.frame(
 ## シミュレーションデータの生成
 
 ### 定数とパラメータの設定
+
 ```{r}
 set.seed(1)
 N <- 2000
@@ -431,6 +431,7 @@ tau_population <- c(0.2, 0.3) #母集団における平均処置効果
 ```
 
 ### データの生成
+
 ```{r}
 outcome_potential <- 
   1:2 |> 
@@ -495,6 +496,7 @@ data_realized |>
 ```
 
 ## 検定統計量の計算
+
 観測データにおける検定統計量の計算
 
 ```{r}
@@ -508,6 +510,7 @@ t
 ```
 
 ## p値の計算
+
 ```{r}
 outcome_potential_null <- 
   data_realized |> 
@@ -547,7 +550,6 @@ t_distribution |>
   geom_vline(xintercept = t, lty = "dashed")
 ```
 
-
 # クラスター化無作為化実験
 
 参照：[因果推論の計量経済学（川口、澤田）：第2章　無作為化実験](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/randomization_cluster.html)
@@ -555,6 +557,7 @@ t_distribution |>
 ## シミュレーションデータの生成
 
 ### 定数とパラメータの設定
+
 ```{r}
 set.seed(1)
 G <- 100　　　　　　　　 #クラスター数
@@ -564,6 +567,7 @@ G_1 <- 50　　　　　　　　#処置を割り当てるクラスター数
 ```
 
 母集団における各クラスターの平均処置効果
+
 ```{r}
 tau_g_polulation <- 
   abs(rnorm(G))
@@ -571,8 +575,8 @@ tau_g_polulation <-
 head(tau_g_polulation)
 ```
 
-母集団全体における平均処置効果
-（クラスターの標本数で重み付け）
+母集団全体における平均処置効果 （クラスターの標本数で重み付け）
+
 ```{r}
 tau_population <- 
   sum(tau_g_polulation * N_g / N)
@@ -581,13 +585,14 @@ tau_population
 ```
 
 各クラスターを1個体とみなした単純平均効果
+
 ```{r}
 tau_c_polulation <- mean(tau_g_polulation)
 tau_c_polulation
 ```
 
-
 ## データの生成
+
 ```{r}
 # 潜在結果の生成
 outcome_potential <- 
@@ -659,11 +664,12 @@ data_realized |>
   kableExtra::kable_styling()
 ```
 
-
 ## 分析と推定
 
 ### 平均の差による$\hat{\tau}_c$の推定
+
 $\hat{\tau}_c$の推定
+
 ```{r}
 tau_c_hat <- 
   data_realized |> 
@@ -682,6 +688,7 @@ tau_c_hat
 ```
 
 $\hat{\tau}_c$標準誤差
+
 ```{r}
 tau_c_hat_se <- 
   data_realized |> 
@@ -704,8 +711,8 @@ tau_c_hat_se <-
 tau_c_hat_se
 ```
 
-
 ### 回帰分析による$\hat{\tau}_c$の推定
+
 ```{r}
 tau_c_hat_regression <- 
   data_realized |> 
@@ -723,8 +730,8 @@ tau_c_hat_regression |>
   )
 ```
 
-
 ### 平均の差による$\hat{\tau}$の推定
+
 ```{r}
 tau_hat <- 
   data_realized |> 
@@ -737,6 +744,7 @@ tau_hat
 ```
 
 ### 回帰分析による$\hat{\tau}$の推定
+
 ```{r}
 tau_hat_regression <- 
   data_realized %>%
@@ -754,6 +762,7 @@ tau_hat_regression |>
 ```
 
 ### $\hat{\tau}$の標準誤差の手動計算
+
 ```{r}
 se_cluster_robust <- 
   data_realized |> 
@@ -798,67 +807,3 @@ se_cluster_robust |>
   diag() |> 
   sqrt()
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
