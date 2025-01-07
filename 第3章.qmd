@@ -1,13 +1,12 @@
 ---
 title: "第3章"
-format: html
-editor: visual
-# 以下設定追加
+format: 
+  html:
+    theme: journal
 number-sections: true
 toc: true
 toc-depth: 3
 toc-location: left
-theme: cosmo
 code-fold: show #code-fold:showでコードの折り畳みが可能
 date: "最終更新: `r Sys.Date()`"
 ---
@@ -30,6 +29,8 @@ library(fwildclusterboot)
 ```
 
 # クラスターブートストラップ
+
+参照：[因果推論の計量経済学（川口、澤田）：第3章　推測・検定の諸問題](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/Inference_wild_cluster_bootstrap.html)
 
 ## クラスターの数が少なくないケース
 
