@@ -859,7 +859,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>t検定のうち、0.05水準で帰無仮説を棄却しているもの。 検定を繰り返すことによる偽棄却が発生している。</p>
+<p>t検定のうち、0.05水準で帰無仮説を棄却しているもの。</p>
+<p>検定を繰り返すことによる偽棄却が発生している。</p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -1355,7 +1356,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>numeric(0)</code></pre>
 </div>
 </div>
-<p><strong>FWERのシミュレーションによる計算</strong> 100回のシミュレーションによりFWERを評価</p>
+<p><strong>FWERのシミュレーションによる計算</strong></p>
+<p>100回のシミュレーションによりFWERを評価</p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -1382,7 +1384,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb60-21"><a href="#cb60-21" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>少なくとも1つの帰無仮説を誤って棄却したものの割合 1.補正なし</p>
+<p>少なくとも1つの帰無仮説を誤って棄却したものの割合</p>
+<p>1.補正なし</p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -1438,7 +1441,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] 0.04</code></pre>
 </div>
 </div>
-<p><strong>シミュレーションによる検出力の計算</strong> 100回のシミュレーションにおいて、正しい対立仮説を採用できた割合 1.補正なし</p>
+<p><strong>シミュレーションによる検出力の計算</strong></p>
+<p>100回のシミュレーションにおいて、正しい対立仮説を採用できた割合</p>
+<p>1.補正なし</p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -1468,8 +1473,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <ol start="2" type="1">
-<li>Bonferroni補正あり FEWRを適正に保つことと引き換えに、検出力が低下している</li>
+<li>Bonferroni補正あり</li>
 </ol>
+<p>FEWRを適正に保つことと引き換えに、検出力が低下している</p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -1534,7 +1540,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>補正した水準で正しく棄却しているもの （Bonferroni補正では棄却できなかった帰無仮説が、新たに1つ棄却出来ている）</p>
+<p>補正した水準で正しく棄却しているもの</p>
+<p>（Bonferroni補正では棄却できなかった帰無仮説が、新たに1つ棄却出来ている）</p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -1562,30 +1569,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] 5.055013e-09 2.361415e-08 4.336928e-04 1.689143e-03</code></pre>
 </div>
 </div>
-<p>p_rejected_somealt_bonferonni p_rejected_somealt_bonferonni_holm</p>
-<p>本来真の帰無仮説を誤って棄却しているもの （誤って棄却しているものは無し）</p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>p_rejected_somealt_false_bonferonni_holm <span class="ot">&lt;-</span> </span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  p_list_somealt_null <span class="sc">%&gt;%</span> </span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abs</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>()</span>
-<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> (</span>
-<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>  p_rejected_somealt_false_bonferroni <span class="sc">&lt;=</span></span>
-<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>    alpha <span class="sc">/</span> </span>
-<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>    (M <span class="sc">-</span> <span class="fu">seq_along</span>(p_rejected_somealt_false_bonferonni_holm) <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> </span>
-<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a>  index <span class="sc">%&gt;%</span> </span>
-<span id="cb72-13"><a href="#cb72-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cummin</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb72-14"><a href="#cb72-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.logical</span>()</span>
-<span id="cb72-15"><a href="#cb72-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-16"><a href="#cb72-16" aria-hidden="true" tabindex="-1"></a>p_rejected_somealt_false_bonferonni_holm <span class="ot">&lt;-</span> </span>
-<span id="cb72-17"><a href="#cb72-17" aria-hidden="true" tabindex="-1"></a>  p_rejected_somealt_false_bonferonni_holm[index]</span>
-<span id="cb72-18"><a href="#cb72-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb72-19"><a href="#cb72-19" aria-hidden="true" tabindex="-1"></a>p_rejected_somealt_false_bonferonni_holm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>p_rejected_somealt_bonferonni</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.055013e-09 2.361415e-08 4.336928e-04</code></pre>
+</div>
+</div>
+<p>本来真の帰無仮説を誤って棄却しているもの</p>
+<p>（誤って棄却しているものは無し）</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>p_rejected_somealt_false_bonferonni_holm <span class="ot">&lt;-</span> </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  p_list_somealt_null <span class="sc">%&gt;%</span> </span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">abs</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>()</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> (</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>  p_rejected_somealt_false_bonferroni <span class="sc">&lt;=</span></span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>    alpha <span class="sc">/</span> </span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>    (M <span class="sc">-</span> <span class="fu">seq_along</span>(p_rejected_somealt_false_bonferonni_holm) <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> </span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>  index <span class="sc">%&gt;%</span> </span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cummin</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.logical</span>()</span>
+<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a>p_rejected_somealt_false_bonferonni_holm <span class="ot">&lt;-</span> </span>
+<span id="cb74-17"><a href="#cb74-17" aria-hidden="true" tabindex="-1"></a>  p_rejected_somealt_false_bonferonni_holm[index]</span>
+<span id="cb74-18"><a href="#cb74-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-19"><a href="#cb74-19" aria-hidden="true" tabindex="-1"></a>p_rejected_somealt_false_bonferonni_holm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>numeric(0)</code></pre>
@@ -1595,13 +1611,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>p_adjusted_somealt_bonferroni_holm <span class="ot">&lt;-</span> </span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">p.adjust</span>(</span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">p =</span> p_list_somealt,</span>
-<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">method =</span> <span class="st">"holm"</span></span>
-<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a> ) </span>
-<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>p_adjusted_somealt_bonferroni_holm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>p_adjusted_somealt_bonferroni_holm <span class="ot">&lt;-</span> </span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">p.adjust</span>(</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>   <span class="at">p =</span> p_list_somealt,</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>   <span class="at">method =</span> <span class="st">"holm"</span></span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a> ) </span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>p_adjusted_somealt_bonferroni_holm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 1.000000e+00 1.000000e+00 2.928697e-01 1.000000e+00 1.000000e+00
@@ -1612,69 +1628,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 [26] 1.000000e+00 1.214340e-02 1.000000e+00 6.848103e-07 1.516504e-07</code></pre>
 </div>
 </div>
-<p><strong>t値での検定</strong> （t値の棄却水準は、検定数が増えるに従って低下していくはずであり、参照サイトの表現は誤っていると思われる）</p>
+<p><strong>t値での検定</strong></p>
+<p>（t値の棄却水準は、検定数が増えるに従って低下していくはずであり、参照サイトの表現は誤っていると思われる）</p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">mapping =</span> </span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">seq_along</span>(t_list_somealt),</span>
-<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> t_list_somealt[t_list_somealt <span class="sc">%&gt;%</span> <span class="fu">abs</span>() <span class="sc">%&gt;%</span> <span class="fu">order</span>()] <span class="sc">%&gt;%</span> <span class="fu">abs</span>(),</span>
-<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> null_list_somealt[t_list_somealt <span class="sc">%&gt;%</span> <span class="fu">abs</span>() <span class="sc">%&gt;%</span> <span class="fu">order</span>()]</span>
-<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">abs</span>(<span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> <span class="dv">2</span>, <span class="at">df =</span> N <span class="sc">-</span> <span class="dv">2</span>)),</span>
-<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">lty =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
-<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> </span>
-<span id="cb76-13"><a href="#cb76-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">seq_along</span>(t_list_somealt),</span>
-<span id="cb76-14"><a href="#cb76-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">y =</span> <span class="fu">abs</span>(<span class="fu">qt</span>(</span>
-<span id="cb76-15"><a href="#cb76-15" aria-hidden="true" tabindex="-1"></a>            <span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> (M <span class="sc">-</span> <span class="fu">seq_along</span>(t_list_somealt) <span class="sc">+</span> <span class="dv">1</span>)),</span>
-<span id="cb76-16"><a href="#cb76-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">df =</span> N <span class="sc">-</span> <span class="dv">2</span></span>
-<span id="cb76-17"><a href="#cb76-17" aria-hidden="true" tabindex="-1"></a>          ))),</span>
-<span id="cb76-18"><a href="#cb76-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">lty =</span> <span class="st">"dashed"</span></span>
-<span id="cb76-19"><a href="#cb76-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb76-20"><a href="#cb76-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
-<span id="cb76-21"><a href="#cb76-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"検定統計量の順位"</span>,</span>
-<span id="cb76-22"><a href="#cb76-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"検定統計量の絶対値"</span>,</span>
-<span id="cb76-23"><a href="#cb76-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"帰無仮説であるか否か"</span>) <span class="sc">+</span></span>
-<span id="cb76-24"><a href="#cb76-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">mapping =</span> </span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">seq_along</span>(t_list_somealt),</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> t_list_somealt[t_list_somealt <span class="sc">%&gt;%</span> <span class="fu">abs</span>() <span class="sc">%&gt;%</span> <span class="fu">order</span>()] <span class="sc">%&gt;%</span> <span class="fu">abs</span>(),</span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> null_list_somealt[t_list_somealt <span class="sc">%&gt;%</span> <span class="fu">abs</span>() <span class="sc">%&gt;%</span> <span class="fu">order</span>()]</span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fu">abs</span>(<span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> <span class="dv">2</span>, <span class="at">df =</span> N <span class="sc">-</span> <span class="dv">2</span>)),</span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>             <span class="at">lty =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb78-12"><a href="#cb78-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> </span>
+<span id="cb78-13"><a href="#cb78-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">seq_along</span>(t_list_somealt),</span>
+<span id="cb78-14"><a href="#cb78-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">y =</span> <span class="fu">abs</span>(<span class="fu">qt</span>(</span>
+<span id="cb78-15"><a href="#cb78-15" aria-hidden="true" tabindex="-1"></a>            <span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> (M <span class="sc">-</span> <span class="fu">seq_along</span>(t_list_somealt) <span class="sc">+</span> <span class="dv">1</span>)),</span>
+<span id="cb78-16"><a href="#cb78-16" aria-hidden="true" tabindex="-1"></a>            <span class="at">df =</span> N <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb78-17"><a href="#cb78-17" aria-hidden="true" tabindex="-1"></a>          ))),</span>
+<span id="cb78-18"><a href="#cb78-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">lty =</span> <span class="st">"dashed"</span></span>
+<span id="cb78-19"><a href="#cb78-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb78-20"><a href="#cb78-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span></span>
+<span id="cb78-21"><a href="#cb78-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"検定統計量の順位"</span>,</span>
+<span id="cb78-22"><a href="#cb78-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"検定統計量の絶対値"</span>,</span>
+<span id="cb78-23"><a href="#cb78-23" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"帰無仮説であるか否か"</span>) <span class="sc">+</span></span>
+<span id="cb78-24"><a href="#cb78-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="第3章_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="第3章_files/figure-html/unnamed-chunk-53-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p><strong>Bonferroni-Holm補正によるFWERと検出力</strong> FWERは5%以下に抑えることが出来ている。</p>
+<p><strong>Bonferroni-Holm補正によるFWERと検出力</strong></p>
+<p>FWERは5%以下に抑えることが出来ている。</p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>t_rejected_somealt_bonferroni_holm_null <span class="ot">&lt;-</span> </span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  t_list_somealt_null <span class="sc">%&gt;%</span> </span>
-<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(</span>
-<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(t_list_somealt) {</span>
-<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>      length_rejected <span class="ot">&lt;-</span> </span>
-<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>        t_list_somealt <span class="sc">%&gt;%</span> </span>
-<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">abs</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>        .[. <span class="sc">&gt;=</span> <span class="fu">abs</span>(<span class="fu">qt</span>(</span>
-<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> (M <span class="sc">-</span> <span class="fu">seq_along</span>(t_list_somealt))),</span>
-<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">df =</span> N <span class="sc">-</span> <span class="dv">2</span></span>
-<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a>        ))] <span class="sc">%&gt;%</span> </span>
-<span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">length</span>()</span>
-<span id="cb77-13"><a href="#cb77-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(length_rejected <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb77-14"><a href="#cb77-14" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb77-15"><a href="#cb77-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb77-16"><a href="#cb77-16" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">reduce</span>(c)</span>
-<span id="cb77-17"><a href="#cb77-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb77-18"><a href="#cb77-18" aria-hidden="true" tabindex="-1"></a>fwer_somealt_bonferroni_holm <span class="ot">&lt;-</span> </span>
-<span id="cb77-19"><a href="#cb77-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(t_rejected_somealt_bonferroni_holm_null) <span class="sc">/</span></span>
-<span id="cb77-20"><a href="#cb77-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">length</span>(t_rejected_somealt_bonferroni_holm_null)</span>
-<span id="cb77-21"><a href="#cb77-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb77-22"><a href="#cb77-22" aria-hidden="true" tabindex="-1"></a>fwer_somealt_bonferroni_holm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>t_rejected_somealt_bonferroni_holm_null <span class="ot">&lt;-</span> </span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  t_list_somealt_null <span class="sc">%&gt;%</span> </span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(t_list_somealt) {</span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>      length_rejected <span class="ot">&lt;-</span> </span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>        t_list_somealt <span class="sc">%&gt;%</span> </span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">abs</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>        .[. <span class="sc">&gt;=</span> <span class="fu">abs</span>(<span class="fu">qt</span>(</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> (M <span class="sc">-</span> <span class="fu">seq_along</span>(t_list_somealt))),</span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">df =</span> N <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a>        ))] <span class="sc">%&gt;%</span> </span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a>        <span class="fu">length</span>()</span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(length_rejected <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">reduce</span>(c)</span>
+<span id="cb79-17"><a href="#cb79-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-18"><a href="#cb79-18" aria-hidden="true" tabindex="-1"></a>fwer_somealt_bonferroni_holm <span class="ot">&lt;-</span> </span>
+<span id="cb79-19"><a href="#cb79-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(t_rejected_somealt_bonferroni_holm_null) <span class="sc">/</span></span>
+<span id="cb79-20"><a href="#cb79-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">length</span>(t_rejected_somealt_bonferroni_holm_null)</span>
+<span id="cb79-21"><a href="#cb79-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-22"><a href="#cb79-22" aria-hidden="true" tabindex="-1"></a>fwer_somealt_bonferroni_holm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.04</code></pre>
@@ -1684,28 +1702,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>t_rejected_somealt_bonferonni_holm_alternative <span class="ot">&lt;-</span> </span>
-<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  t_list_somealt_alternative <span class="sc">%&gt;%</span> </span>
-<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(</span>
-<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(t_list_somealt) {</span>
-<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>      length_regected <span class="ot">&lt;-</span> </span>
-<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>        t_list_somealt <span class="sc">%&gt;%</span> </span>
-<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>        .[. <span class="sc">&gt;=</span> <span class="fu">abs</span>(<span class="fu">qt</span>(</span>
-<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> (M <span class="sc">-</span> <span class="fu">seq_along</span>(t_list_somealt) <span class="sc">+</span> <span class="dv">1</span>)),</span>
-<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">df =</span> N <span class="sc">-</span> <span class="dv">2</span></span>
-<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>        ))] <span class="sc">%&gt;%</span> </span>
-<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">length</span>()</span>
-<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(length_regected)</span>
-<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">reduce</span>(c)</span>
-<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb79-17"><a href="#cb79-17" aria-hidden="true" tabindex="-1"></a>power_somealt_bonferroni_holm <span class="ot">&lt;-</span> </span>
-<span id="cb79-18"><a href="#cb79-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(t_rejected_somealt_bonferonni_holm_alternative) <span class="sc">/</span> </span>
-<span id="cb79-19"><a href="#cb79-19" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">length</span>(t_list_somealt_alternative[[<span class="dv">1</span>]]) <span class="sc">*</span></span>
-<span id="cb79-20"><a href="#cb79-20" aria-hidden="true" tabindex="-1"></a>     <span class="fu">length</span>(t_list_somealt_alternative))</span>
-<span id="cb79-21"><a href="#cb79-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb79-22"><a href="#cb79-22" aria-hidden="true" tabindex="-1"></a>power_somealt_bonferroni_holm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>t_rejected_somealt_bonferonni_holm_alternative <span class="ot">&lt;-</span> </span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  t_list_somealt_alternative <span class="sc">%&gt;%</span> </span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(t_list_somealt) {</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>      length_regected <span class="ot">&lt;-</span> </span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>        t_list_somealt <span class="sc">%&gt;%</span> </span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>        .[. <span class="sc">&gt;=</span> <span class="fu">abs</span>(<span class="fu">qt</span>(</span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span> <span class="sc">-</span> alpha <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> (M <span class="sc">-</span> <span class="fu">seq_along</span>(t_list_somealt) <span class="sc">+</span> <span class="dv">1</span>)),</span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">df =</span> N <span class="sc">-</span> <span class="dv">2</span></span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>        ))] <span class="sc">%&gt;%</span> </span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">length</span>()</span>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(length_regected)</span>
+<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb81-15"><a href="#cb81-15" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">reduce</span>(c)</span>
+<span id="cb81-16"><a href="#cb81-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-17"><a href="#cb81-17" aria-hidden="true" tabindex="-1"></a>power_somealt_bonferroni_holm <span class="ot">&lt;-</span> </span>
+<span id="cb81-18"><a href="#cb81-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>(t_rejected_somealt_bonferonni_holm_alternative) <span class="sc">/</span> </span>
+<span id="cb81-19"><a href="#cb81-19" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">length</span>(t_list_somealt_alternative[[<span class="dv">1</span>]]) <span class="sc">*</span></span>
+<span id="cb81-20"><a href="#cb81-20" aria-hidden="true" tabindex="-1"></a>     <span class="fu">length</span>(t_list_somealt_alternative))</span>
+<span id="cb81-21"><a href="#cb81-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-22"><a href="#cb81-22" aria-hidden="true" tabindex="-1"></a>power_somealt_bonferroni_holm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.4218182</code></pre>
