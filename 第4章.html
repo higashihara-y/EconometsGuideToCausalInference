@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>第4章 非遵守者</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="第4章_files/libs/clipboard/clipboard.min.js"></script>
+<script src="第4章_files/libs/quarto-html/quarto.js"></script>
+<script src="第4章_files/libs/quarto-html/popper.min.js"></script>
+<script src="第4章_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="第4章_files/libs/quarto-html/anchor.min.js"></script>
+<link href="第4章_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="第4章_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="第4章_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="第4章_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="第4章_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="第4章_files/libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="第4章_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#片側遵守者" id="toc-片側遵守者" class="nav-link active" data-scroll-target="#片側遵守者"><span class="header-section-number">1</span> 片側遵守者</a>
+  <ul class="collapse">
+  <li><a href="#シミュレーションデータの生成" id="toc-シミュレーションデータの生成" class="nav-link" data-scroll-target="#シミュレーションデータの生成"><span class="header-section-number">1.1</span> シミュレーションデータの生成</a>
+  <ul class="collapse">
+  <li><a href="#定数とパラメータの設定" id="toc-定数とパラメータの設定" class="nav-link" data-scroll-target="#定数とパラメータの設定"><span class="header-section-number">1.1.1</span> 定数とパラメータの設定</a></li>
+  <li><a href="#データの生成" id="toc-データの生成" class="nav-link" data-scroll-target="#データの生成"><span class="header-section-number">1.1.2</span> データの生成</a></li>
+  </ul></li>
+  <li><a href="#分析と推計" id="toc-分析と推計" class="nav-link" data-scroll-target="#分析と推計"><span class="header-section-number">1.2</span> 分析と推計</a>
+  <ul class="collapse">
+  <li><a href="#tildetau_dの手動計算" id="toc-tildetau_dの手動計算" class="nav-link" data-scroll-target="#tildetau_dの手動計算"><span class="header-section-number">1.2.1</span> <span class="math inline">\(\tilde{\tau}_D\)</span>の手動計算</a></li>
+  <li><a href="#回帰分析によるtildetau_dの推定" id="toc-回帰分析によるtildetau_dの推定" class="nav-link" data-scroll-target="#回帰分析によるtildetau_dの推定"><span class="header-section-number">1.2.2</span> 回帰分析による<span class="math inline">\(\tilde{\tau}_D\)</span>の推定</a></li>
+  <li><a href="#tildetau_yの手動計算" id="toc-tildetau_yの手動計算" class="nav-link" data-scroll-target="#tildetau_yの手動計算"><span class="header-section-number">1.2.3</span> <span class="math inline">\(\tilde{\tau}_Y\)</span>の手動計算</a></li>
+  <li><a href="#回帰分析によるtildetau_yの推定" id="toc-回帰分析によるtildetau_yの推定" class="nav-link" data-scroll-target="#回帰分析によるtildetau_yの推定"><span class="header-section-number">1.2.4</span> 回帰分析による<span class="math inline">\(\tilde{\tau}_Y\)</span>の推定</a></li>
+  <li><a href="#tildetau_yco-tau_lateの手動計算" id="toc-tildetau_yco-tau_lateの手動計算" class="nav-link" data-scroll-target="#tildetau_yco-tau_lateの手動計算"><span class="header-section-number">1.2.5</span> <span class="math inline">\(\tilde{\tau}_{Y,co} = \tau_{late}\)</span>の手動計算</a></li>
+  <li><a href="#二段階最小二乗法によるtildetau_yco-tau_lateの推定" id="toc-二段階最小二乗法によるtildetau_yco-tau_lateの推定" class="nav-link" data-scroll-target="#二段階最小二乗法によるtildetau_yco-tau_lateの推定"><span class="header-section-number">1.2.6</span> 二段階最小二乗法による<span class="math inline">\(\tilde{\tau}_{Y,co} = \tau_{late}\)</span>の推定</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">第4章 非遵守者</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="片側遵守者" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> 片側遵守者</h1>
+<p>参照：<a href="https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/noncompliance_onesided.html">因果推論の計量経済学（川口、澤田）：第4章　非遵守者</a></p>
+<section id="シミュレーションデータの生成" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="シミュレーションデータの生成"><span class="header-section-number">1.1</span> シミュレーションデータの生成</h2>
+<section id="定数とパラメータの設定" class="level3" data-number="1.1.1">
+<h3 data-number="1.1.1" class="anchored" data-anchor-id="定数とパラメータの設定"><span class="header-section-number">1.1.1</span> 定数とパラメータの設定</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">1000</span>           <span class="co">#個体数</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>N_1 <span class="ot">&lt;-</span> <span class="dv">500</span>　　　　　<span class="co">#処置群のサイズ</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>G <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"nc"</span>, <span class="st">"co"</span>)　<span class="co">#遵守タイプ</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>bias <span class="ot">&lt;-</span> <span class="fl">0.5</span>　　　　 <span class="co">#除外制約が満たされない場合のバイアス</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>tau_population <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>) <span class="co">#母集団における平均処置効果</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="データの生成" class="level3" data-number="1.1.2">
+<h3 data-number="1.1.2" class="anchored" data-anchor-id="データの生成"><span class="header-section-number">1.1.2</span> データの生成</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>outcome_potential <span class="ot">&lt;-</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(G) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(n) {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      df <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">g =</span> G[n],</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">y_0 =</span> <span class="fu">rnorm</span>(N <span class="sc">/</span> <span class="fu">length</span>(G),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">mean =</span> <span class="dv">0</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sd =</span> <span class="dv">1</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">y_1 =</span> <span class="fu">rnorm</span>(N <span class="sc">/</span> <span class="fu">length</span>(G),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                    <span class="at">mean =</span> tau_population[n],</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sd =</span> <span class="dv">1</span>),</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">y_z =</span> <span class="fu">rnorm</span>(N <span class="sc">/</span> <span class="fu">length</span>(G),</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                    <span class="at">mean =</span> bias,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                    <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(df)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">bind_rows</span>()</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>tau <span class="ot">&lt;-</span> </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  outcome_potential <span class="sc">%&gt;%</span> </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(g) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">tau =</span> <span class="fu">mean</span>(y_1 <span class="sc">-</span> y_0)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>()</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>outcome_potential <span class="sc">%&gt;%</span> </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">g</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y_0</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y_1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y_z</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">nc</td>
+<td style="text-align: right;">-0.6264538</td>
+<td style="text-align: right;">1.0773031</td>
+<td style="text-align: right;">1.6349651</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nc</td>
+<td style="text-align: right;">0.1836433</td>
+<td style="text-align: right;">0.7031314</td>
+<td style="text-align: right;">1.6119318</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nc</td>
+<td style="text-align: right;">-0.8356286</td>
+<td style="text-align: right;">-0.1832422</td>
+<td style="text-align: right;">-0.3707776</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nc</td>
+<td style="text-align: right;">1.5952808</td>
+<td style="text-align: right;">1.0112927</td>
+<td style="text-align: right;">0.7107316</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nc</td>
+<td style="text-align: right;">0.3295078</td>
+<td style="text-align: right;">1.9916010</td>
+<td style="text-align: right;">0.5693956</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nc</td>
+<td style="text-align: right;">-0.8204684</td>
+<td style="text-align: right;">2.5939675</td>
+<td style="text-align: right;">-1.1626489</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>outcome_potential <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">datasummary_skim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_ak7nl8urhlicv62ll6cp(i, j, css_id) {
+          var table = document.getElementById("tinytable_ak7nl8urhlicv62ll6cp");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_ak7nl8urhlicv62ll6cp');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_ak7nl8urhlicv62ll6cp(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_ak7nl8urhlicv62ll6cp");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 6, j: 0 }, { i: 6, j: 3 }, { i: 6, j: 2 }, { i: 6, j: 1 }, { i: 6, j: 4 }, { i: 6, j: 7 }, { i: 6, j: 6 }, { i: 6, j: 5 }, { i: 6, j: 8 },  ], css_id: 'tinytable_css_xr171rmkycr8m7sejz6c',}, 
+          { positions: [ { i: 4, j: 0 }, { i: 4, j: 3 }, { i: 4, j: 2 }, { i: 4, j: 1 }, { i: 4, j: 4 }, { i: 4, j: 7 }, { i: 4, j: 6 }, { i: 4, j: 5 }, { i: 4, j: 8 },  ], css_id: 'tinytable_css_drbgc2tbwf1bsoppacqd',}, 
+          { positions: [ { i: 0, j: 0 }, { i: 0, j: 3 }, { i: 0, j: 2 }, { i: 0, j: 1 }, { i: 0, j: 4 }, { i: 0, j: 7 }, { i: 0, j: 6 }, { i: 0, j: 5 }, { i: 0, j: 8 },  ], css_id: 'tinytable_css_cw69682chpg8r2rx4z2w',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_ak7nl8urhlicv62ll6cp(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_xr171rmkycr8m7sejz6c, .table th.tinytable_css_xr171rmkycr8m7sejz6c { border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_drbgc2tbwf1bsoppacqd, .table th.tinytable_css_drbgc2tbwf1bsoppacqd { border-top: solid black 0.1em; }
+      .table td.tinytable_css_cw69682chpg8r2rx4z2w, .table th.tinytable_css_cw69682chpg8r2rx4z2w { border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_ak7nl8urhlicv62ll6cp" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">Unique</th>
+                <th scope="col">Missing Pct.</th>
+                <th scope="col">Mean</th>
+                <th scope="col">SD</th>
+                <th scope="col">Min</th>
+                <th scope="col">Median</th>
+                <th scope="col">Max</th>
+                <th scope="col">Histogram</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>y_0</td>
+                  <td>1000</td>
+                  <td>0</td>
+                  <td>0.0</td>
+                  <td>1.0</td>
+                  <td>-3.0</td>
+                  <td>0.0</td>
+                  <td>3.8</td>
+                  <td><img src="./tinytable_assets/idymv9rccfc111ww8fgchh.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>y_1</td>
+                  <td>1000</td>
+                  <td>0</td>
+                  <td>1.5</td>
+                  <td>1.2</td>
+                  <td>-2.0</td>
+                  <td>1.5</td>
+                  <td>4.7</td>
+                  <td><img src="./tinytable_assets/idzup0jsfnhhdnmt42xia3.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>y_z</td>
+                  <td>1000</td>
+                  <td>0</td>
+                  <td>0.5</td>
+                  <td>1.0</td>
+                  <td>-2.8</td>
+                  <td>0.5</td>
+                  <td>4.1</td>
+                  <td><img src="./tinytable_assets/idaacsm5eg7fr2w3y1s23c.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>g</td>
+                  <td>N</td>
+                  <td>%</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>co</td>
+                  <td>500</td>
+                  <td>50.0</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>nc</td>
+                  <td>500</td>
+                  <td>50.0</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tau <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">g</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">tau</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">co</td>
+<td style="text-align: right;">2.0386312</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nc</td>
+<td style="text-align: right;">0.9314155</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>観察されるデータの生成。（処置割当ベクトルzと遵守タイプから、処置受取ベクトルdを生成する。）</p>
+<p>除外制約ありのデータの生成</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data_realized_excluded <span class="ot">&lt;-</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_data_noncompliance_oneside</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">outcome_potential =</span> outcome_potential,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_1 =</span> N_1,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">exclusion =</span> <span class="dv">1</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>data_realized_excluded <span class="sc">%&gt;%</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">y_z</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">z</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">d</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1.6349651</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.6264538</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1.6119318</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.1836433</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.3707776</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.8356286</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.7107316</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.5952808</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.5693956</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3295078</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-1.1626489</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.8204684</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data_realized_excluded <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">datasummary_skim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_ufkbtl0brboo7u4bt818(i, j, css_id) {
+          var table = document.getElementById("tinytable_ufkbtl0brboo7u4bt818");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_ufkbtl0brboo7u4bt818');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_ufkbtl0brboo7u4bt818(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_ufkbtl0brboo7u4bt818");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 4, j: 1 }, { i: 4, j: 3 }, { i: 4, j: 6 }, { i: 4, j: 7 }, { i: 4, j: 2 }, { i: 4, j: 4 }, { i: 4, j: 5 }, { i: 4, j: 0 }, { i: 4, j: 8 },  ], css_id: 'tinytable_css_uc2ns9c59ihkmpess4l0',}, 
+          { positions: [ { i: 0, j: 0 }, { i: 0, j: 8 }, { i: 0, j: 3 }, { i: 0, j: 4 }, { i: 0, j: 6 }, { i: 0, j: 1 }, { i: 0, j: 2 }, { i: 0, j: 5 }, { i: 0, j: 7 },  ], css_id: 'tinytable_css_lqmx201is4xbhxc35mof',}, 
+          { positions: [ { i: 3, j: 0 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 3, j: 1 }, { i: 3, j: 2 }, { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 1, j: 3 }, { i: 2, j: 3 }, { i: 3, j: 3 }, { i: 2, j: 6 }, { i: 2, j: 1 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 3, j: 4 }, { i: 2, j: 7 }, { i: 2, j: 2 }, { i: 1, j: 5 }, { i: 2, j: 5 }, { i: 3, j: 5 }, { i: 2, j: 8 }, { i: 3, j: 8 }, { i: 1, j: 6 }, { i: 1, j: 7 }, { i: 3, j: 6 }, { i: 3, j: 7 }, { i: 1, j: 8 },  ], css_id: 'tinytable_css_lpd57kn2dqci2s4oudzj',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_ufkbtl0brboo7u4bt818(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_uc2ns9c59ihkmpess4l0, .table th.tinytable_css_uc2ns9c59ihkmpess4l0 { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_lqmx201is4xbhxc35mof, .table th.tinytable_css_lqmx201is4xbhxc35mof { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_lpd57kn2dqci2s4oudzj, .table th.tinytable_css_lpd57kn2dqci2s4oudzj { text-align: left; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_ufkbtl0brboo7u4bt818" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">Unique</th>
+                <th scope="col">Missing Pct.</th>
+                <th scope="col">Mean</th>
+                <th scope="col">SD</th>
+                <th scope="col">Min</th>
+                <th scope="col">Median</th>
+                <th scope="col">Max</th>
+                <th scope="col">Histogram</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>y_z</td>
+                  <td>1000</td>
+                  <td>0</td>
+                  <td>0.5</td>
+                  <td>1.0</td>
+                  <td>-2.8</td>
+                  <td>0.5</td>
+                  <td>4.1</td>
+                  <td><img src="./tinytable_assets/idr0184qs1udokm5k4ogwi.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>z</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>0.5</td>
+                  <td>0.5</td>
+                  <td>0.0</td>
+                  <td>0.5</td>
+                  <td>1.0</td>
+                  <td><img src="./tinytable_assets/idgjmju4qw0sxzjknxj2jx.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>d</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>0.3</td>
+                  <td>0.4</td>
+                  <td>0.0</td>
+                  <td>0.0</td>
+                  <td>1.0</td>
+                  <td><img src="./tinytable_assets/idetcfztsrc6h034zxpwig.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>y</td>
+                  <td>1000</td>
+                  <td>0</td>
+                  <td>0.5</td>
+                  <td>1.4</td>
+                  <td>-3.0</td>
+                  <td>0.4</td>
+                  <td>4.7</td>
+                  <td><img src="./tinytable_assets/idcz6l8vwrbtyp2emo0r8d.png" style="height: 1em;"></td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<p>除外制約なしのデータの生成</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>data_realized_included <span class="ot">&lt;-</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">generate_data_noncompliance_oneside</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">outcome_potential =</span> outcome_potential,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">N_1 =</span> N_1,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">1</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">exclusion =</span> <span class="dv">0</span>  <span class="co">#除外制約なし</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>data_realized_included <span class="sc">%&gt;%</span> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">y_z</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">z</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">d</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1.6349651</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.6264538</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1.6119318</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.1836433</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.3707776</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.8356286</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.7107316</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.5952808</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.5693956</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3295078</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-1.1626489</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.8204684</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data_realized_included <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">datasummary_skim</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_ufkbtl0brboo7u4bt818(i, j, css_id) {
+          var table = document.getElementById("tinytable_ufkbtl0brboo7u4bt818");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_ufkbtl0brboo7u4bt818');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_ufkbtl0brboo7u4bt818(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_ufkbtl0brboo7u4bt818");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 4, j: 1 }, { i: 4, j: 3 }, { i: 4, j: 6 }, { i: 4, j: 7 }, { i: 4, j: 2 }, { i: 4, j: 4 }, { i: 4, j: 5 }, { i: 4, j: 0 }, { i: 4, j: 8 },  ], css_id: 'tinytable_css_uc2ns9c59ihkmpess4l0',}, 
+          { positions: [ { i: 0, j: 0 }, { i: 0, j: 8 }, { i: 0, j: 3 }, { i: 0, j: 4 }, { i: 0, j: 6 }, { i: 0, j: 1 }, { i: 0, j: 2 }, { i: 0, j: 5 }, { i: 0, j: 7 },  ], css_id: 'tinytable_css_lqmx201is4xbhxc35mof',}, 
+          { positions: [ { i: 3, j: 0 }, { i: 1, j: 1 }, { i: 1, j: 2 }, { i: 3, j: 1 }, { i: 3, j: 2 }, { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 1, j: 3 }, { i: 2, j: 3 }, { i: 3, j: 3 }, { i: 2, j: 6 }, { i: 2, j: 1 }, { i: 1, j: 4 }, { i: 2, j: 4 }, { i: 3, j: 4 }, { i: 2, j: 7 }, { i: 2, j: 2 }, { i: 1, j: 5 }, { i: 2, j: 5 }, { i: 3, j: 5 }, { i: 2, j: 8 }, { i: 3, j: 8 }, { i: 1, j: 6 }, { i: 1, j: 7 }, { i: 3, j: 6 }, { i: 3, j: 7 }, { i: 1, j: 8 },  ], css_id: 'tinytable_css_lpd57kn2dqci2s4oudzj',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_ufkbtl0brboo7u4bt818(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_uc2ns9c59ihkmpess4l0, .table th.tinytable_css_uc2ns9c59ihkmpess4l0 { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_lqmx201is4xbhxc35mof, .table th.tinytable_css_lqmx201is4xbhxc35mof { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_lpd57kn2dqci2s4oudzj, .table th.tinytable_css_lpd57kn2dqci2s4oudzj { text-align: left; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_ufkbtl0brboo7u4bt818" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">Unique</th>
+                <th scope="col">Missing Pct.</th>
+                <th scope="col">Mean</th>
+                <th scope="col">SD</th>
+                <th scope="col">Min</th>
+                <th scope="col">Median</th>
+                <th scope="col">Max</th>
+                <th scope="col">Histogram</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>y_z</td>
+                  <td>1000</td>
+                  <td>0</td>
+                  <td>0.5</td>
+                  <td>1.0</td>
+                  <td>-2.8</td>
+                  <td>0.5</td>
+                  <td>4.1</td>
+                  <td><img src="./tinytable_assets/idr0184qs1udokm5k4ogwi.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>z</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>0.5</td>
+                  <td>0.5</td>
+                  <td>0.0</td>
+                  <td>0.5</td>
+                  <td>1.0</td>
+                  <td><img src="./tinytable_assets/idgjmju4qw0sxzjknxj2jx.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>d</td>
+                  <td>2</td>
+                  <td>0</td>
+                  <td>0.3</td>
+                  <td>0.4</td>
+                  <td>0.0</td>
+                  <td>0.0</td>
+                  <td>1.0</td>
+                  <td><img src="./tinytable_assets/idetcfztsrc6h034zxpwig.png" style="height: 1em;"></td>
+                </tr>
+                <tr>
+                  <td>y</td>
+                  <td>1000</td>
+                  <td>0</td>
+                  <td>0.6</td>
+                  <td>1.6</td>
+                  <td>-3.0</td>
+                  <td>0.4</td>
+                  <td>6.8</td>
+                  <td><img src="./tinytable_assets/idcz6l8vwrbtyp2emo0r8d.png" style="height: 1em;"></td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</section>
+</section>
+<section id="分析と推計" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="分析と推計"><span class="header-section-number">1.2</span> 分析と推計</h2>
+<section id="tildetau_dの手動計算" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="tildetau_dの手動計算"><span class="header-section-number">1.2.1</span> <span class="math inline">\(\tilde{\tau}_D\)</span>の手動計算</h3>
+<p>処置が割り当てられた時の処置の受取確率（処置受取の処置割当効果<span class="math inline">\(\tilde{\tau}_D\)</span>の推定値）</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tau_tilde_d_excluded <span class="ot">&lt;-</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  data_realized_excluded <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(z <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">d =</span> <span class="fu">sum</span>(d) <span class="sc">/</span> <span class="fu">length</span>(d)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(d)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>tau_tilde_d_excluded</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.512</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>tau_tilde_d_included <span class="ot">&lt;-</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  data_realized_included <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(z <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">d =</span> <span class="fu">sum</span>(d) <span class="sc">/</span> <span class="fu">length</span>(d)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(d)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>tau_tilde_d_included</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.512</code></pre>
+</div>
+</div>
+</section>
+<section id="回帰分析によるtildetau_dの推定" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="回帰分析によるtildetau_dの推定"><span class="header-section-number">1.2.2</span> 回帰分析による<span class="math inline">\(\tilde{\tau}_D\)</span>の推定</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>data_realized_excluded <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(<span class="at">data =</span> .,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">formula =</span> d <span class="sc">~</span> z) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(<span class="at">fmt =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_cby718u646u1j7oykvf6(i, j, css_id) {
+          var table = document.getElementById("tinytable_cby718u646u1j7oykvf6");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_cby718u646u1j7oykvf6');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_cby718u646u1j7oykvf6(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_cby718u646u1j7oykvf6");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_oiyoc9xfan26tlvmnbr7',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 8, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 7, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 },  ], css_id: 'tinytable_css_mch1b9m57mctx7blm23k',}, 
+          { positions: [ { i: 4, j: 1 },  ], css_id: 'tinytable_css_m8wajjx8c42pg07ih1lz',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 8, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 7, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 },  ], css_id: 'tinytable_css_inam1jd9kwvrr63ottv9',}, 
+          { positions: [ { i: 4, j: 0 },  ], css_id: 'tinytable_css_bnc6qlyv4q9scbq08yaz',}, 
+          { positions: [ { i: 11, j: 0 },  ], css_id: 'tinytable_css_9kzmrvonb4ug5sipq008',}, 
+          { positions: [ { i: 0, j: 1 },  ], css_id: 'tinytable_css_5zo388zi3ysf2zjddw0y',}, 
+          { positions: [ { i: 11, j: 1 },  ], css_id: 'tinytable_css_3dafoz4quq1vmj54ihxk',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_cby718u646u1j7oykvf6(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_oiyoc9xfan26tlvmnbr7, .table th.tinytable_css_oiyoc9xfan26tlvmnbr7 { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_mch1b9m57mctx7blm23k, .table th.tinytable_css_mch1b9m57mctx7blm23k { text-align: left; }
+      .table td.tinytable_css_m8wajjx8c42pg07ih1lz, .table th.tinytable_css_m8wajjx8c42pg07ih1lz { text-align: center; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_inam1jd9kwvrr63ottv9, .table th.tinytable_css_inam1jd9kwvrr63ottv9 { text-align: center; }
+      .table td.tinytable_css_bnc6qlyv4q9scbq08yaz, .table th.tinytable_css_bnc6qlyv4q9scbq08yaz { text-align: left; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_9kzmrvonb4ug5sipq008, .table th.tinytable_css_9kzmrvonb4ug5sipq008 { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_5zo388zi3ysf2zjddw0y, .table th.tinytable_css_5zo388zi3ysf2zjddw0y { text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_3dafoz4quq1vmj54ihxk, .table th.tinytable_css_3dafoz4quq1vmj54ihxk { text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_cby718u646u1j7oykvf6" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">(1)</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>(Intercept)</td>
+                  <td>0.000000  </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.015823)</td>
+                </tr>
+                <tr>
+                  <td>z          </td>
+                  <td>0.512000  </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.022377)</td>
+                </tr>
+                <tr>
+                  <td>Num.Obs.   </td>
+                  <td>1000      </td>
+                </tr>
+                <tr>
+                  <td>R2         </td>
+                  <td>0.344     </td>
+                </tr>
+                <tr>
+                  <td>R2 Adj.    </td>
+                  <td>0.343     </td>
+                </tr>
+                <tr>
+                  <td>AIC        </td>
+                  <td>763.9     </td>
+                </tr>
+                <tr>
+                  <td>BIC        </td>
+                  <td>778.6     </td>
+                </tr>
+                <tr>
+                  <td>Log.Lik.   </td>
+                  <td>-378.930  </td>
+                </tr>
+                <tr>
+                  <td>RMSE       </td>
+                  <td>0.35      </td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data_realized_included <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(<span class="at">data =</span> .,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">formula =</span> d <span class="sc">~</span> z) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(<span class="at">fmt =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_s83phy0kdt0miq6dvdrj(i, j, css_id) {
+          var table = document.getElementById("tinytable_s83phy0kdt0miq6dvdrj");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_s83phy0kdt0miq6dvdrj');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_s83phy0kdt0miq6dvdrj(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_s83phy0kdt0miq6dvdrj");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 4, j: 0 },  ], css_id: 'tinytable_css_xwffv3iys844na9kk648',}, 
+          { positions: [ { i: 0, j: 1 },  ], css_id: 'tinytable_css_w4z9dmmlsau139c1a4r6',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 8, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 7, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 },  ], css_id: 'tinytable_css_eudug9725ocwb9o09rwu',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 8, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 7, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 },  ], css_id: 'tinytable_css_c2ahe2izeca74sswqlwz',}, 
+          { positions: [ { i: 11, j: 0 },  ], css_id: 'tinytable_css_8qbemzp6wiflgxlh3fen',}, 
+          { positions: [ { i: 4, j: 1 },  ], css_id: 'tinytable_css_7161ot5l1w4w25zkjyvf',}, 
+          { positions: [ { i: 11, j: 1 },  ], css_id: 'tinytable_css_2gv0hna1aawvy16pjgq6',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_06rnptnrmse9yo8dipfu',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_s83phy0kdt0miq6dvdrj(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_xwffv3iys844na9kk648, .table th.tinytable_css_xwffv3iys844na9kk648 { text-align: left; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_w4z9dmmlsau139c1a4r6, .table th.tinytable_css_w4z9dmmlsau139c1a4r6 { text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_eudug9725ocwb9o09rwu, .table th.tinytable_css_eudug9725ocwb9o09rwu { text-align: center; }
+      .table td.tinytable_css_c2ahe2izeca74sswqlwz, .table th.tinytable_css_c2ahe2izeca74sswqlwz { text-align: left; }
+      .table td.tinytable_css_8qbemzp6wiflgxlh3fen, .table th.tinytable_css_8qbemzp6wiflgxlh3fen { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_7161ot5l1w4w25zkjyvf, .table th.tinytable_css_7161ot5l1w4w25zkjyvf { text-align: center; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_2gv0hna1aawvy16pjgq6, .table th.tinytable_css_2gv0hna1aawvy16pjgq6 { text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_06rnptnrmse9yo8dipfu, .table th.tinytable_css_06rnptnrmse9yo8dipfu { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_s83phy0kdt0miq6dvdrj" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">(1)</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>(Intercept)</td>
+                  <td>0.000000  </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.015823)</td>
+                </tr>
+                <tr>
+                  <td>z          </td>
+                  <td>0.512000  </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.022377)</td>
+                </tr>
+                <tr>
+                  <td>Num.Obs.   </td>
+                  <td>1000      </td>
+                </tr>
+                <tr>
+                  <td>R2         </td>
+                  <td>0.344     </td>
+                </tr>
+                <tr>
+                  <td>R2 Adj.    </td>
+                  <td>0.343     </td>
+                </tr>
+                <tr>
+                  <td>AIC        </td>
+                  <td>763.9     </td>
+                </tr>
+                <tr>
+                  <td>BIC        </td>
+                  <td>778.6     </td>
+                </tr>
+                <tr>
+                  <td>Log.Lik.   </td>
+                  <td>-378.930  </td>
+                </tr>
+                <tr>
+                  <td>RMSE       </td>
+                  <td>0.35      </td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</section>
+<section id="tildetau_yの手動計算" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="tildetau_yの手動計算"><span class="header-section-number">1.2.3</span> <span class="math inline">\(\tilde{\tau}_Y\)</span>の手動計算</h3>
+<p>結果の処置割当効果<span class="math inline">\(\tilde{\tau}_Y\)</span>の推定値</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>tau_tilde_y_excluded <span class="ot">&lt;-</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  data_realized_excluded <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(z) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">mean</span>(y)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">sum</span>(y <span class="sc">*</span> z) <span class="sc">-</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(y <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> z))</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(y)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>tau_tilde_y_excluded</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.066599</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>tau_tilde_y_included <span class="ot">&lt;-</span>  </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  data_realized_included <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(z) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">mean</span>(y)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">summarise</span>(</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fu">sum</span>(y <span class="sc">*</span> z) <span class="sc">-</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">sum</span>(y <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> z))</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(y)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>tau_tilde_y_included</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.335747</code></pre>
+</div>
+</div>
+</section>
+<section id="回帰分析によるtildetau_yの推定" class="level3" data-number="1.2.4">
+<h3 data-number="1.2.4" class="anchored" data-anchor-id="回帰分析によるtildetau_yの推定"><span class="header-section-number">1.2.4</span> 回帰分析による<span class="math inline">\(\tilde{\tau}_Y\)</span>の推定</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>data_realized_excluded <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(<span class="at">data =</span> .,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">formula =</span> y <span class="sc">~</span> z) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(<span class="at">fmt =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_ga2eoxfcn5yqflh1zmmf(i, j, css_id) {
+          var table = document.getElementById("tinytable_ga2eoxfcn5yqflh1zmmf");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_ga2eoxfcn5yqflh1zmmf');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_ga2eoxfcn5yqflh1zmmf(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_ga2eoxfcn5yqflh1zmmf");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 11, j: 1 },  ], css_id: 'tinytable_css_ygp7avl2ifi8c7br88ls',}, 
+          { positions: [ { i: 4, j: 1 },  ], css_id: 'tinytable_css_xa42a1fgntdy32yumypo',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_uwpt39q69ewzckv5pjme',}, 
+          { positions: [ { i: 11, j: 0 },  ], css_id: 'tinytable_css_te3b8ikxpdh9137n2hat',}, 
+          { positions: [ { i: 4, j: 0 },  ], css_id: 'tinytable_css_rpqeyht3kmgfe5eniqa2',}, 
+          { positions: [ { i: 0, j: 1 },  ], css_id: 'tinytable_css_h3fcjwfxp3lsdkhoxvo4',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 8, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 7, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 },  ], css_id: 'tinytable_css_a2okx431ou7we7fnel41',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 8, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 7, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 },  ], css_id: 'tinytable_css_4o9xksnxrvin8x75zq86',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_ga2eoxfcn5yqflh1zmmf(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_ygp7avl2ifi8c7br88ls, .table th.tinytable_css_ygp7avl2ifi8c7br88ls { text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_xa42a1fgntdy32yumypo, .table th.tinytable_css_xa42a1fgntdy32yumypo { text-align: center; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_uwpt39q69ewzckv5pjme, .table th.tinytable_css_uwpt39q69ewzckv5pjme { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_te3b8ikxpdh9137n2hat, .table th.tinytable_css_te3b8ikxpdh9137n2hat { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_rpqeyht3kmgfe5eniqa2, .table th.tinytable_css_rpqeyht3kmgfe5eniqa2 { text-align: left; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_h3fcjwfxp3lsdkhoxvo4, .table th.tinytable_css_h3fcjwfxp3lsdkhoxvo4 { text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_a2okx431ou7we7fnel41, .table th.tinytable_css_a2okx431ou7we7fnel41 { text-align: left; }
+      .table td.tinytable_css_4o9xksnxrvin8x75zq86, .table th.tinytable_css_4o9xksnxrvin8x75zq86 { text-align: center; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_ga2eoxfcn5yqflh1zmmf" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">(1)</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>(Intercept)</td>
+                  <td>-0.038998 </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.056768)</td>
+                </tr>
+                <tr>
+                  <td>z          </td>
+                  <td>1.066599  </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.080282)</td>
+                </tr>
+                <tr>
+                  <td>Num.Obs.   </td>
+                  <td>1000      </td>
+                </tr>
+                <tr>
+                  <td>R2         </td>
+                  <td>0.150     </td>
+                </tr>
+                <tr>
+                  <td>R2 Adj.    </td>
+                  <td>0.149     </td>
+                </tr>
+                <tr>
+                  <td>AIC        </td>
+                  <td>3318.9    </td>
+                </tr>
+                <tr>
+                  <td>BIC        </td>
+                  <td>3333.6    </td>
+                </tr>
+                <tr>
+                  <td>Log.Lik.   </td>
+                  <td>-1656.456 </td>
+                </tr>
+                <tr>
+                  <td>RMSE       </td>
+                  <td>1.27      </td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>data_realized_included <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(<span class="at">data =</span> .,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">formula =</span> y <span class="sc">~</span> z) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(<span class="at">fmt =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_pbtvdabnfdaeur1fhxb4(i, j, css_id) {
+          var table = document.getElementById("tinytable_pbtvdabnfdaeur1fhxb4");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_pbtvdabnfdaeur1fhxb4');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_pbtvdabnfdaeur1fhxb4(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_pbtvdabnfdaeur1fhxb4");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 4, j: 0 },  ], css_id: 'tinytable_css_yl413a7rk1juysx6ta6c',}, 
+          { positions: [ { i: 4, j: 1 },  ], css_id: 'tinytable_css_ruzq246gxfd2n00v4xd9',}, 
+          { positions: [ { i: 11, j: 0 },  ], css_id: 'tinytable_css_qiae44rshikn643uhfmr',}, 
+          { positions: [ { i: 0, j: 1 },  ], css_id: 'tinytable_css_jsdougj5ri38n68dnrxs',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 8, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 }, { i: 7, j: 0 }, { i: 9, j: 0 }, { i: 10, j: 0 },  ], css_id: 'tinytable_css_jhedbf2sonuv8hb38ky2',}, 
+          { positions: [ { i: 11, j: 1 },  ], css_id: 'tinytable_css_fnfrifzt4vgp41akz6xg',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 8, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 }, { i: 7, j: 1 }, { i: 9, j: 1 }, { i: 10, j: 1 },  ], css_id: 'tinytable_css_b4wn6ixteqn90jen2htm',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_0bu2eibb8p6reky55yca',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_pbtvdabnfdaeur1fhxb4(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_yl413a7rk1juysx6ta6c, .table th.tinytable_css_yl413a7rk1juysx6ta6c { text-align: left; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_ruzq246gxfd2n00v4xd9, .table th.tinytable_css_ruzq246gxfd2n00v4xd9 { text-align: center; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_qiae44rshikn643uhfmr, .table th.tinytable_css_qiae44rshikn643uhfmr { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_jsdougj5ri38n68dnrxs, .table th.tinytable_css_jsdougj5ri38n68dnrxs { text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_jhedbf2sonuv8hb38ky2, .table th.tinytable_css_jhedbf2sonuv8hb38ky2 { text-align: left; }
+      .table td.tinytable_css_fnfrifzt4vgp41akz6xg, .table th.tinytable_css_fnfrifzt4vgp41akz6xg { text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_b4wn6ixteqn90jen2htm, .table th.tinytable_css_b4wn6ixteqn90jen2htm { text-align: center; }
+      .table td.tinytable_css_0bu2eibb8p6reky55yca, .table th.tinytable_css_0bu2eibb8p6reky55yca { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_pbtvdabnfdaeur1fhxb4" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">(1)</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>(Intercept)</td>
+                  <td>-0.038998 </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.065739)</td>
+                </tr>
+                <tr>
+                  <td>z          </td>
+                  <td>1.335747  </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.092970)</td>
+                </tr>
+                <tr>
+                  <td>Num.Obs.   </td>
+                  <td>1000      </td>
+                </tr>
+                <tr>
+                  <td>R2         </td>
+                  <td>0.171     </td>
+                </tr>
+                <tr>
+                  <td>R2 Adj.    </td>
+                  <td>0.171     </td>
+                </tr>
+                <tr>
+                  <td>AIC        </td>
+                  <td>3612.4    </td>
+                </tr>
+                <tr>
+                  <td>BIC        </td>
+                  <td>3627.1    </td>
+                </tr>
+                <tr>
+                  <td>Log.Lik.   </td>
+                  <td>-1803.185 </td>
+                </tr>
+                <tr>
+                  <td>RMSE       </td>
+                  <td>1.47      </td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</section>
+<section id="tildetau_yco-tau_lateの手動計算" class="level3" data-number="1.2.5">
+<h3 data-number="1.2.5" class="anchored" data-anchor-id="tildetau_yco-tau_lateの手動計算"><span class="header-section-number">1.2.5</span> <span class="math inline">\(\tilde{\tau}_{Y,co} = \tau_{late}\)</span>の手動計算</h3>
+<p>結果の処置割当効果を処置受取の処置割当効果で割ることによって局所平均処置効果の推定値（＝遵守者の平均処置効果）を算出。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>tau_late_excluded <span class="ot">&lt;-</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  tau_tilde_y_excluded <span class="sc">/</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  tau_tilde_d_excluded</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>tau_late_excluded</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.083201</code></pre>
+</div>
+</div>
+<p>母集団におけるパラメータ(= 2)を適切に推定している。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>tau_late_included <span class="ot">&lt;-</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  tau_tilde_y_included <span class="sc">/</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  tau_tilde_d_included</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>tau_late_included</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.60888</code></pre>
+</div>
+</div>
+<p>除外制約が満たされないことで、母集団におけるパラメータ(= 2)をバイアス分過大評価している。</p>
+</section>
+<section id="二段階最小二乗法によるtildetau_yco-tau_lateの推定" class="level3" data-number="1.2.6">
+<h3 data-number="1.2.6" class="anchored" data-anchor-id="二段階最小二乗法によるtildetau_yco-tau_lateの推定"><span class="header-section-number">1.2.6</span> 二段階最小二乗法による<span class="math inline">\(\tilde{\tau}_{Y,co} = \tau_{late}\)</span>の推定</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>data_realized_excluded <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  estimatr<span class="sc">::</span><span class="fu">iv_robust</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> .,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> y <span class="sc">~</span> d <span class="sc">|</span> z</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(<span class="at">fmt =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_so9n1a6h67uk7vmn3ez2(i, j, css_id) {
+          var table = document.getElementById("tinytable_so9n1a6h67uk7vmn3ez2");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_so9n1a6h67uk7vmn3ez2');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_so9n1a6h67uk7vmn3ez2(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_so9n1a6h67uk7vmn3ez2");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 },  ], css_id: 'tinytable_css_wnuscvgb6q34hm5q5m5t',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 },  ], css_id: 'tinytable_css_rpnc65nh9ywg1y8rulcp',}, 
+          { positions: [ { i: 4, j: 1 },  ], css_id: 'tinytable_css_p5nlvj0irvcz6wsds4tv',}, 
+          { positions: [ { i: 7, j: 1 },  ], css_id: 'tinytable_css_ml0imnf90wtg4bhdvi41',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_kx562f3be0xy751vi2wg',}, 
+          { positions: [ { i: 4, j: 0 },  ], css_id: 'tinytable_css_hprkcy131npok8zg8ijc',}, 
+          { positions: [ { i: 7, j: 0 },  ], css_id: 'tinytable_css_cgk3rlj2cgodtipbg3ix',}, 
+          { positions: [ { i: 0, j: 1 },  ], css_id: 'tinytable_css_1afrrpugbz0pld9fy7mk',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_so9n1a6h67uk7vmn3ez2(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_wnuscvgb6q34hm5q5m5t, .table th.tinytable_css_wnuscvgb6q34hm5q5m5t { text-align: left; }
+      .table td.tinytable_css_rpnc65nh9ywg1y8rulcp, .table th.tinytable_css_rpnc65nh9ywg1y8rulcp { text-align: center; }
+      .table td.tinytable_css_p5nlvj0irvcz6wsds4tv, .table th.tinytable_css_p5nlvj0irvcz6wsds4tv { text-align: center; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_ml0imnf90wtg4bhdvi41, .table th.tinytable_css_ml0imnf90wtg4bhdvi41 { text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_kx562f3be0xy751vi2wg, .table th.tinytable_css_kx562f3be0xy751vi2wg { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_hprkcy131npok8zg8ijc, .table th.tinytable_css_hprkcy131npok8zg8ijc { text-align: left; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_cgk3rlj2cgodtipbg3ix, .table th.tinytable_css_cgk3rlj2cgodtipbg3ix { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_1afrrpugbz0pld9fy7mk, .table th.tinytable_css_1afrrpugbz0pld9fy7mk { text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_so9n1a6h67uk7vmn3ez2" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">(1)</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>(Intercept)</td>
+                  <td>-0.038998 </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.048281)</td>
+                </tr>
+                <tr>
+                  <td>d          </td>
+                  <td>2.083201  </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.129396)</td>
+                </tr>
+                <tr>
+                  <td>Num.Obs.   </td>
+                  <td>1000      </td>
+                </tr>
+                <tr>
+                  <td>R2         </td>
+                  <td>0.421     </td>
+                </tr>
+                <tr>
+                  <td>R2 Adj.    </td>
+                  <td>0.421     </td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>data_realized_included <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  estimatr<span class="sc">::</span><span class="fu">iv_robust</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> .,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> y <span class="sc">~</span> d <span class="sc">|</span> z</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  modelsummary<span class="sc">::</span><span class="fu">modelsummary</span>(<span class="at">fmt =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script>
+
+      function styleCell_sxx0g3hblibhg447kg8r(i, j, css_id) {
+          var table = document.getElementById("tinytable_sxx0g3hblibhg447kg8r");
+          var cell = table.rows[i]?.cells[j];  // Safe navigation to avoid errors
+          if (cell) {
+              console.log(`Styling cell at (${i}, ${j}) with class ${css_id}`);
+              cell.classList.add(css_id);
+          } else {
+              console.warn(`Cell at (${i}, ${j}) not found.`);
+          }
+      }
+      function insertSpanRow(i, colspan, content) {
+        var table = document.getElementById('tinytable_sxx0g3hblibhg447kg8r');
+        var newRow = table.insertRow(i);
+        var newCell = newRow.insertCell(0);
+        newCell.setAttribute("colspan", colspan);
+        // newCell.innerText = content;
+        // this may be unsafe, but innerText does not interpret <br>
+        newCell.innerHTML = content;
+      }
+      function spanCell_sxx0g3hblibhg447kg8r(i, j, rowspan, colspan) {
+        var table = document.getElementById("tinytable_sxx0g3hblibhg447kg8r");
+        const targetRow = table.rows[i];
+        const targetCell = targetRow.cells[j];
+        for (let r = 0; r < rowspan; r++) {
+          // Only start deleting cells to the right for the first row (r == 0)
+          if (r === 0) {
+            // Delete cells to the right of the target cell in the first row
+            for (let c = colspan - 1; c > 0; c--) {
+              if (table.rows[i + r].cells[j + c]) {
+                table.rows[i + r].deleteCell(j + c);
+              }
+            }
+          }
+          // For rows below the first, delete starting from the target column
+          if (r > 0) {
+            for (let c = colspan - 1; c >= 0; c--) {
+              if (table.rows[i + r] && table.rows[i + r].cells[j]) {
+                table.rows[i + r].deleteCell(j);
+              }
+            }
+          }
+        }
+        // Set rowspan and colspan of the target cell
+        targetCell.rowSpan = rowspan;
+        targetCell.colSpan = colspan;
+      }
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: 4, j: 1 },  ], css_id: 'tinytable_css_syk767yz5ysfi98ghmj9',}, 
+          { positions: [ { i: 7, j: 1 },  ], css_id: 'tinytable_css_ln7y1pqh4yb3sgfwu57y',}, 
+          { positions: [ { i: 0, j: 1 },  ], css_id: 'tinytable_css_f4prdrcpmhv8p5icnp4x',}, 
+          { positions: [ { i: 1, j: 1 }, { i: 2, j: 1 }, { i: 3, j: 1 }, { i: 5, j: 1 }, { i: 6, j: 1 },  ], css_id: 'tinytable_css_dxu9ftb7jeoz60zixb2f',}, 
+          { positions: [ { i: 1, j: 0 }, { i: 2, j: 0 }, { i: 3, j: 0 }, { i: 5, j: 0 }, { i: 6, j: 0 },  ], css_id: 'tinytable_css_dosqlrbmvwri3orq8cpm',}, 
+          { positions: [ { i: 7, j: 0 },  ], css_id: 'tinytable_css_d9zpe22kvfowskp73div',}, 
+          { positions: [ { i: 4, j: 0 },  ], css_id: 'tinytable_css_ajj7p7bw5nmt5ajs9xd8',}, 
+          { positions: [ { i: 0, j: 0 },  ], css_id: 'tinytable_css_5lzytcp18bmoxssjr5bv',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  styleCell_sxx0g3hblibhg447kg8r(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script>
+
+    <style>
+      /* tinytable css entries after */
+      .table td.tinytable_css_syk767yz5ysfi98ghmj9, .table th.tinytable_css_syk767yz5ysfi98ghmj9 { text-align: center; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_ln7y1pqh4yb3sgfwu57y, .table th.tinytable_css_ln7y1pqh4yb3sgfwu57y { text-align: center; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_f4prdrcpmhv8p5icnp4x, .table th.tinytable_css_f4prdrcpmhv8p5icnp4x { text-align: center; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+      .table td.tinytable_css_dxu9ftb7jeoz60zixb2f, .table th.tinytable_css_dxu9ftb7jeoz60zixb2f { text-align: center; }
+      .table td.tinytable_css_dosqlrbmvwri3orq8cpm, .table th.tinytable_css_dosqlrbmvwri3orq8cpm { text-align: left; }
+      .table td.tinytable_css_d9zpe22kvfowskp73div, .table th.tinytable_css_d9zpe22kvfowskp73div { text-align: left; border-bottom: solid #d3d8dc 0.1em; }
+      .table td.tinytable_css_ajj7p7bw5nmt5ajs9xd8, .table th.tinytable_css_ajj7p7bw5nmt5ajs9xd8 { text-align: left; border-bottom: solid black 0.05em; }
+      .table td.tinytable_css_5lzytcp18bmoxssjr5bv, .table th.tinytable_css_5lzytcp18bmoxssjr5bv { text-align: left; border-top: solid #d3d8dc 0.1em; border-bottom: solid #d3d8dc 0.05em; }
+    </style>
+    <div class="container">
+      <table class="table table-borderless" id="tinytable_sxx0g3hblibhg447kg8r" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+        <thead>
+        
+              <tr>
+                <th scope="col"> </th>
+                <th scope="col">(1)</th>
+              </tr>
+        </thead>
+        
+        <tbody>
+                <tr>
+                  <td>(Intercept)</td>
+                  <td>-0.038998 </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.048281)</td>
+                </tr>
+                <tr>
+                  <td>d          </td>
+                  <td>2.608880  </td>
+                </tr>
+                <tr>
+                  <td>           </td>
+                  <td>(0.143283)</td>
+                </tr>
+                <tr>
+                  <td>Num.Obs.   </td>
+                  <td>1000      </td>
+                </tr>
+                <tr>
+                  <td>R2         </td>
+                  <td>0.484     </td>
+                </tr>
+                <tr>
+                  <td>R2 Adj.    </td>
+                  <td>0.484     </td>
+                </tr>
+        </tbody>
+      </table>
+    </div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

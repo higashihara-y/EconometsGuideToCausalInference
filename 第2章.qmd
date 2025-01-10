@@ -1,5 +1,5 @@
 ---
-title: "第2章"
+title: "第2章 無作為化実験"
 format: html
 editor: visual
 # 以下設定追加
