@@ -564,7 +564,7 @@ ggplot(
   theme_classic()
 ```
 
-t検定のうち、0.05水準で帰無仮説を棄却しているもの。 
+t検定のうち、0.05水準で帰無仮説を棄却しているもの。
 
 検定を繰り返すことによる偽棄却が発生している。
 
@@ -668,6 +668,7 @@ p_adjusted_allnull_bonferroni
 ```
 
 **検定統計量の棄却域の補正による方法**
+
 ```{r}
 ggplot(
   mapping = aes(x = seq_along(t_list_allnull),
@@ -691,10 +692,10 @@ t_rejected_allull_bonferroni_direct <-
 t_rejected_allull_bonferroni_direct
 ```
 
-
 **シミュレーションによるFWERの評価**
 
 100回のシミュレーション実施
+
 ```{r}
 t_list_allnull_all <- 
   seq_len(L) %>% 
@@ -709,6 +710,7 @@ t_list_allnull_all <-
 ```
 
 補正を行わない場合
+
 ```{r}
 t_rejected_allnull_all <- 
   t_list_allnull_all %>% 
@@ -732,6 +734,7 @@ fwer_allnull
 ```
 
 Bonferroni補正によるFWER制御
+
 ```{r}
 t_rejected_allnull_bonferroni_all <- 
   t_list_allnull_all %>% 
@@ -754,8 +757,8 @@ fewr_allnull_bonferroni <-
 fewr_allnull_bonferroni
 ```
 
-
 ### 偽である帰無仮説を含む場合
+
 ```{r}
 t_list_somealt_null <- 
   result_list_null_somealt %>% 
@@ -853,6 +856,7 @@ ggplot(
 ```
 
 p値のうち、0.05水準で正しく棄却しているもの
+
 ```{r}
 p_rejected_somealt <- 
   p_list_somealt_alternative %>% 
@@ -863,6 +867,7 @@ p_rejected_somealt
 ```
 
 本来真の帰無仮説を誤って棄却しているもの
+
 ```{r}
 p_rejected_somealt_false <- 
   p_list_somealt_null %>% 
@@ -873,6 +878,7 @@ p_rejected_somealt_false
 ```
 
 Bonferroni補正をかけた棄却域
+
 ```{r}
 ggplot(
   mapping = aes(
@@ -896,6 +902,7 @@ ggplot(
 ```
 
 Bonferroni補正した検定で正しく棄却しているもの
+
 ```{r}
 t_rejected_sumealt_bonferroni <- 
   t_list_somealt_alternative %>% 
@@ -906,6 +913,7 @@ t_rejected_sumealt_bonferroni
 ```
 
 p値での結果
+
 ```{r}
 ggplot(
   mapping = aes(
@@ -925,6 +933,7 @@ ggplot(
 ```
 
 Bonferroni補正した検定で、0.0016667水準で正しく棄却しているもの
+
 ```{r}
 p_rejected_somealt_bonferonni <- 
   p_list_somealt_alternative %>% 
@@ -935,6 +944,7 @@ p_rejected_somealt_bonferonni
 ```
 
 本来真の帰無仮説を誤って棄却しているもの（無し）
+
 ```{r}
 p_rejected_somealt_false_bonferroni <- 
   p_list_somealt_null %>% 
@@ -947,6 +957,7 @@ p_rejected_somealt_false_bonferroni
 **FWERのシミュレーションによる計算**
 
 100回のシミュレーションによりFWERを評価
+
 ```{r}
 t_list_somealt_null <- 
   seq_len(L) %>% 
@@ -974,6 +985,7 @@ t_list_somealt_alternative <-
 少なくとも1つの帰無仮説を誤って棄却したものの割合
 
 1.補正なし
+
 ```{r}
 t_rejected_somealt_null <- 
   t_list_somealt_null %>% 
@@ -997,6 +1009,7 @@ fwer_somealt
 ```
 
 2.Bonferroni補正あり
+
 ```{r}
 t_rejected_somealt_bonferroni_null <- 
   t_list_somealt_null %>% 
@@ -1024,6 +1037,7 @@ fwer_somealt_bonferroni
 100回のシミュレーションにおいて、正しい対立仮説を採用できた割合
 
 1.補正なし
+
 ```{r}
 t_rejected_somealt_alternative <- 
   t_list_somealt_alternative %>% 
@@ -1047,9 +1061,10 @@ power_somealt <-
 power_somealt
 ```
 
-2. Bonferroni補正あり 
+2.  Bonferroni補正あり
 
 FEWRを適正に保つことと引き換えに、検出力が低下している
+
 ```{r}
 t_rejected_somealt_bonferroni_alternative <- 
   t_list_somealt_alternative %>% 
@@ -1076,6 +1091,7 @@ power_somealt_bonferroni
 ### Bonferroni-Holm補正
 
 **p値の有意水準の補正**
+
 ```{r}
 ggplot(
   mapping = 
@@ -1102,6 +1118,7 @@ ggplot(
 補正した水準で正しく棄却しているもの
 
 （Bonferroni補正では棄却できなかった帰無仮説が、新たに1つ棄却出来ている）
+
 ```{r}
 p_rejected_somealt_bonferonni_holm <- 
   p_list_somealt_alternative %>% 
@@ -1131,6 +1148,7 @@ p_rejected_somealt_bonferonni
 本来真の帰無仮説を誤って棄却しているもの
 
 （誤って棄却しているものは無し）
+
 ```{r}
 p_rejected_somealt_false_bonferonni_holm <- 
   p_list_somealt_null %>% 
@@ -1154,6 +1172,7 @@ p_rejected_somealt_false_bonferonni_holm
 ```
 
 p.ajust関数を使った方法
+
 ```{r}
 p_adjusted_somealt_bonferroni_holm <- 
  p.adjust(
@@ -1167,6 +1186,7 @@ p_adjusted_somealt_bonferroni_holm
 **t値での検定**
 
 （t値の棄却水準は、検定数が増えるに従って低下していくはずであり、参照サイトの表現は誤っていると思われる）
+
 ```{r}
 ggplot(
   mapping = 
@@ -1197,6 +1217,7 @@ ggplot(
 **Bonferroni-Holm補正によるFWERと検出力**
 
 FWERは5%以下に抑えることが出来ている。
+
 ```{r}
 t_rejected_somealt_bonferroni_holm_null <- 
   t_list_somealt_null %>% 
@@ -1223,6 +1244,7 @@ fwer_somealt_bonferroni_holm
 ```
 
 検出力は、Bonferroni補正に比べて若干改善している。
+
 ```{r}
 t_rejected_somealt_bonferonni_holm_alternative <- 
   t_list_somealt_alternative %>% 
@@ -1248,38 +1270,395 @@ power_somealt_bonferroni_holm <-
 power_somealt_bonferroni_holm
 ```
 
+# 多重検定：FDR制御
 
+参照：[因果推論の計量経済学（川口、澤田）：第3章　推測・検定の諸問題](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/inference_fdr.html)
 
+## データの生成
 
+### 定数の設定とデータの生成
 
+```{r}
+set.seed(1)
+N <- 500        #標本サイズ
+M <- 60         #帰無仮説の数
+M_0 <- 45　　　 #正しい帰無仮説の数
+L <- 100        #シミュレーション回数
+alpha <- 0.05　 #有意水準
+tau_population <- 0.2
+```
 
+```{r}
+z <- (runif(N) >= 0.5)
 
+df_list_1 <-
+  seq_len(M - M_0) %>% 
+  purrr::map(
+    ~ tibble::tibble(
+      z = z,
+      y = rnorm(N) + tau_population * z
+    )
+  )
+  
+df_list_0 <- 
+  seq_len(M_0) %>% 
+  purrr::map(
+    ~ tibble::tibble(
+      z = z,
+      y = rnorm(N)
+    )
+  )
 
+df_list <- 
+  c(df_list_1, df_list_0)
+```
 
+###検定統計量の計算 60個の独立な線形回帰を行い、t値とp値を計算する
 
+```{r}
+result_list_1 <- 
+  df_list_1 %>% 
+  purrr::map(
+    ~ lm(y ~ z, data = .)
+  )
 
+result_list_0 <- 
+  df_list_0 %>% 
+  purrr::map(
+    ~ lm(y ~ z, data = .)
+  )
+```
 
+```{r}
+t_list_1 <- 
+  result_list_1 %>% 
+  purrr::map(
+    ~ summary(.) %>% 
+      coef() %>% 
+      .["zTRUE", "t value"]
+  ) %>% 
+  purrr::reduce(c)
 
+t_list_0 <- 
+  result_list_0 %>% 
+  purrr::map(
+    ~ summary(.) %>% 
+      coef() %>% 
+      .["zTRUE", "t value"]
+  ) %>% 
+  purrr::reduce(c)
+```
 
+```{r}
+p_list_1 <- 
+  result_list_1 %>% 
+  purrr::map(
+    ~ summary(.) %>% 
+      coef() %>% 
+      .["zTRUE", "Pr(>|t|)"]
+  ) %>% 
+  purrr::reduce(c)
 
+p_list_0 <- 
+  result_list_0 %>% 
+  purrr::map(
+    ~ summary(.) %>% 
+      coef() %>% 
+      .["zTRUE", "Pr(>|t|)"]
+  ) %>% 
+  purrr::reduce(c)
+```
 
+## 分析と推計
 
+### FDRの計算
 
+帰無仮説が偽である15個の検定統計量の絶対値を小さいものから順にプロット
 
+```{r}
+ggplot(
+  mapping = 
+    aes(x = seq_along(t_list_1),
+        y = t_list_1 %>% abs() %>% sort()
+        )
+  ) +
+  geom_point() +
+  geom_hline(yintercept = abs(qnorm(1 - alpha / 2)),
+             lty = "dashed") +
+  labs(x = "検定統計量の順位",
+       y = "検定統計量の絶対値") +
+  theme_classic()
+```
 
+```{r}
+ggplot(
+  mapping = 
+    aes(x = seq_along(p_list_1),
+        y = p_list_1 %>% sort()
+        )
+  ) +
+  geom_point() +
+  geom_hline(yintercept = alpha,
+             lty = "dashed") +
+  labs(x = "検定統計量の順位",
+       y = "検定統計量の絶対値") +
+  theme_classic()
+```
 
+```{r}
+ggplot(
+  mapping = 
+    aes(x = seq_along(t_list_0),
+        y = t_list_0 %>% abs() %>% sort())
+) +
+  geom_point() +
+  geom_hline(yintercept = abs(qnorm(1 - alpha / 2)),
+             lty = "dashed") +
+  labs(x = "検定統計量の順位",
+       y = "p値") +
+  theme_classic()
+```
 
+```{r}
+ggplot(
+  mapping = 
+    aes(x = seq_along(p_list_0),
+        y = p_list_0 %>% sort())
+) +
+  geom_point() +
+  geom_hline(yintercept = alpha,
+             lty = "dashed") +
+  labs(x = "検定統計量の順位",
+       y = "p値") +
+  theme_classic()
+```
 
+偽である15個の帰無仮説のうち、正しく棄却された検定統計量
 
+```{r}
+t_list_rejected_1 <- 
+  t_list_1 [
+    abs(t_list_1) > abs(qnorm(1 - alpha / 2))
+    ]
 
+t_list_rejected_1
+```
 
+偽である45個の帰無仮説のうち、誤って棄却された検定統計量
 
+```{r}
+t_list_rejected_0 <- 
+  t_list_0[
+    abs(t_list_0) > abs(qnorm(1 - alpha / 2))
+  ]
 
+t_list_rejected_0
+```
 
+FDRは棄却された帰無仮説のうち、誤って棄却された帰無仮説の割合
 
+```{r}
+fdr <- 
+  length(t_list_rejected_0) /
+  (length(t_list_rejected_0) + length(t_list_rejected_1))
 
+fdr
+```
 
+### FDR補正
 
+**Benjamini-Hochberg補正**
 
+```{r}
+p_list_sorted <- 
+  c(p_list_1, p_list_0) %>% 
+  sort()
 
+i <- M
+flag_continue <- TRUE
 
+while(flag_continue & i > 1) {
+  test <- p_list_sorted[i] <= (i / M) * alpha
+  if(test) {
+    flag_continue <- FALSE
+  }
+  i <- i - 1  #改行がないと正しく機能しない
+}
+```
+
+これにより棄却された帰無仮説の数とそのp値の閾値
+
+```{r}
+i
+```
+
+```{r}
+p_list_sorted[i]
+```
+
+正しく棄却された帰無仮説のp値
+
+```{r}
+p_list_rejected_benjamini_hotchberg_1 <- 
+  p_list_1[p_list_1 <= p_list_sorted[i]]
+
+p_list_rejected_benjamini_hotchberg_1
+```
+
+誤って棄却された帰無仮説のp値
+
+```{r}
+p_list_rejected_benjamini_hotchberg_0 <- 
+  p_list_0[p_list_0 <= p_list_sorted[i]]
+
+p_list_rejected_benjamini_hotchberg_0
+```
+
+Benjamini-Hochberg法によるFDR
+
+```{r}
+fdr_benjamini_hotchberg <- 
+  length(p_list_rejected_benjamini_hotchberg_0) /
+  sum(length(p_list_rejected_benjamini_hotchberg_1),
+      length(p_list_rejected_benjamini_hotchberg_0))
+
+fdr_benjamini_hotchberg
+```
+
+100回のシミュレーションによるFDRの期待値の計算
+
+```{r}
+p_list_all <- 
+  seq_len(L) %>% 
+  purrr::map(
+    ~ compute_p_value_mixed_effect(
+      N = N,
+      M = M,
+      M_0 = M_0,
+      seed = .
+    )
+  )
+```
+
+```{r}
+p_value_all <- 
+  p_list_all %>% 
+  purrr::map(
+    ~ compute_p_value_benjamini_hotchberg(
+      p_list_1 = .$p_list_1,
+      p_list_0 = .$p_list_0,
+      alpha = alpha
+    )
+  )
+```
+
+```{r}
+fdr_expected <- 
+  purrr::map2(
+    p_list_all,
+    p_value_all,
+    ~ compute_fdr(
+      p_list_1 = .x$p_list_1,
+      p_list_0 = .x$p_list_0,
+      p_value = .y
+    )
+  ) %>% 
+  purrr::reduce(c) %>% 
+  mean()
+
+fdr_expected
+```
+
+期待FDRが `r fdr_expected` となり、0.05よりも小さい値に制御されている。
+
+**Benjamini-Yekutieli補正**
+
+検定間の任意の相関においてFDR制御可能だが、検出力が劣る
+
+```{r}
+p_list_sorted <- 
+  c(p_list_1, p_list_0) %>% 
+  sort()
+
+i <- M
+flag_continue <- TRUE
+
+while(flag_continue & i > 1) {
+  test <- (p_list_sorted[i] <= 
+    (i / M) * alpha / sum(1 / seq_len(M)))
+  if(test) {
+    flag_continue <- FALSE
+    }
+  i <- i - 1
+}
+```
+
+これによる棄却された帰無仮説の数
+
+```{r}
+i
+```
+
+そのp値の閾値
+
+```{r}
+p_list_sorted[i]
+```
+
+正しく棄却された帰無仮説のp値
+
+```{r}
+p_list_rejected_benjamini_yekutieli_1 <- 
+  p_list_1[p_list_1 <= p_list_sorted[i]]
+
+p_list_rejected_benjamini_yekutieli_1
+```
+
+誤って棄却された帰無仮説のp値
+
+```{r}
+p_list_rejected_benjamini_yekutieli_0 <- 
+  p_list_0[p_list_0 <= p_list_sorted[i]]
+
+p_list_rejected_benjamini_yekutieli_0
+```
+
+Benjamini-Yekutieli補正によるFDR
+
+```{r}
+fdr_benjamini_yekutieli <- 
+  length(p_list_rejected_benjamini_yekutieli_0) /
+  sum(length(p_list_rejected_benjamini_yekutieli_0),
+      length(p_list_rejected_benjamini_yekutieli_1))
+
+fdr_benjamini_yekutieli
+```
+
+100回のシミュレーションによる期待FDRの計算
+
+```{r}
+p_value_all <- 
+  p_list_all %>% 
+  purrr::map(
+    ~ compute_p_value_benjamini_yekutieli(
+      p_list_1 = .$p_list_1,
+      p_list_0 = .$p_list_0,
+      alpha = alpha
+    )
+  )
+
+fdr_expected <- 
+  purrr::map2(
+    p_list_all,
+    p_value_all,
+    ~ compute_fdr(
+      p_list_1 = .x$p_list_1,
+      p_list_0 = .x$p_list_0,
+      p_value = .y
+    )
+  ) %>% 
+  purrr::reduce(c) %>% 
+  mean()
+
+fdr_expected
+```
