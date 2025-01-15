@@ -1,0 +1,251 @@
+---
+title: "回帰非連続デザインの基礎"
+format: 
+  html:
+    theme: journal
+    highlight-style: pygments
+    page-layout: full
+number-sections: true
+toc: true
+toc-depth: 3
+toc-location: left
+code-fold: show
+data: "最終更新: `r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+knitr::opts_chunk$set(cache = FALSE, echo = TRUE, fig.align = "center", warning = FALSE)
+library(magrittr)
+library(ggplot2)
+library(kableExtra)
+library(modelsummary)
+library(rdrobust)
+library(rddensity)
+library(CausalInferenceTextbook)
+color_main <- scales::viridis_pal(option = "C")(1)
+```
+
+# シャープRD推定
+
+参照：[因果推論の計量経済学（川口、澤田）：第6章　回帰非連続デザインの基礎](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/regression_discontinuity_rdrobust_sharp.html)
+
+## シミュレーションデータの生成
+
+### 定数とパラメータの設定
+```{r}
+set.seed(1)
+N <- 500
+```
+
+### データの生成
+
+潜在結果のプロット
+```{r}
+plot <- 
+  data.frame(
+    x = c(-1, 1)
+  ) %>% 
+  ggplot(mapping = aes(x = x)) +
+  stat_function(fun = function(x) {
+    dbeta(x = (x + 1) / 2,
+          shape1 = 2,
+          shape2 = 4)
+  }) +
+  labs(y = "Density") +
+  theme_classic()
+
+plot
+```
+
+顕在結果のプロット
+```{r}
+plot <- 
+  data.frame(
+    x = c(-1, 1)
+  ) %>% 
+  ggplot(mapping = aes(x = x)) +
+  stat_function(
+    fun = CausalInferenceTextbook::specify_mu_lee,
+    geom = "point"
+  ) +
+  labs(
+    x = "Score",
+    y = "Regression function") +
+  theme_classic()
+
+plot
+```
+
+Leeデータの生成
+```{r}
+dgp_lee <- 
+  CausalInferenceTextbook::generate_dgp_lee(
+    N = N
+  )
+```
+
+処置群・統制群の単純平均差
+```{r}
+mean_y <- 
+  dgp_lee %>% 
+  dplyr::group_by(d) %>% 
+  dplyr::summarise(
+    mean_y = mean(y)
+  ) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::pull(mean_y)
+
+mean_y %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+閾値近傍の左極限と右極限を比較した真の効果
+```{r}
+lim_mean_y <- 
+  data.frame(
+    d = c(FALSE, TRUE),
+    mean_y = c(
+      CausalInferenceTextbook::specify_mu_lee(
+        s = -1.e-30
+      ),
+      CausalInferenceTextbook::specify_mu_lee(
+        s = 0
+      )
+    )
+  )
+
+lim_mean_y %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+## 分析と推計
+
+### rdrobustパッケージによる推定
+
+yに結果変数、xにスコア変数を指定。
+バンド幅の選択手法のデフォルトは、平均二乗誤差を最小化する`mserd`。
+```{r}
+result <- 
+  rdrobust::rdrobust(
+    y = dgp_lee$y,
+    x = dgp_lee$s
+  )
+
+summary(result)
+```
+
+推定時にオプションを指定しなかった場合、従来型(Conventional)の推定量と標準誤差、バイアスの漸近誤差に対して頑健(Robust)な標準誤差のみが出力される。
+
+オプションとして`all = TRUE`を渡せば、バイアス修正済(Bias-Corrected)推定量もまとめて出力される。
+
+```{r}
+result <- 
+  rdrobust::rdrobust(
+    y = dgp_lee$y,
+    x = dgp_lee$s,
+    all = TRUE
+  )
+
+summary(result)
+```
+デフォルトで、最適バンド幅は推定された平均二乗誤差を最小化するように選択され、カーネル関数は三角カーネルが選択される。
+
+`rho = 1`のオプションを指定すると、バイアス修正と最終的な推定のいずれでも同じバンド幅を用いるように要求することができる。
+```{r}
+result <- 
+  rdrobust::rdrobust(
+    y = dgp_lee$y,
+    x = dgp_lee$s,
+    all = TRUE,
+    rho = 1
+  )
+
+summary(result)
+```
+
+`local-quadratic`を指定(`p = 2`)とし、バンド幅を共通のものとすれば、Conventionalに現れる推定結果が`rho = 1`の場合のRobust推定結果と同一なものになる。
+```{r}
+result <- 
+  rdrobust::rdrobust(
+    y = dgp_lee$y,
+    x = dgp_lee$s,
+    all = TRUE,
+    rho = 1,
+    p = 2,
+    h = result$bws[1, 1],
+    b = result$bws[1, 1]
+  )
+
+summary(result)
+```
+
+【追加】
+
+`bwselect`のオプションに、カバー率の誤差の意味で最適なバンド幅 `cerrd (= Coverage Error Rate)`を指定した場合の推定結果は以下。
+```{r}
+result <- 
+  rdrobust::rdrobust(
+    y = dgp_lee$y,
+    x = dgp_lee$s,
+    bwselect = "cerrd",
+    all = TRUE
+  )
+
+summary(result)
+```
+
+### rdplotによるプロット
+
+デフォルトの`binselect = "esmv"`は、生データの分散をビン平均値の分散で近似し、分散が等間隔になるように分割する方法。
+```{r}
+rdrobust::rdplot(
+  y = dgp_lee$y,
+  x = dgp_lee$s
+)
+```
+
+ビンの区切り方はbinselectオプションを指定。
+`es`または`qs`はいずれもサポート全体の平均二乗誤差を最小化するようにビン数を選ぶ方法。
+
+`es`は等間隔でビンを区切るため、極端に少ない観測の平均をその他の平均と同等であるかのように見せる恐れがある。`qs`のビン選択では、各ビンに同じ観測数が入る。
+```{r}
+rdrobust::rdplot(
+  y = dgp_lee$y,
+  x = dgp_lee$s,
+  binselect = "es"
+)
+```
+
+```{r}
+rdrobust::rdplot(
+  y = dgp_lee$y,
+  x = dgp_lee$s,
+  binselect = "qs"
+)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
