@@ -227,6 +227,217 @@ rdrobust::rdplot(
 )
 ```
 
+<br>
+
+# シャープRD推定の妥当性チェック
+
+参照：[因果推論の計量経済学（川口、澤田）：第6章　回帰非連続デザインの基礎](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/regression_discontinuity_diagnostic.html)
+
+## シミュレーションデータの生成
+
+### 定数とパラメータの設定
+```{r}
+set.seed(1)
+N <- 500
+```
+
+### データの生成
+
+潜在結果のプロット
+```{r}
+plot <- 
+  data.frame(
+    x = c(-1, 1)
+  ) %>% 
+  ggplot(
+    aes(x = x)
+  ) +
+  stat_function(
+    fun = function(x) {
+      dbeta(x = (x + 1) / 2,
+            shape1 = 2,
+            shape2 = 4)
+  }) +
+  labs(y = "Density") +
+  theme_classic()
+
+plot
+```
+
+観測される結果変数のプロット
+```{r}
+plot <- 
+  data.frame(
+    x = c(-1, 1)
+  ) %>% 
+  ggplot(
+    aes(x = x)
+  ) +
+  stat_function(
+    fun = CausalInferenceTextbook::specify_mu_lee,
+    geom = "point"
+  ) +
+  labs(
+    x = "Score",
+    y = "Regression function"
+  ) +
+  theme_classic()
+
+plot
+```
+
+Leeデータの生成
+```{r}
+dgp_lee <- 
+  CausalInferenceTextbook::generate_dgp_lee(
+    N = N
+  )
+```
+
+処置群・制御群の単純平均差
+```{r}
+mean_y <- 
+  dgp_lee %>% 
+  dplyr::group_by(d) %>% 
+  dplyr::summarise(
+    y = mean(y)
+  ) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::pull()
+
+mean_y %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+閾値の左極限と右極限を比較した、真の処置効果。
+```{r}
+lim_mean_y <- 
+  tibble::tibble(
+    d = c(FALSE, TRUE),
+    mean_y = c(
+      CausalInferenceTextbook::specify_mu_lee(
+        s = -1.e-30
+      ),
+      CausalInferenceTextbook::specify_mu_lee(
+        s = 0
+      )
+    )
+  )
+
+lim_mean_y %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+## 分析と推計
+
+### 密度検定
+
+`rddensity`パッケージによる、スコア変数の密度関数の閾値における連続性の検定。
+```{r}
+result_density <- 
+  rddensity::rddensity(
+    X = dgp_lee$s  #大文字Xであることに注意
+  )
+
+summary(result_density)
+```
+
+検定統計量の値は`r result_density$test$t_jk`、p値は`r result_density$test$p_jk`となり、帰無仮説は棄却されない。
+
+`rdplotdensity`関数による推定結果のプロット。
+```{r}
+rddensity::rdplotdensity(
+  rdd = result_density,
+  X = dgp_lee$s  #大文字Xであることに注意
+)
+```
+
+### バンド幅とバイアス・分散の関係
+
+パイロットバンド幅（=バイアス推定に用いるバンド幅 "b"）を固定し、推定バンド幅をMSE最適なものから変化させることで、バイアスと分散が変化する。
+```{r}
+result_opt <- 
+  rdrobust::rdrobust(
+    y = dgp_lee$y,
+    x = dgp_lee$s
+  )
+
+table <- 
+  data.frame(
+    case = "optimal",
+    absolute_bias = sum(abs(result_opt$bias)),
+    se_raw = result_opt$se[1],
+    bandwidth_h = result_opt$bws[1,1],
+    bandwidth_b = result_opt$bws[2,1]
+  )
+
+result_small <- 
+  rdrobust::rdrobust(
+    y = dgp_lee$y,
+    x = dgp_lee$s,
+    h = result_opt$bws[1,1] / 10,
+    b = result_opt$bws[2,1]
+  )
+
+table <- 
+  rbind(table,
+        data.frame(
+          case = "small",
+          absolute_bias = sum(abs(result_small$bias)),
+          se_raw = result_small$se[1],
+          bandwidth_h = result_small$bws[1,1],
+          bandwidth_b = result_small$bws[2,1]
+        ))
+
+result_large <- 
+  rdrobust::rdrobust(
+    y = dgp_lee$y,
+    x = dgp_lee$s,
+    h = result_opt$bws[1,1] * 4,
+    b = result_opt$bws[2,1]
+  )
+
+table <- 
+  rbind(table,
+        data.frame(
+          case = "large",
+          absolute_bias = sum(abs(result_large$bias)),
+          se_raw = result_large$se[1],
+          bandwidth_h = result_large$bws[1,1],
+          bandwidth_b = result_large$bws[2,1]
+        ))
+
+table %>% 
+  kbl %>% 
+  kable_styling()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
