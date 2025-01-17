@@ -1,0 +1,134 @@
+---
+title: "回帰非連続デザインの発展的トピック"
+format: 
+  html:
+    theme: journal
+    highlight-style: pygments
+    page-layout: full
+number-sections: true
+toc: true
+toc-depth: 3
+toc-location: left
+code-fold: show
+date: "最終更新: `r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+knitr::opts_chunk$set(cache = FALSE, echo = TRUE, fig.align = "center", warning = FALSE)
+library(magrittr)
+library(ggplot2)
+library(kableExtra)
+library(modelsummary)
+library(rdrobust)
+library(CausalInferenceTextbook)
+color_main <- scales::viridis_pal(option = "C")(1)
+```
+
+# ファジーRD推定
+
+参照：[因果推論の計量経済学（川口、澤田）：第7章　回帰非連続デザインの発展的トピック](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/regression_discontinuity_rdrobust_fuzzy.html)
+
+## シミュレーションデータの生成
+
+### 定数とパラメータの設定
+```{r}
+set.seed(1)
+N <- 1000
+```
+
+### データの生成
+
+誘導型モデルの効果量（= ITT）を0.24、服従者割合を0.6、LATEを0.4（= 0.24/0.6）と設定。
+
+また、処置変数はプロビットモデルに従う。
+```{r}
+dgp_lee <- 
+  CausalInferenceTextbook::generate_dgp_lee_fuzzy(
+    N = N
+  )
+
+dgp_lee %>% 
+  head() %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+## 分析と推計
+
+### rdrobustパッケージによる推定
+
+`rdrobust`関数に結果変数`y`とスコア変数`x`を指定し、ITT効果を算出。
+```{r}
+rdrobust::rdrobust(
+  y = dgp_lee$y,
+  x = dgp_lee$s,
+  all = TRUE
+) %>% 
+  summary()
+```
+
+
+結果変数の代わりに処置変数`d`を指定し、操作変数`s`の処置への効果を算出。
+```{r}
+rdrobust::rdrobust(
+  y = dgp_lee$d,
+  x = dgp_lee$s,
+  all = TRUE
+) %>% 
+  summary()
+```
+
+`fuzzy`オプションに処置変数`d`を指定し、ファジーRDデザインの効果推定値を算出。
+```{r}
+rdrobust::rdrobust(
+  y = dgp_lee$y,
+  x = dgp_lee$s,
+  fuzzy = dgp_lee$d,
+  all = TRUE
+) %>% 
+  summary()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

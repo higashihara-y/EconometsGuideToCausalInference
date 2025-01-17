@@ -10,7 +10,7 @@ toc: true
 toc-depth: 3
 toc-location: left
 code-fold: show
-data: "最終更新: `r Sys.Date()`"
+date: "最終更新: `r Sys.Date()`"
 ---
 
 ```{r setup, include=FALSE}
