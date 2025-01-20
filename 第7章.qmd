@@ -90,6 +90,627 @@ rdrobust::rdrobust(
   summary()
 ```
 
+<br>
+
+# 離散スコアRD推定
+
+参照：[[因果推論の計量経済学（川口、澤田）：第7章　回帰非連続デザインの発展的トピック](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/regression_discontinuity_rdhonest.html)
+
+## 3種類のデータ生成
+
+### 連続スコアデータの生成
+```{r}
+set.seed(1)
+N <- 1000
+dgp_cont <- 
+  CausalInferenceTextbook::generate_dgp_LM_discrete(
+    N = N,
+    rounding = function(s) {s}
+  )
+
+dgp_all <- 
+  list(
+    dgp_cont = dgp_cont
+  )
+```
+
+### 離散データの生成
+
+**設定の準備**
+
+スコアは離散点のみで実現し、離散点での条件付き期待値に正規分布ノイズを加えたものが従属変数として観測される。
+（離散点は、0.01刻み、0.02刻み、0.05刻み、0.1刻みの4パターン）
+```{r}
+list_specifications <- 
+  list(
+    "Continuous score variable",
+    "Discrete score variable at 0.01 grids",
+    "Discrete score variable at 0.02 grids",
+    "Discrete score variable at 0.05 grids",
+    "Discrete score variable at 0.1 grids"
+  )
+
+list_rounding_fine <- 
+  list(
+    dgp_001 = function(s) {
+      round(s, 2)
+    },
+    dgp_002 = function(s) {
+      round(s/ 2, 2) * 2
+    }
+  )
+
+list_rounding_rough <- 
+  list(
+    dgp_005 = function(s) {
+      round(s * 2, 1) / 2
+    },
+    dgp_01 = function(s) {
+      round(s, 1)
+    }
+  )
+```
+
+**データの生成**
+
+```{r}
+dgp_discrete_fine <- 
+  purrr::map(
+    list_rounding_fine,
+    function(rounding) {
+      call_generate_dgp_LM_discrete(rounding)
+    }
+  )
+
+dgp_discrete_rough <- 
+  purrr::map(
+    .x = list_rounding_rough,
+    .f = function(rounding) {
+      call_generate_dgp_LM_discrete(rounding)
+    }
+  )
+
+dgp_fine <- 
+  append(
+    dgp_all,
+    dgp_discrete_fine
+  )
+
+dgp_all <- 
+  append(
+    dgp_fine,
+    dgp_discrete_rough
+  )
+```
+
+生成したデータのプロット
+```{r}
+list_plots <- 
+  purrr::map(
+    .x = dgp_all,
+    .f = CausalInferenceTextbook::call_plot_data
+  )
+
+counter <- 0
+for(plot in list_plots) {
+  counter <- counter + 1
+  plot_to_display <- 
+    plot + 
+    ggtitle(
+      list_specifications[counter]
+    )
+  print(plot_to_display)
+}
+```
+
+<br>
+
+## 分析: OLS、rdrobust、RDHonestの比較
+
+### グローバルOLS推定
+```{r}
+table <- data.frame()
+wgt__ <- NULL
+```
+
+内容理解のため、備え付けの関数を使わず、同じ関数を再現する形で実施。
+```{r}
+list_result_ols <- 
+  purrr::map(
+    .x = dgp_all,
+    .f = function(data) {
+      data$s_2 = data$s^2
+      data$s_3 = data$s^3
+      data$s_4 = data$s^4
+      
+      result <- 
+        lm(data = data,
+           formula = "y ~ 1 + d + s + s_2 + s_3 + s_4")
+      
+      return(result)
+    }
+  )
+
+list_specifications <- 
+  list(
+    "連続スコア",
+    "離散(0.01刻み)",
+    "離散(0.02刻み)",
+    "離散(0.05刻み)",
+    "離散(0.1刻み)"
+  )
+# 参照サイトは誤り
+
+counter <- 0
+
+for(result in list_result_ols) {
+  counter <- counter + 1
+  table_lm <- coef(summary(result))
+  table <- 
+    rbind(
+      table,
+      data.frame(
+        case = paste0("四次元OLS 不均一分散頑健分散: ",
+                      list_specifications[counter]),
+        ci_lower = table_lm[2] - 
+          table_lm[2,2] * qt(0.975, df = summary(result)$df[2]),
+        ci_upper = table_lm[2] +
+          table_lm[2,2] * qt(0.975, df = summary(result)$df[2]),
+        point_est  = table_lm[2],
+        se = table_lm[2,2],
+        h = NA
+      )
+    )
+  }
+
+```
+
+```{r}
+list_result_ols_cluster <- 
+  purrr::map(
+    .x = dgp_all,
+    .f = function(data) {
+      data$s_2 = data$s^2
+      data$s_3 = data$s^3
+      data$s_4 = data$s^4
+      
+      result <- miceadds::lm.cluster(
+        data = data,
+        formula = "y ~ 1 + d + s + s_2 + s_3 + s_4",
+        cluster = "s",
+        weights = NULL
+      )
+      return(result)
+    }
+  )
+
+counter <- 0
+
+for(result_cluster in list_result_ols_cluster) {
+  counter <- counter + 1
+  invisible(capture.output(table_cl <- summary(result_cluster)))
+  table <- 
+    rbind(
+      table,
+      data.frame(
+        case = paste0("四次元OLS クラスター頑健分散: ",
+                      list_specifications[counter]),
+        ci_lower = table_cl[2] - 
+          table_cl[2,2] * qt(0.975,
+                             result_cluster$lm_res$df.residual),
+        ci_upper = table_cl[2] +
+          table_cl[2,2] * qt(0.975,
+                             result_cluster$lm_res$df.residual),
+        point_est  = NA,
+        se = table_cl[2,2],
+        h = NA
+      )
+    )
+  }
+```
+
+```{r}
+table %>% 
+  kbl() %>% 
+  kable_styling()
+```
+OLS推定の場合、処置受取dの効果について、真の効果である`3.44`に対して大きく乖離した推定結果となっている。これはクラスター頑健標準誤差を適用した推定でも同様である。
+
+<br>
+
+### クラスター頑健分散推定の方が小さい例
+```{r}
+set.seed(1)
+
+dgp_01_alt <- 
+  generate_dgp_LM_discrete_alternate(
+    N = N,
+    rounding = function(s) {round(s, 1)}
+  )
+
+table_alt <- data.frame()
+
+result <- return_OLS(
+  data = dgp_01_alt
+)
+
+table_alt <- 
+  append_OLS_table(
+    table = table_alt,
+    case = "四次OLS 不均一分散頑健分散: 離散(0.1刻み)",
+    result = result
+  )
+
+result_cluster <- 
+  return_OLS_cluster(
+    data = dgp_01_alt
+    )
+
+table_alt <- 
+  append_OLS_cluster_table(
+    table = table_alt,
+    case = "四次OLS クラスター頑健分散: 離散(0.1刻み)",
+    result = result_cluster
+  )
+
+table_alt %>% 
+  kbl() %>% 
+  kable_styling()
+```
+クラスター頑健分散の標準誤差が、不均一分散頑健分散の標準誤差より小さくなっている。
+
+<br>
+
+### `rdrobust`推定
+スコアの離散性を無視し、`rdrobust`パッケージで推定。
+
+初期値で`masspoints`オプションが`adjust`と指定されており、同じ点での重複観測を自動で検出し、分散推定やバンド選択の補正を行う。
+以下では、`masspoints`オプションを`off`にした推定も実施。
+
+```{r}
+table <- data.frame()
+table_compare <- data.frame()
+
+list_result_rdrobust <- 
+  purrr::map(
+    .x = dgp_fine,
+    .f = function(data) {
+      result <- 
+        rdrobust::rdrobust(
+          y = data$y,
+          x = data$s
+        )
+      return(result)
+    }
+  )
+
+counter <- 0
+
+for(result in list_result_rdrobust) {
+  counter <- counter + 1
+  table <- 
+    rbind(
+      table,
+      data.frame(
+        case = paste0("rdrobust: ", list_specifications[counter]),
+        ci_lower = result$ci[3, 1],
+        ci_upper = result$ci[3, 2],
+        point_est = result$Estimate[1],
+        se = result$se[3],
+        h = result$bws[1],
+        M = NA
+      )
+    )
+  
+  table_compare <-
+    rbind(
+      table_compare,
+      data.frame(
+        case = paste0("rdrobust: ", list_specifications[counter]),
+        ci_lower = result$ci[3, 1],
+        ci_upper = result$ci[3, 2],
+        point_est = result$Estimate[1],
+        se = result$se[3],
+        h = result$bws[1],
+        M = NA
+      )
+    )
+}
+
+list_result_rdrobust_masspoints_off <- 
+  purrr::map(
+    .x = dgp_discrete_fine,
+    .f = function(data) {
+      result <- 
+        rdrobust::rdrobust(
+          y = data$y,
+          x = data$s,
+          masspoints = "off"
+        )
+      return(result)
+    }
+  )
+
+counter <- 0
+
+for(result in list_result_rdrobust_masspoints_off) {
+  counter <- counter + 1
+  table <- 
+    rbind(
+      table,
+      data.frame(
+        case = paste0("rdrobust: ", list_specifications[counter + 1],
+                      "(離散値補正なし)"),
+        ci_lower = result$ci[3, 1],
+        ci_upper = result$ci[3, 2],
+        point_est = result$Estimate[1],
+        se = result$se[3],
+        h = result$bws[1],
+        M = NA
+      )
+    )
+}
+
+table %>% 
+  kbl() %>% 
+  kable_styling()
+```
+※参照サイトでは、0.02が0.1と誤って記載されている。
+
+```{r}
+try(
+  result <- 
+    rdrobust::rdrobust(
+      y = dgp_all$dgp_005$y,
+      x = dgp_all$dgp_005$s
+    ),
+  silent = FALSE
+)
+```
+`masspoints`オプションによる離散数値補正を行っても、一定以上の離散化（この場合0.05以上の粗さ）となると推定が行えずエラーとなる。
+
+<br>
+
+### `RDHonest`に基づく推定
+
+`RDHonest`推定では、二階導関数の最悪値を指定してやる必要がある一方で、スコア変数が本質的に離散観測であることを加味した信頼区間を得ることができる。
+
+`kern = "uniform"`: カーネルを一様関数に指定、`opt.criterion = "FLCI"`: 推定量の最適基準が信頼区間幅の最小化、`sclass = "H"`: ヘルダークラス関数のクラスを取りうる関数のクラスとしている、`M = 100`: 条件付き期待値関数の二階導関数が取り得る最悪値。
+
+```{r}
+list_M_value <- 
+  c(100, 60, 30, 15, 5)
+
+list_results_rdhonest <- 
+  purrr::map(
+    .x = list_M_value,
+    .f = function(M) {
+      result <- 
+        RDHonest::RDHonest(
+          y ~ s,
+          data = dgp_all$dgp_005,
+          kern = "uniform",
+          opt.criterion = "FLCI",
+          M = M,
+          sclass = "H"
+        )
+      return(result)
+    }
+  )
+
+table <- data.frame()
+counter <- 0
+
+for(result in list_results_rdhonest) {
+  counter <- counter + 1
+  table <- 
+    rbind(
+      table,
+      data.frame(
+        case = paste0("RDHonest:(0.05刻み) 一様カーネル CI最小化 M=",
+                      list_M_value[counter]),
+        ci_lower = result$coefficients$conf.low,
+        ci_upper = result$coefficients$conf.high,
+        point_est = result$coefficients$estimate,
+        se = result$coefficients$std.error,
+        h = result$coefficients$bandwidth,
+        M = result$coefficients$M
+      )
+    )
+}
+
+table %>% 
+  kbl() %>% 
+  kable_styling()
+```
+`M`を極端に小さくすると、信頼区間が小さくなりすぎ、真の値である`3.44`を含まなくなる。
+
+`M`を指定しない場合、グローバル多項式回帰に基づいてMを選択するArmstrong and Koles'ar (2020)の方法が出力される。
+```{r}
+result <- 
+  RDHonest::RDHonest(
+    y ~ s,
+    data = dgp_all$dgp_005,
+    kern = "uniform",
+    opt.criterion = "FLCI",
+    sclass = "H"
+  )
+```
+
+```{r}
+table <- 
+    rbind(
+      table,
+      data.frame(
+        case = "RDHonest: (0.05刻み)一様カーネル CI最小化 M=rule-of-thumb",
+        ci_lower = result$coefficients$conf.low,
+        ci_upper = result$coefficients$conf.high,
+        point_est = result$coefficients$estimate,
+        se = result$coefficients$std.error,
+        h = result$coefficients$bandwidth,
+        M = result$coefficients$M
+      )
+    )
+
+table %>% 
+  kbl %>% 
+  kable_styling()
+```
+
+カーネルに三角カーネルを指定した場合（結果は大きく変わらない）
+```{r}
+result <- 
+  RDHonest::RDHonest(
+    y ~ s,
+    data = dgp_all$dgp_005,
+    kern = "triangular",
+    opt.criterion = "FLCI",
+    sclass = "H"
+  )
+
+table <- 
+    rbind(
+      table,
+      data.frame(
+        case = "RDHonest: (0.05刻み)三角カーネル CI最小化 M=rule-of-thumb",
+        ci_lower = result$coefficients$conf.low,
+        ci_upper = result$coefficients$conf.high,
+        point_est = result$coefficients$estimate,
+        se = result$coefficients$std.error,
+        h = result$coefficients$bandwidth,
+        M = result$coefficients$M
+      )
+    )
+
+table %>% 
+  kbl %>% 
+  kable_styling()
+```
+
+`RDHonest`による推定値を`rdrobust`による推定値と比較すると、当シミュレーションデータにおいてはほぼ同一の結果となっている。しかし、`rdrobust`では粗い離散化においては推定値の算出自体が出来ない一方、`RDHonest`ではある程度適切な結果が得られている。
+```{r}
+list_results_rdhonest_data <- 
+  purrr::map(
+    .x = dgp_all,
+    .f = function(data) {
+      result <- 
+        RDHonest::RDHonest(
+          y ~ s,
+          data = data,
+          kern = "uniform",
+          opt.criterion = "FLCI",
+          sclass = "H"
+        ) 
+      return(result)
+    }
+  )
+```
+
+```{r}
+counter <- 0
+
+for(result in list_results_rdhonest_data) {
+  counter <- counter + 1
+  table_compare <- 
+    rbind(
+      table_compare,
+      data.frame(
+        case = paste0("RDHonest: ",
+                      list_specifications[counter],
+                      " (一様カーネル CI最小化 M=rule-of-thumb)"),
+        ci_lower = result$coefficients$conf.low,
+        ci_upper = result$coefficients$conf.high,
+        point_est = result$coefficients$estimate,
+        se = result$coefficients$std.error,
+        h = result$coefficients$bandwidth,
+        M = result$coefficients$M
+      )
+    )
+}
+
+table_compare %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
