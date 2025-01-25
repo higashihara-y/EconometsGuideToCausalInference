@@ -1,0 +1,710 @@
+---
+title: "差の差法の基礎"
+format:
+  html: 
+    theme: journal
+    highlight-style: pygments
+    page-layout: full
+number-sections: true
+toc: true
+toc-depth: 3
+toc-location: left
+code-fold: show
+date: "最終更新: `r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+knitr::opts_chunk$set(cache = FALSE, echo = TRUE, fig.align = "center", warning = FALSE)
+library(magrittr)
+library(ggplot2)
+library(kableExtra)
+library(modelsummary)
+library(CausalInferenceTextbook)
+color_main <- scales::viridis_pal(option = "C")(1)
+```
+
+# 2方向固定効果（TWFE）推定
+
+参照： [因果推論の計量経済学（川口、澤田）：第9章　差の差法の基礎（第10章　差の差法とその周辺の発展的トピック）](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/difference_in_differences_TWFE.html)
+
+## シミュレーションデータの生成
+
+### 定数とパラメータの設定
+```{r}
+N <- 1000  #個体数
+T0 <- 4
+T1 <- 6
+T <- T0 + T1　#期間
+```
+
+処置が処置群全体に同時に割り当てられるデザイン（の正規分布のパラメータ）
+```{r}
+mean_tau_i_simul <- 0.05
+sd_tau_i_simul <- 0.2
+```
+
+処置群のなかで処置が段階的に割り当てられていくデザイン
+
+（
+※正規分布の絶対値に以下の効果量の乗数をかけたものを処置効果とし、処置割り当てのタイミングごとに異なる符号の効果を発生させる）
+```{r}
+mean_tau_i_multi <- 0.1
+sd_tau_i_multi <- 0.2
+
+scale_5 <- 1
+scale_6 <- -2.5
+scale_7 <- -1.75
+scale_8 <- -1
+```
+
+### 同時割り当てデータの生成
+
+※データ生成過程については参照サイトの記述を参照
+```{r}
+set.seed(1)
+df_design <- 
+  generate_df_no_covariates(
+    N = N,
+    T = T,
+    T0 = T0,
+    mean_tau_i = mean_tau_i_simul,
+    sd_tau_i = sd_tau_i_simul
+  )
+```
+
+生成した10期間の処置群平均処置効果の期間全体平均
+```{r}
+att_pop <- 
+  df_design %>% 
+  dplyr::filter(time > T0) %>% 
+  dplyr::pull(tau_t) %>% 
+  unique()  #6つの処置期間それぞれのtau_tを抽出
+
+att_pop <- 
+  mean(att_pop) * mean_tau_i_simul
+
+att_pop  #ATTの期間全体平均
+```
+
+処置期間ごとのATTの平均値を取ったATTの「期間全体平均」は、本来知り得ない母集団におけるパラメータから算出した母集団のATTとは必ずしも一致しない。
+```{r}
+att_sample <- 
+  df_design %>% 
+  dplyr::filter(
+    time > T0,
+    g_i == 1
+  ) %>% 
+  dplyr::summarise(
+    att_sample = mean(tau_it)
+  ) %>% 
+  dplyr::pull(att_sample)
+
+att_sample
+```
+
+### 複数時点での処置発生データの生成
+
+※データ生成過程については参照サイトの記述を参照
+```{r}
+set.seed(1)
+
+df_design_multiperiod <- 
+  generate_df_multiperiod(
+    N = N,
+    T = T,
+    T1 = T1,
+    T0 = T0,
+    diff_trend = FALSE,
+    mean_tau_i = mean_tau_i_multi,
+    sd_tau_i = sd_tau_i_multi,
+    scale_5 = scale_5,
+    scale_6 = scale_6,
+    scale_7 = scale_7,
+    scale_8 = scale_8
+  )
+```
+
+各コホートの割合は以下
+```{r}
+df_design_multiperiod %>% 
+  dplyr::group_by(group_i) %>% 
+  dplyr::summarise(
+    fraction = length(z_it) 
+  ) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::mutate(
+    fraction = fraction / sum(fraction)
+  ) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+各コホートの「期間平均」のATTを算出するため、まず時間効果の期待値の絶対値$|\tau_i|$を算出する。
+```{r}
+mean_abs_tau_i <- 
+  (
+    mean_tau_i_multi + 
+      sd_tau_i_multi * (
+        dnorm((-mean_tau_i_multi) / sd_tau_i_multi)) / 
+      (1 - pnorm((-mean_tau_i_multi) / sd_tau_i_multi))
+   ) * 
+    pnorm(mean_tau_i_multi / sd_tau_i_multi) -
+  (
+    mean_tau_i_multi -
+     sd_tau_i_multi * (
+        dnorm((-mean_tau_i_multi) / sd_tau_i_multi)) / 
+     (pnorm((-mean_tau_i_multi) / sd_tau_i_multi))
+   ) * 
+    (1 - pnorm(mean_tau_i_multi / sd_tau_i_multi))
+```
+
+次にこの$\mathbb{E}[|\tau_i|]$をもとに、ATTの「期間平均」を算出する。
+```{r}
+att_pop_multiperiod_group <- 
+  df_design_multiperiod %>% 
+  dplyr::filter(
+    time > T0,
+    g5_i == 1
+  ) %>% 
+  dplyr::summarise(
+    group = "5",
+    att_pop_multiperiod = 
+      mean(unique(tau_t)) * scale_5 * mean_abs_tau_i,
+    fraction_within_group = 
+      sum(z_it) / sum(df_design_multiperiod$z_it)
+  )
+
+att_pop_multiperiod_group <- 
+  rbind(
+    att_pop_multiperiod_group,
+    df_design_multiperiod %>% 
+    dplyr::filter(
+      time > T0 + 1,
+      g6_i == 1
+    ) %>% 
+    dplyr::summarise(
+      group = "6",
+      att_pop_multiperiod = 
+        mean(unique(tau_t)) * scale_6 * mean_abs_tau_i,
+      fraction_within_group = 
+        sum(z_it) / sum(df_design_multiperiod$z_it)
+  ))
+
+att_pop_multiperiod_group <- 
+  rbind(
+    att_pop_multiperiod_group,
+    df_design_multiperiod %>% 
+    dplyr::filter(
+      time > T0 + 2,
+      g7_i == 1
+    ) %>% 
+    dplyr::summarise(
+      group = "7",
+      att_pop_multiperiod = 
+        mean(unique(tau_t)) * scale_7 * mean_abs_tau_i,
+      fraction_within_group = 
+        sum(z_it) / sum(df_design_multiperiod$z_it)
+  ))
+
+att_pop_multiperiod_group <- 
+  rbind(
+    att_pop_multiperiod_group,
+    df_design_multiperiod %>% 
+    dplyr::filter(
+      time > T0 + 3,
+      g8_i == 1
+    ) %>% 
+    dplyr::summarise(
+      group = "8",
+      att_pop_multiperiod = 
+        mean(unique(tau_t)) * scale_8 * mean_abs_tau_i,
+      fraction_within_group = 
+        sum(z_it) / sum(df_design_multiperiod$z_it)
+  ))
+
+att_pop_multiperiod_group %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+それぞれのグループの割合について加重平均を取り、母集団におけるATTの期間平均を算出。
+```{r}
+att_pop_multiperiod <- 
+  att_pop_multiperiod_group$att_pop_multiperiod %*%
+  att_pop_multiperiod_group$fraction_within_group
+
+att_pop_multiperiod
+
+# 上記は以下の計算と同じ（%*%が加重平均を返す）
+# att_pop_multiperiod <-
+#   att_pop_multiperiod_group$att_pop_multiperiod *
+#   att_pop_multiperiod_group$fraction_within_group
+# 
+# sum(att_pop_multiperiod)
+```
+
+本来知り得ない母集団におけるパラメータである`tau_i`と`tau_t`からの算出ではなく、標本の`tau_it`の値を直接使い各コホートのATTを計算すると、母集団におけるATTとは厳密には一致しない。
+```{r}
+att_sample_multiperiod_group <- 
+  df_design_multiperiod %>% 
+  dplyr::filter(
+    group_i > 0
+  ) %>% 
+  dplyr::group_by(
+    group_i
+  ) %>% 
+  dplyr::summarise(
+    att_sample = sum(tau_it * (time >= group_i)) / sum(time >= group_i)
+  )
+
+att_sample_multiperiod_group %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+標本の`tau_it`の値から全コホートのATTを算出。
+```{r}
+att_sample_multiperiod <- 
+  df_design_multiperiod %>% 
+  dplyr::filter(
+    z_it > 0
+  ) %>% 
+  dplyr::summarise(
+    att_sample_multiperiod = mean(tau_it)
+  ) %>% 
+  dplyr::pull(att_sample_multiperiod)
+
+att_sample_multiperiod
+```
+
+## 分析と推計
+
+### 同時割り当てにおける推定
+
+先に生成した`df_design`のうち、実際に観測できる変数は以下。
+```{r}
+df_design_observed <- 
+  df_design %>% 
+  dplyr::select(
+    id, time, g_i, z_it, y_it
+  )
+
+head(df_design_observed) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+<br>
+
+<u>**1. 平均の差による差の差の推定**</u>
+
+処置群の割合の算出
+```{r}
+df_design_observed %>% 
+  dplyr::pull(g_i) %>% 
+  mean()
+```
+
+事後期間の処置群と統制群の平均の差
+```{r}
+post <- 
+  df_design_observed %>% 
+  dplyr::filter(
+    time > T0
+  ) %>% 
+  dplyr::summarise(
+    sum(y_it * g_i) / sum(g_i) - sum(y_it * (1 - g_i)) / sum(1 - g_i)
+  ) %>% 
+  dplyr::ungroup()
+
+post
+```
+
+事前期間の処置群と統制群の平均の差
+```{r}
+pre <- 
+  df_design_observed %>% 
+  dplyr::filter(
+    time <= T0
+  ) %>% 
+  dplyr::summarise(
+    sum(y_it * g_i) / sum(g_i) - sum(y_it * (1 - g_i)) / sum(1 - g_i)
+  ) %>% 
+  dplyr::ungroup()
+
+pre
+```
+
+差の差推定量のノンパラメトリックな算出
+```{r}
+did <- post - pre
+did
+```
+
+上記の差の差推定により得られた`did``r did`は、母集団におけるATTの期間全体平均`att_pop``r att_pop`の不偏推定量となる。
+
+<br>
+
+<u>**2. TWFEによる差の差推定**</u>
+
+個体固定効果と時間固定効果を入れたTWFE推定量の算出。
+
+以下のモデルの最小二乗推定量を算出し、係数$\tau$をATTの推定量とする。
+
+\begin{align}
+Y_{it} = \mu_i + \theta_t + \tau Z_{it} + \epsilon_{it}
+\end{align}
+
+```{r}
+lsdv <- 
+  plm::plm(
+    formula = y_it ~ z_it,
+    data = df_design_observed,
+    index = c("id", "time"),
+    effect = "twoways"
+  )
+
+clubSandwich::coef_test(
+  lsdv,
+  vcov = "CR1",
+  cluster = "id",
+  test = "naive-t"
+) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+<br>
+
+**（参考）`estimatr::lm_robust`による推計**
+`fixed_effects`に`id + time`、`clusters`に`id`、`se_type`に`CR0`を指定することで、同じ推計結果が得られる。
+```{r}
+estimatr::lm_robust(
+  formula = y_it ~ z_it,
+  data = df_design_observed,
+  fixed_effects = id + time,
+  clusters = id,
+  se_type = "CR0"
+) %>% 
+  summary() %>% 
+  .$coefficients %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+<br>
+
+### 複数時点割り当てにおける推定
+
+先に生成した`df_design_multiperiod`のうち、観測できる変数は以下。
+```{r}
+df_design_multiperiod_observed <- 
+  df_design_multiperiod %>% 
+  dplyr::select(
+    c("id",
+      "time",
+      "group_i",
+      "g5_i",
+      "g6_i",
+      "g7_i",
+      "g8_i",
+      "z5_it",
+      "z6_it",
+      "z7_it",
+      "z8_it",
+      "z_it",
+      "y_it")
+  )
+
+head(df_design_multiperiod_observed) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+<br>
+
+<u>**1.平均の差による差の差の差推定**</u>
+
+処置群を処置を受けたタイミングごとのグループgroup_iに分け、ずっと処置を受けない (never treated) 統制群と比較することによる差の差法推定。
+```{r}
+trend_control <- 
+  tibble::tibble(
+    group_i = c(5, 6, 7, 8),
+    trend_control = 
+      df_design_multiperiod_observed %>% 
+      dplyr::filter(
+        group_i == 0
+      ) %>% 
+      dplyr::summarise(
+        trend_5 = 
+          sum(y_it * (time >= 5)) / sum(time >= 5) -
+          sum(y_it * (time < 5)) / sum(time < 5),
+        trend_6 = 
+          sum(y_it * (time >= 6)) / sum(time >= 6) -
+          sum(y_it * (time < 6)) / sum(time < 6),
+        trend_7 = 
+          sum(y_it * (time >= 7)) / sum(time >= 7) -
+          sum(y_it * (time < 7)) / sum(time < 7),
+        trend_8 = 
+          sum(y_it * (time >= 8)) / sum(time >= 8) -
+          sum(y_it * (time < 8)) / sum(time < 8)
+      ) 
+  ) 
+
+trend_treated <- 
+  df_design_multiperiod_observed %>% 
+  dplyr::filter(
+    group_i > 0
+  ) %>% 
+  dplyr::group_by(
+    group_i
+    ) %>% 
+  dplyr::summarise(
+    trend_treated =
+      sum(y_it * (time >= group_i)) / sum(time >= group_i) -
+      sum(y_it * (time < group_i)) / sum(time < group_i),
+    proportion = sum(z_it) / sum(df_design_multiperiod$z_it)
+  )
+
+df_did <- 
+  dplyr::left_join(
+    trend_control,
+    trend_treated,
+    by = "group_i"
+  )
+
+df_did <- 
+  df_did %>% 
+  dplyr::mutate(
+    did_dif = trend_treated - trend_control
+  ) %>% 
+  dplyr::select(
+    group_i,
+    did_dif,
+    proportion
+  )
+
+df_did <-  
+  df_did %>% 
+  dplyr::left_join(
+    att_sample_multiperiod_group,
+    by = "group_i"
+  )
+
+df_did %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+これらの推定の加重平均を取り、ATTの期間全体平均を算出。
+```{r}
+cbind(
+  df_did %>% 
+    dplyr::summarise(
+      did_dif_average = sum(did_dif * proportion)
+    ),
+  att_sample_multiperiod
+) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+<br>
+
+<u>**2.TWFEによる誤った推定**</u>
+
+以下のようなTWFEモデルの推定は、処置群全体でのATTをうまく推定できず、負の値を取る。
+
+\begin{align}
+Y_{it} = \mu_i + \theta_t + \tau Z_{it} + \epsilon_{it}
+\end{align}
+
+```{r}
+lsdv <- 
+  plm::plm(
+    formula = y_it ~ z_it,
+    data = df_design_multiperiod_observed,
+    index = c("id", "time"),
+    effect = "twoways"
+  )
+
+lsdv %>% 
+  clubSandwich::coef_test(
+    vcov = "CR1",
+    cluster = "id",
+    test = "naive-t"
+  ) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+<br>
+
+**（参考）`estimatr::lm_robust`による推計**
+```{r}
+estimatr::lm_robust(
+  formula = y_it ~ z_it,
+  data = df_design_multiperiod_observed,
+  fixed_effects = id + time,
+  clusters = id,
+  se_type = "CR0"
+) %>% 
+  summary() %>%
+  .$coefficients %>%
+  kbl() %>% 
+  kable_styling()
+```
+
+<br>
+
+<u>**3.Goodman-baconによる分解**</u>
+
+```{r}
+result <- 
+  bacondecomp::bacon(
+    formula = y_it ~ z_it,
+    data = df_design_multiperiod_observed,
+    id_var = "id",
+    time_var = "time"
+  )
+```
+
+```{r}
+result %>% 
+  ggplot() +
+  aes(
+    x = weight,
+    y = estimate,
+    colour = factor(type)
+  ) +
+  geom_point() +
+  scale_color_viridis_d() +
+  labs(
+    color = "type"
+  ) +
+  theme(legend.position = "bottom")
+```
+
+必ずしもATTと解釈できない`Later vs Earlier Treated`の推定が負の値を取り、この不適切な比較に加重が与えられることによって、母集団におけるATTの期間平均`r att_pop_multiperiod`と大きく乖離した推計となっている。
+
+<br>
+
+<u>**4.修正TWFE推定**</u>
+
+処置時点での層別を適切に行った、処置を受け始めるタイミングのグループと処置期間の時点について飽和した回帰（処置タイミングのコーホートダミー、時点ダミー、それらの処置時点に対応する交差項をすべて入れた回帰）を行う。
+
+※回帰の詳細、フォーミュラについては参照サイトを参照。
+
+```{r}
+df_design_multiperiod_observed$z_it_t <- 
+  df_design_multiperiod_observed$z_it * 
+  df_design_multiperiod_observed$time +
+  df_design_multiperiod_observed$z_it *
+  df_design_multiperiod_observed$group_i * 100
+
+df_design_multiperiod_observed <- 
+  fastDummies::dummy_cols(
+    df_design_multiperiod_observed,
+    select_columns = "z_it_t"
+  )
+
+df_design_multiperiod_observed <- 
+  df_design_multiperiod_observed %>% 
+  dplyr::select(-"z_it_t_0")
+
+fml <- as.formula(
+  paste("y_it ~ ",
+        paste(grep(
+          "z_it_t_",
+          names(df_design_multiperiod_observed),
+          value = TRUE
+        ),
+        collapse = "+"))
+)
+
+lsdv <- 
+  plm::plm(
+    formula = fml,
+    data = df_design_multiperiod_observed,
+    index = c("id", "time"),
+    effect = "twoways"
+  )
+
+clubSandwich::coef_test(
+  lsdv,
+  vcov = "CR1",
+  cluster = "id",
+  test = "naive-t"
+) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+得られた係数について、処置タイミングのグループごとに集計。
+```{r}
+df_compare <- 
+  tibble::tibble(
+    group_i = c(5, 6, 7, 8),
+    did_lsdv = 
+      c(
+        mean(lsdv$coefficients[grep("z_it_t_5", names(lsdv$coefficients), value = TRUE)], na.rm = TRUE),
+        mean(lsdv$coefficients[grep("z_it_t_6", names(lsdv$coefficients), value = TRUE)], na.rm = TRUE),
+        mean(lsdv$coefficients[grep("z_it_t_7", names(lsdv$coefficients), value = TRUE)], na.rm = TRUE),
+        mean(lsdv$coefficients[grep("z_it_t_8", names(lsdv$coefficients), value = TRUE)], na.rm = TRUE)
+      ),
+    did_dif = trend_treated$trend_treated - trend_control$trend_control[,1]
+  )
+
+df_compare %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+これらの値の加重平均を取ると、差の差法推定の推定値`did_dif_average`とおおむね一致する推定値を得る。（ただし、修正TWFE推定の回帰には、never-treatedのみならず、not-yet-treatedとの比較も一部含まれるため厳密には一致しない）
+
+```{r}
+df_compare$proportion <- 
+  df_did$proportion
+
+df_compare %>% 
+  dplyr::summarise(
+    did_lsdv_average = sum(did_lsdv * proportion),
+    did_dif_average = sum(did_dif[,1] * proportion)
+  ) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
