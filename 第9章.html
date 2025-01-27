@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-01-25">
+<meta name="dcterms.date" content="2025-01-27">
 
 <title>差の差法の基礎</title>
 <style>
@@ -127,6 +127,21 @@ window.Quarto = {
   <li><a href="#複数時点割り当てにおける推定" id="toc-複数時点割り当てにおける推定" class="nav-link" data-scroll-target="#複数時点割り当てにおける推定"><span class="header-section-number">1.2.2</span> 複数時点割り当てにおける推定</a></li>
   </ul></li>
   </ul></li>
+  <li><a href="#合成コントロール法標準的デザインにおける推計" id="toc-合成コントロール法標準的デザインにおける推計" class="nav-link" data-scroll-target="#合成コントロール法標準的デザインにおける推計"><span class="header-section-number">2</span> 合成コントロール法：標準的デザインにおける推計</a>
+  <ul class="collapse">
+  <li><a href="#データの生成" id="toc-データの生成" class="nav-link" data-scroll-target="#データの生成"><span class="header-section-number">2.1</span> データの生成</a>
+  <ul class="collapse">
+  <li><a href="#定数とパラメータの設定-1" id="toc-定数とパラメータの設定-1" class="nav-link" data-scroll-target="#定数とパラメータの設定-1"><span class="header-section-number">2.1.1</span> 定数とパラメータの設定</a></li>
+  <li><a href="#データの生成-1" id="toc-データの生成-1" class="nav-link" data-scroll-target="#データの生成-1"><span class="header-section-number">2.1.2</span> データの生成</a></li>
+  </ul></li>
+  <li><a href="#分析と推計-1" id="toc-分析と推計-1" class="nav-link" data-scroll-target="#分析と推計-1"><span class="header-section-number">2.2</span> 分析と推計</a>
+  <ul class="collapse">
+  <li><a href="#ファクターモデル処置効果がないケース" id="toc-ファクターモデル処置効果がないケース" class="nav-link" data-scroll-target="#ファクターモデル処置効果がないケース"><span class="header-section-number">2.2.1</span> ファクターモデル：処置効果がないケース</a></li>
+  <li><a href="#ファクターモデル処置効果があるケース" id="toc-ファクターモデル処置効果があるケース" class="nav-link" data-scroll-target="#ファクターモデル処置効果があるケース"><span class="header-section-number">2.2.2</span> ファクターモデル：処置効果があるケース</a></li>
+  <li><a href="#自己回帰モデルでの挙動処置効果がないケース" id="toc-自己回帰モデルでの挙動処置効果がないケース" class="nav-link" data-scroll-target="#自己回帰モデルでの挙動処置効果がないケース"><span class="header-section-number">2.2.3</span> 自己回帰モデルでの挙動：処置効果がないケース</a></li>
+  <li><a href="#自己回帰モデルでの挙動処置効果があるケース" id="toc-自己回帰モデルでの挙動処置効果があるケース" class="nav-link" data-scroll-target="#自己回帰モデルでの挙動処置効果があるケース"><span class="header-section-number">2.2.4</span> 自己回帰モデルでの挙動：処置効果があるケース</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -147,7 +162,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">January 25, 2025</p>
+      <p class="date">January 27, 2025</p>
     </div>
   </div>
   
@@ -707,7 +722,7 @@ window.Quarto = {
 </div>
 <p>上記の差の差推定により得られた<code>did</code>0.0469922は、母集団におけるATTの期間全体平均<code>att_pop</code>0.0481014の不偏推定量となる。</p>
 <p><br></p>
-<p><u><strong>1. TWFEによる差の差推定</strong></u></p>
+<p><u><strong>2. TWFEによる差の差推定</strong></u></p>
 <p>個体固定効果と時間固定効果を入れたTWFE推定量の算出。</p>
 <p>以下のモデルの最小二乗推定量を算出し、係数<span class="math inline">\(\tau\)</span>をATTの推定量とする。</p>
 <p><span class="math display">\[\begin{align}
@@ -1110,7 +1125,7 @@ Y_{it} = \mu_i + \theta_t + \tau Z_{it} + \epsilon_{it}
 </div>
 </div>
 <p><br></p>
-<p><u><strong>TWFEによる誤った推定</strong></u></p>
+<p><u><strong>2.TWFEによる誤った推定</strong></u></p>
 <p>以下のようなTWFEモデルの推定は、処置群全体でのATTをうまく推定できず、負の値を取る。</p>
 <p><span class="math display">\[\begin{align}
 Y_{it} = \mu_i + \theta_t + \tau Z_{it} + \epsilon_{it}
@@ -1213,7 +1228,7 @@ Y_{it} = \mu_i + \theta_t + \tau Z_{it} + \epsilon_{it}
 </div>
 </div>
 <p><br></p>
-<p><u><strong>Goodman-baconによる分解</strong></u></p>
+<p><u><strong>3.Goodman-baconによる分解</strong></u></p>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
@@ -1259,7 +1274,7 @@ Y_{it} = \mu_i + \theta_t + \tau Z_{it} + \epsilon_{it}
 </div>
 <p>必ずしもATTと解釈できない<code>Later vs Earlier Treated</code>の推定が負の値を取り、この不適切な比較に加重が与えられることによって、母集団におけるATTの期間平均0.0320154と大きく乖離した推計となっている。</p>
 <p><br></p>
-<p><u><strong>修正TWFE推定</strong></u></p>
+<p><u><strong>4.修正TWFE推定</strong></u></p>
 <p>処置時点での層別を適切に行った、処置を受け始めるタイミングのグループと処置期間の時点について飽和した回帰（処置タイミングのコーホートダミー、時点ダミー、それらの処置時点に対応する交差項をすべて入れた回帰）を行う。</p>
 <p>※回帰の詳細、フォーミュラについては参照サイトを参照。</p>
 <div class="cell" data-layout-align="center">
@@ -1574,6 +1589,1516 @@ Y_{it} = \mu_i + \theta_t + \tau Z_{it} + \epsilon_{it}
 <tr class="odd">
 <td style="text-align: right;">0.0299517</td>
 <td style="text-align: right;">0.0295028</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p><br></p>
+</section>
+</section>
+</section>
+<section id="合成コントロール法標準的デザインにおける推計" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> 合成コントロール法：標準的デザインにおける推計</h1>
+<p>参照：<a href="https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/difference_in_differences_synthetic_control.html">因果推論の計量経済学（川口、澤田）：第9章　差の差法の基礎</a></p>
+<p>処置群の数が限られる場合における手法としての合成コントロール法を、<code>tidysynth</code>パッケージを使い実装する。</p>
+<p>分析には<code>tidysynth</code>パッケージに含まれる、<code>smoking</code>データを使う。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"smoking"</span>,</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">package =</span> <span class="st">"tidysynth"</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>smoking <span class="sc">%&gt;%</span> </span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>    state                year         cigsale         lnincome     
+ Length:1209        Min.   :1970   Min.   : 40.7   Min.   : 9.397  
+ Class :character   1st Qu.:1977   1st Qu.:100.9   1st Qu.: 9.739  
+ Mode  :character   Median :1985   Median :116.3   Median : 9.861  
+                    Mean   :1985   Mean   :118.9   Mean   : 9.862  
+                    3rd Qu.:1993   3rd Qu.:130.5   3rd Qu.: 9.973  
+                    Max.   :2000   Max.   :296.2   Max.   :10.487  
+                                                   NA's   :195     
+      beer         age15to24         retprice    
+ Min.   : 2.50   Min.   :0.1294   Min.   : 27.3  
+ 1st Qu.:20.90   1st Qu.:0.1658   1st Qu.: 50.0  
+ Median :23.30   Median :0.1781   Median : 95.5  
+ Mean   :23.43   Mean   :0.1755   Mean   :108.3  
+ 3rd Qu.:25.10   3rd Qu.:0.1867   3rd Qu.:158.4  
+ Max.   :40.40   Max.   :0.2037   Max.   :351.2  
+ NA's   :663     NA's   :390                     </code></pre>
+</div>
+</div>
+<section id="データの生成" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="データの生成"><span class="header-section-number">2.1</span> データの生成</h2>
+<section id="定数とパラメータの設定-1" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="定数とパラメータの設定-1"><span class="header-section-number">2.1.1</span> 定数とパラメータの設定</h3>
+<p>仮想的な処置タイミングと処置群の設定。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>year_start <span class="ot">&lt;-</span> <span class="dv">1988</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>name_treated <span class="ot">&lt;-</span> <span class="st">"California"</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>year_init <span class="ot">&lt;-</span> <span class="fu">min</span>(smoking<span class="sc">$</span>year)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>year_end <span class="ot">&lt;-</span> <span class="fu">max</span>(smoking<span class="sc">$</span>year)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>total_years <span class="ot">&lt;-</span> year_end <span class="sc">-</span> year_init</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 切片項</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>alpha0_retprice <span class="ot">&lt;-</span> <span class="dv">35</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>alpha0_cigsale <span class="ot">&lt;-</span> <span class="dv">140</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 時間効果パラメータ</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>delta_mean <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>delta_sd <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ファクターのパラメータ</span></span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>mu_mean <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>mu_sd <span class="ot">&lt;-</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><code>cigsale</code>を減らす処置効果を決定するパラメータ</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>te_unif_lower <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>te_unif_upper <span class="ot">&lt;-</span> <span class="fl">0.1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>自己回帰モデルのパラメータ</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 誤差項分布パラメータ</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>eta_mean <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>eta_sd <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 自己回帰係数パラメータ</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.1</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>rho_zy <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>rho_zz <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>rho_yy <span class="ot">&lt;-</span> <span class="fl">0.5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>合成コントロール法で合わせる期間の設定</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用する共変量と顕在結果の時点の設定</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>window_income_age <span class="ot">&lt;-</span> <span class="dv">1980</span><span class="sc">:</span><span class="dv">1988</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>window_beer <span class="ot">&lt;-</span> <span class="dv">1984</span><span class="sc">:</span><span class="dv">1988</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>window_cigsale1 <span class="ot">&lt;-</span> <span class="dv">1975</span></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>window_cigsale2 <span class="ot">&lt;-</span> <span class="dv">1980</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>window_cigsale3 <span class="ot">&lt;-</span> <span class="dv">1988</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ウェイトの計算に用いる期間の設定</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>window_fit <span class="ot">&lt;-</span> <span class="dv">1970</span><span class="sc">:</span><span class="dv">1988</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>最適化にあたって使用する、二次計画ソルバーに渡すチューニングパラメータの設定。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>margin_ipop <span class="ot">&lt;-</span> <span class="fl">0.02</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>sigf_ipop <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>bound_ipop <span class="ot">&lt;-</span> <span class="dv">6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="データの生成-1" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="データの生成-1"><span class="header-section-number">2.1.2</span> データの生成</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><u><strong>ファクターモデル：処置効果がないケース</strong></u></p>
+<p><code>retprice</code>と<code>cigsale</code>が以下の位置変量ファクターモデルで生成でされていると想定。 共に平均0の乱数で生成し、処置効果が無い設定とする。</p>
+<p><span class="math display">\[
+Y_{it} = \alpha_0 + \delta_t + \lambda_t \mu_i + \epsilon_{it}
+\]</span></p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>smoking_fake_factor_no_effect <span class="ot">&lt;-</span> </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  smoking <span class="sc">%&gt;%</span> </span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(state) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu_i_retprice =</span> </span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> mu_mean,</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> mu_sd),</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu_i_cisale =</span> </span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> mu_mean,</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> mu_sd)</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">retprice =</span> </span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>      alpha0_retprice <span class="sc">+</span>                <span class="co"># 切片$\alpha_0$</span></span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>,                    </span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> delta_mean,</span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> delta_sd) <span class="sc">+</span>           <span class="co"># $delta_t$</span></span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">*</span> mu_i_retprice <span class="sc">+</span>   <span class="co"># $\lambda_t \mu_i</span></span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="fu">length</span>(state)),        <span class="co"># $\eplison_{it}$</span></span>
+<span id="cb51-24"><a href="#cb51-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">cigsale =</span> </span>
+<span id="cb51-25"><a href="#cb51-25" aria-hidden="true" tabindex="-1"></a>      alpha0_cigsale <span class="sc">+</span></span>
+<span id="cb51-26"><a href="#cb51-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
+<span id="cb51-27"><a href="#cb51-27" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> delta_mean,</span>
+<span id="cb51-28"><a href="#cb51-28" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> delta_sd) <span class="sc">+</span></span>
+<span id="cb51-29"><a href="#cb51-29" aria-hidden="true" tabindex="-1"></a>      <span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">*</span> mu_i_cisale <span class="sc">+</span></span>
+<span id="cb51-30"><a href="#cb51-30" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="fu">length</span>(state))</span>
+<span id="cb51-31"><a href="#cb51-31" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb51-32"><a href="#cb51-32" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb51-33"><a href="#cb51-33" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
+<span id="cb51-34"><a href="#cb51-34" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>mu_i_retprice,</span>
+<span id="cb51-35"><a href="#cb51-35" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>mu_i_cisale</span>
+<span id="cb51-36"><a href="#cb51-36" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><br></p>
+<p><u><strong>ファクターモデル：処置効果があるケース</strong></u></p>
+<p>カリフォルニアでは処置期以降に販売量が減少する状況を想定したデータを生成。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>smoking_fake_factor_some_effect <span class="ot">&lt;-</span> </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  smoking <span class="sc">%&gt;%</span> </span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(state) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu_i_retprice =</span> </span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> mu_mean,</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> mu_sd),</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">mu_i_cigsale =</span> </span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> mu_mean,</span>
+<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> mu_sd)</span>
+<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-14"><a href="#cb52-14" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb52-15"><a href="#cb52-15" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-16"><a href="#cb52-16" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb52-17"><a href="#cb52-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">retprice =</span> </span>
+<span id="cb52-18"><a href="#cb52-18" aria-hidden="true" tabindex="-1"></a>      alpha0_retprice <span class="sc">+</span>                <span class="co"># 切片$\alpha_0$</span></span>
+<span id="cb52-19"><a href="#cb52-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>,                    </span>
+<span id="cb52-20"><a href="#cb52-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> delta_mean,</span>
+<span id="cb52-21"><a href="#cb52-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> delta_sd) <span class="sc">+</span>           <span class="co"># $delta_t$</span></span>
+<span id="cb52-22"><a href="#cb52-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">*</span> mu_i_retprice <span class="sc">+</span>   <span class="co"># $\lambda_t \mu_i</span></span>
+<span id="cb52-23"><a href="#cb52-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="fu">length</span>(state)),        <span class="co"># $\eplison_{it}$</span></span>
+<span id="cb52-24"><a href="#cb52-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">cigsale =</span> </span>
+<span id="cb52-25"><a href="#cb52-25" aria-hidden="true" tabindex="-1"></a>      alpha0_cigsale <span class="sc">+</span></span>
+<span id="cb52-26"><a href="#cb52-26" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
+<span id="cb52-27"><a href="#cb52-27" aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> delta_mean,</span>
+<span id="cb52-28"><a href="#cb52-28" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> delta_sd) <span class="sc">+</span></span>
+<span id="cb52-29"><a href="#cb52-29" aria-hidden="true" tabindex="-1"></a>      <span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">1</span>) <span class="sc">*</span> mu_i_cigsale <span class="sc">+</span></span>
+<span id="cb52-30"><a href="#cb52-30" aria-hidden="true" tabindex="-1"></a>      <span class="fu">rnorm</span>(<span class="at">n =</span> <span class="fu">length</span>(state))</span>
+<span id="cb52-31"><a href="#cb52-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-32"><a href="#cb52-32" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">ungroup</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb52-33"><a href="#cb52-33" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
+<span id="cb52-34"><a href="#cb52-34" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>mu_i_retprice,</span>
+<span id="cb52-35"><a href="#cb52-35" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>mu_i_cigsale</span>
+<span id="cb52-36"><a href="#cb52-36" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb52-37"><a href="#cb52-37" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb52-38"><a href="#cb52-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">cigsale =</span> </span>
+<span id="cb52-39"><a href="#cb52-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ifelse</span>(</span>
+<span id="cb52-40"><a href="#cb52-40" aria-hidden="true" tabindex="-1"></a>        state <span class="sc">==</span> name_treated <span class="sc">&amp;</span> year <span class="sc">&gt;</span> year_start,</span>
+<span id="cb52-41"><a href="#cb52-41" aria-hidden="true" tabindex="-1"></a>        cigsale <span class="sc">*</span> (</span>
+<span id="cb52-42"><a href="#cb52-42" aria-hidden="true" tabindex="-1"></a>          <span class="dv">1</span> <span class="sc">-</span> <span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">1</span>,</span>
+<span id="cb52-43"><a href="#cb52-43" aria-hidden="true" tabindex="-1"></a>                    te_unif_lower,</span>
+<span id="cb52-44"><a href="#cb52-44" aria-hidden="true" tabindex="-1"></a>                    te_unif_upper)</span>
+<span id="cb52-45"><a href="#cb52-45" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb52-46"><a href="#cb52-46" aria-hidden="true" tabindex="-1"></a>        cigsale</span>
+<span id="cb52-47"><a href="#cb52-47" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb52-48"><a href="#cb52-48" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><br></p>
+<p><u><strong>自己回帰モデル：処置効果がないケース</strong></u></p>
+<p>時間を通じて一定の自己回帰係数<span class="math inline">\(\rho_{zz}\)</span>と<span class="math inline">\(\rho_{yy}\)</span>を持つ自己回帰モデルを想定したデータの生成。（モデルの詳細は参照サイトを参照）</p>
+<p>※なお、参照サイトでは<code>year_start</code>を<code>year_init + 10</code>と計算しているが、定義上の<code>year_start</code>と一致しない。このようになっている理由は不明だが、以下では参照サイトの計算式に従う。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>smoking_fake <span class="ot">&lt;-</span> smoking</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">unique</span>(smoking_fake<span class="sc">$</span>year)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>smoking_fake<span class="sc">$</span>retprice[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> </span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  alpha0_retprice <span class="sc">+</span> </span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rnorm</span>(</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">sum</span>(smoking_fake<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">1</span>),</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> eta_mean,</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> eta_sd</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a>smoking_fake<span class="sc">$</span>cigsale[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> </span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>  alpha0_cigsale <span class="sc">+</span> </span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>  rho <span class="sc">*</span> smoking_fake<span class="sc">$</span>retprice[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">+</span></span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rnorm</span>(</span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">sum</span>(smoking_fake<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">1</span>),</span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> eta_mean,</span>
+<span id="cb53-18"><a href="#cb53-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> eta_sd</span>
+<span id="cb53-19"><a href="#cb53-19" aria-hidden="true" tabindex="-1"></a>  )  </span>
+<span id="cb53-20"><a href="#cb53-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-21"><a href="#cb53-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (</span>
+<span id="cb53-22"><a href="#cb53-22" aria-hidden="true" tabindex="-1"></a>  t <span class="cf">in</span> years[<span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(years)]</span>
+<span id="cb53-23"><a href="#cb53-23" aria-hidden="true" tabindex="-1"></a>) {</span>
+<span id="cb53-24"><a href="#cb53-24" aria-hidden="true" tabindex="-1"></a>  smoking_fake<span class="sc">$</span>retprice[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t] <span class="ot">&lt;-</span> </span>
+<span id="cb53-25"><a href="#cb53-25" aria-hidden="true" tabindex="-1"></a>    alpha0_retprice <span class="sc">+</span> </span>
+<span id="cb53-26"><a href="#cb53-26" aria-hidden="true" tabindex="-1"></a>    rho_zy<span class="sc">*</span>(</span>
+<span id="cb53-27"><a href="#cb53-27" aria-hidden="true" tabindex="-1"></a>      (t <span class="sc">-</span> (year_init <span class="sc">+</span> <span class="dv">10</span>)) <span class="sc">/</span> total_years</span>
+<span id="cb53-28"><a href="#cb53-28" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> smoking_fake<span class="sc">$</span>cigsale[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">+</span></span>
+<span id="cb53-29"><a href="#cb53-29" aria-hidden="true" tabindex="-1"></a>    rho_zz <span class="sc">*</span> (</span>
+<span id="cb53-30"><a href="#cb53-30" aria-hidden="true" tabindex="-1"></a>      (t <span class="sc">-</span> year_init) <span class="sc">/</span> total_years</span>
+<span id="cb53-31"><a href="#cb53-31" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">*</span> smoking_fake<span class="sc">$</span>retprice[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">+</span> </span>
+<span id="cb53-32"><a href="#cb53-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rnorm</span>(</span>
+<span id="cb53-33"><a href="#cb53-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">n =</span> <span class="fu">sum</span>(smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t),</span>
+<span id="cb53-34"><a href="#cb53-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean =</span> eta_mean,</span>
+<span id="cb53-35"><a href="#cb53-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">sd =</span> eta_sd</span>
+<span id="cb53-36"><a href="#cb53-36" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb53-37"><a href="#cb53-37" aria-hidden="true" tabindex="-1"></a>  smoking_fake<span class="sc">$</span>cigsale[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t] <span class="ot">&lt;-</span> </span>
+<span id="cb53-38"><a href="#cb53-38" aria-hidden="true" tabindex="-1"></a>    alpha0_cigsale <span class="sc">+</span> </span>
+<span id="cb53-39"><a href="#cb53-39" aria-hidden="true" tabindex="-1"></a>    rho <span class="sc">*</span> smoking_fake<span class="sc">$</span>retprice[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t] <span class="sc">+</span></span>
+<span id="cb53-40"><a href="#cb53-40" aria-hidden="true" tabindex="-1"></a>    rho_yy <span class="sc">*</span> (</span>
+<span id="cb53-41"><a href="#cb53-41" aria-hidden="true" tabindex="-1"></a>      (t <span class="sc">-</span> year_init) <span class="sc">/</span> total_years</span>
+<span id="cb53-42"><a href="#cb53-42" aria-hidden="true" tabindex="-1"></a>    )<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> smoking_fake<span class="sc">$</span>cigsale[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">+</span> </span>
+<span id="cb53-43"><a href="#cb53-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rnorm</span>(</span>
+<span id="cb53-44"><a href="#cb53-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">n =</span> <span class="fu">sum</span>(smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t),</span>
+<span id="cb53-45"><a href="#cb53-45" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean =</span> eta_mean,</span>
+<span id="cb53-46"><a href="#cb53-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">sd =</span> eta_sd</span>
+<span id="cb53-47"><a href="#cb53-47" aria-hidden="true" tabindex="-1"></a>    )  </span>
+<span id="cb53-48"><a href="#cb53-48" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb53-49"><a href="#cb53-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-50"><a href="#cb53-50" aria-hidden="true" tabindex="-1"></a>smoking_fake_ar_no_effect <span class="ot">&lt;-</span> smoking_fake</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><br></p>
+<p><u><strong>自己回帰モデル：処置効果があるケース</strong></u></p>
+<p>処置群のみ、処置発生の翌年以降、毎年比例的に減少する場合のデータを生成。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>smoking_fake <span class="ot">&lt;-</span> smoking</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> <span class="fu">unique</span>(smoking_fake<span class="sc">$</span>year)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>smoking_fake<span class="sc">$</span>retprice[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> </span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  alpha0_retprice <span class="sc">+</span> </span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rnorm</span>(</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">sum</span>(smoking_fake<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">1</span>),</span>
+<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> eta_mean,</span>
+<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> eta_sd</span>
+<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>smoking_fake<span class="sc">$</span>cigsale[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">1</span>] <span class="ot">&lt;-</span> </span>
+<span id="cb54-13"><a href="#cb54-13" aria-hidden="true" tabindex="-1"></a>  alpha0_cigsale <span class="sc">+</span> </span>
+<span id="cb54-14"><a href="#cb54-14" aria-hidden="true" tabindex="-1"></a>  rho <span class="sc">*</span> smoking_fake<span class="sc">$</span>retprice[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">1</span>] <span class="sc">+</span></span>
+<span id="cb54-15"><a href="#cb54-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rnorm</span>(</span>
+<span id="cb54-16"><a href="#cb54-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">sum</span>(smoking_fake<span class="sc">$</span>year <span class="sc">==</span> <span class="dv">1</span>),</span>
+<span id="cb54-17"><a href="#cb54-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> eta_mean,</span>
+<span id="cb54-18"><a href="#cb54-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> eta_sd</span>
+<span id="cb54-19"><a href="#cb54-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb54-20"><a href="#cb54-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-21"><a href="#cb54-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (</span>
+<span id="cb54-22"><a href="#cb54-22" aria-hidden="true" tabindex="-1"></a>  t <span class="cf">in</span> years[<span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(years)]</span>
+<span id="cb54-23"><a href="#cb54-23" aria-hidden="true" tabindex="-1"></a>) {</span>
+<span id="cb54-24"><a href="#cb54-24" aria-hidden="true" tabindex="-1"></a>  smoking_fake<span class="sc">$</span>retprice[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t] <span class="ot">&lt;-</span> </span>
+<span id="cb54-25"><a href="#cb54-25" aria-hidden="true" tabindex="-1"></a>    alpha0_retprice <span class="sc">+</span> </span>
+<span id="cb54-26"><a href="#cb54-26" aria-hidden="true" tabindex="-1"></a>    rho_zy<span class="sc">*</span>((t <span class="sc">-</span> (year_init<span class="sc">+</span><span class="dv">10</span>))<span class="sc">/</span>total_years)<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span></span>
+<span id="cb54-27"><a href="#cb54-27" aria-hidden="true" tabindex="-1"></a>    smoking_fake<span class="sc">$</span>cigsale[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">+</span></span>
+<span id="cb54-28"><a href="#cb54-28" aria-hidden="true" tabindex="-1"></a>    rho_zz<span class="sc">*</span> ((t <span class="sc">-</span> year_init)<span class="sc">/</span>total_years) <span class="sc">*</span></span>
+<span id="cb54-29"><a href="#cb54-29" aria-hidden="true" tabindex="-1"></a>    smoking_fake<span class="sc">$</span>retprice[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">+</span> </span>
+<span id="cb54-30"><a href="#cb54-30" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rnorm</span>(</span>
+<span id="cb54-31"><a href="#cb54-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">n =</span> <span class="fu">sum</span>(smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t),</span>
+<span id="cb54-32"><a href="#cb54-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean =</span> eta_mean,</span>
+<span id="cb54-33"><a href="#cb54-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">sd =</span> eta_sd</span>
+<span id="cb54-34"><a href="#cb54-34" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb54-35"><a href="#cb54-35" aria-hidden="true" tabindex="-1"></a>  smoking_fake<span class="sc">$</span>cigsale[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t] <span class="ot">&lt;-</span> </span>
+<span id="cb54-36"><a href="#cb54-36" aria-hidden="true" tabindex="-1"></a>    alpha0_cigsale <span class="sc">+</span> </span>
+<span id="cb54-37"><a href="#cb54-37" aria-hidden="true" tabindex="-1"></a>    rho <span class="sc">*</span> smoking_fake<span class="sc">$</span>retprice[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t] <span class="sc">+</span></span>
+<span id="cb54-38"><a href="#cb54-38" aria-hidden="true" tabindex="-1"></a>    rho_yy <span class="sc">*</span> ((t <span class="sc">-</span> year_init)<span class="sc">/</span>total_years)<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span></span>
+<span id="cb54-39"><a href="#cb54-39" aria-hidden="true" tabindex="-1"></a>    smoking_fake<span class="sc">$</span>cigsale[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t <span class="sc">-</span> <span class="dv">1</span>] <span class="sc">+</span> </span>
+<span id="cb54-40"><a href="#cb54-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rnorm</span>(</span>
+<span id="cb54-41"><a href="#cb54-41" aria-hidden="true" tabindex="-1"></a>      <span class="at">n =</span> <span class="fu">sum</span>(smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t),</span>
+<span id="cb54-42"><a href="#cb54-42" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean =</span> eta_mean,</span>
+<span id="cb54-43"><a href="#cb54-43" aria-hidden="true" tabindex="-1"></a>      <span class="at">sd =</span> eta_sd</span>
+<span id="cb54-44"><a href="#cb54-44" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb54-45"><a href="#cb54-45" aria-hidden="true" tabindex="-1"></a>  smoking_fake<span class="sc">$</span>cigsale[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t <span class="sc">&amp;</span></span>
+<span id="cb54-46"><a href="#cb54-46" aria-hidden="true" tabindex="-1"></a>                         smoking_fake<span class="sc">$</span>state <span class="sc">==</span> <span class="st">'California'</span>] <span class="ot">&lt;-</span> </span>
+<span id="cb54-47"><a href="#cb54-47" aria-hidden="true" tabindex="-1"></a>    smoking_fake<span class="sc">$</span>cigsale[smoking_fake<span class="sc">$</span>year <span class="sc">==</span> t <span class="sc">&amp;</span></span>
+<span id="cb54-48"><a href="#cb54-48" aria-hidden="true" tabindex="-1"></a>                           smoking_fake<span class="sc">$</span>state <span class="sc">==</span> <span class="st">'California'</span>] <span class="sc">*</span> (</span>
+<span id="cb54-49"><a href="#cb54-49" aria-hidden="true" tabindex="-1"></a>      <span class="dv">1</span> <span class="sc">-</span> </span>
+<span id="cb54-50"><a href="#cb54-50" aria-hidden="true" tabindex="-1"></a>      <span class="fu">runif</span>(</span>
+<span id="cb54-51"><a href="#cb54-51" aria-hidden="true" tabindex="-1"></a>        <span class="at">n =</span> <span class="dv">1</span>,</span>
+<span id="cb54-52"><a href="#cb54-52" aria-hidden="true" tabindex="-1"></a>        te_unif_lower,</span>
+<span id="cb54-53"><a href="#cb54-53" aria-hidden="true" tabindex="-1"></a>        te_unif_upper</span>
+<span id="cb54-54"><a href="#cb54-54" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">*</span> (</span>
+<span id="cb54-55"><a href="#cb54-55" aria-hidden="true" tabindex="-1"></a>        t <span class="sc">&gt;</span> year_start</span>
+<span id="cb54-56"><a href="#cb54-56" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb54-57"><a href="#cb54-57" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb54-58"><a href="#cb54-58" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb54-59"><a href="#cb54-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-60"><a href="#cb54-60" aria-hidden="true" tabindex="-1"></a>smoking_fake_ar_some_effect <span class="ot">&lt;-</span> smoking_fake</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+</section>
+<section id="分析と推計-1" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="分析と推計-1"><span class="header-section-number">2.2</span> 分析と推計</h2>
+<section id="ファクターモデル処置効果がないケース" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="ファクターモデル処置効果がないケース"><span class="header-section-number">2.2.1</span> ファクターモデル：処置効果がないケース</h3>
+<p>関数の設定内容の詳細は参照サイトを参照。（以下、事前に定義した変数の再掲）</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 合成コントロール法で合わせる期間の設定</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ・使用する共変量と顕在結果の時点の設定</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="co"># window_income_age &lt;- 1980:1988</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="co"># window_beer &lt;- 1984:1988</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="co"># # window_cigsale1 &lt;- 1975</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="co"># # window_cigsale2 &lt;- 1980</span></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="co"># # window_cigsale3 &lt;- 1988</span></span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ・ウェイトの計算に用いる期間の設定</span></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a><span class="co"># window_fit &lt;- 1970:1988</span></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 最適化にあたって使用する、二次計画ソルバーに渡すチューニングパラメータの設定。</span></span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a><span class="co"># margin_ipop &lt;- 0.02</span></span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a><span class="co"># sigf_ipop &lt;- 7</span></span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a><span class="co"># bound_ipop &lt;- 6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect <span class="ot">&lt;-</span> </span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  smoking_fake_factor_no_effect <span class="sc">%&gt;%</span> </span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">synthetic_control</span>(</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">outcome =</span> cigsale,</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">unit =</span> state,</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">time =</span> year,</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">i_unit =</span> name_treated,</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">i_time =</span> year_start,</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">generate_placebos =</span> <span class="cn">TRUE</span></span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">generate_predictor</span>(</span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> window_income_age,</span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">lnincome =</span> <span class="fu">mean</span>(lnincome, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">youth =</span> <span class="fu">mean</span>(age15to24, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">generate_predictor</span>(</span>
+<span id="cb56-17"><a href="#cb56-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> window_beer,</span>
+<span id="cb56-18"><a href="#cb56-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">beer_sales =</span> <span class="fu">mean</span>(beer, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb56-19"><a href="#cb56-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-20"><a href="#cb56-20" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">generate_predictor</span>(</span>
+<span id="cb56-21"><a href="#cb56-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> window_cigsale1,</span>
+<span id="cb56-22"><a href="#cb56-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">cigsale1 =</span> cigsale</span>
+<span id="cb56-23"><a href="#cb56-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-24"><a href="#cb56-24" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">generate_predictor</span>(</span>
+<span id="cb56-25"><a href="#cb56-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> window_cigsale2,</span>
+<span id="cb56-26"><a href="#cb56-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">cigsale2 =</span> cigsale</span>
+<span id="cb56-27"><a href="#cb56-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-28"><a href="#cb56-28" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">generate_predictor</span>(</span>
+<span id="cb56-29"><a href="#cb56-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">time_window =</span> window_cigsale3,</span>
+<span id="cb56-30"><a href="#cb56-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">cigsale3 =</span> cigsale</span>
+<span id="cb56-31"><a href="#cb56-31" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-32"><a href="#cb56-32" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">generate_weights</span>(</span>
+<span id="cb56-33"><a href="#cb56-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">optimization_window =</span> window_fit,</span>
+<span id="cb56-34"><a href="#cb56-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">margin_ipop =</span> margin_ipop,</span>
+<span id="cb56-35"><a href="#cb56-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">sigf_ipop =</span> sigf_ipop,</span>
+<span id="cb56-36"><a href="#cb56-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">bound_ipop =</span> bound_ipop</span>
+<span id="cb56-37"><a href="#cb56-37" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-38"><a href="#cb56-38" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">generate_control</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><u><strong>推定結果の表示</strong></u></p>
+<p><code>plot_trends</code>で、合成コントロール系列と観測系列を比較するプロットを生成。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_trends</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-45-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>plot_differences</code>で、それらを差分として表示。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_differences</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-46-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>plot_weights</code>で、どの統制群とどの変数が予測に寄与しているかを表示。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_weights</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-47-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>grab_balance_table</code>で、予測に用いた変数の合成コントロールと実際の観測における類似の程度を表示。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">grab_balance_table</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">variable</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">California</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">synthetic_California</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">donor_sample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">lnincome</td>
+<td style="text-align: right;">10.0765586</td>
+<td style="text-align: right;">9.9507206</td>
+<td style="text-align: right;">9.8291968</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">youth</td>
+<td style="text-align: right;">0.1735324</td>
+<td style="text-align: right;">0.1730182</td>
+<td style="text-align: right;">0.1725101</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">beer_sales</td>
+<td style="text-align: right;">24.2800003</td>
+<td style="text-align: right;">28.5184480</td>
+<td style="text-align: right;">23.6552632</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cigsale1</td>
+<td style="text-align: right;">137.8555014</td>
+<td style="text-align: right;">138.5129916</td>
+<td style="text-align: right;">140.0848534</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cigsale2</td>
+<td style="text-align: right;">135.9694223</td>
+<td style="text-align: right;">135.8295657</td>
+<td style="text-align: right;">136.4325736</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cigsale3</td>
+<td style="text-align: right;">135.6485199</td>
+<td style="text-align: right;">136.0652810</td>
+<td style="text-align: right;">135.9853657</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p><br></p>
+<p><u><strong>プラセボ分析と推測統計</strong></u></p>
+<p>推計において<code>generate_placebos</code>をTRUEにすることで、統制群の各個体についても同様のウェイトが計算され、<code>plot_placebos</code>で全個体に対する予測と合成コントロール予測を可視化できる。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_placebos</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>prune = FALSE</code>とすることで、（予測がうまくいかず）自動で排除されていた個体も含む全ての個体を表示。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_placebos</span>(</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">prune =</span> <span class="cn">FALSE</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>plot_mspe_ratio</code>で、統制群のプラセボ予測誤差に比べて、処置群の予測誤差が 何番目に大きいかを表示。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_mspe_ratio</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><code>grab_significance</code>で、処置個体と他の全てのプラセボ個体が同じ予測誤差を持っている場合の帰無仮説において、特定の順位が生じる確率が<code>fishers_exac_pvalue</code>として得られる。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">grab_significance</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">unit_name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">type</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pre_mspe</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">post_mspe</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mspe_ratio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">rank</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">fishers_exact_pvalue</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">z_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">New Mexico</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.6187232</td>
+<td style="text-align: right;">3.520239</td>
+<td style="text-align: right;">5.689521</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0256410</td>
+<td style="text-align: right;">4.5340434</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Maine</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.5947365</td>
+<td style="text-align: right;">1.670436</td>
+<td style="text-align: right;">2.808699</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.0512821</td>
+<td style="text-align: right;">1.5525712</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Wisconsin</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.5834910</td>
+<td style="text-align: right;">1.563416</td>
+<td style="text-align: right;">2.679417</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.0769231</td>
+<td style="text-align: right;">1.4187727</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ohio</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.8438535</td>
+<td style="text-align: right;">2.164614</td>
+<td style="text-align: right;">2.565154</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.1025641</td>
+<td style="text-align: right;">1.3005173</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vermont</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.5580264</td>
+<td style="text-align: right;">1.338843</td>
+<td style="text-align: right;">2.399247</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.1282051</td>
+<td style="text-align: right;">1.1288134</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">California</td>
+<td style="text-align: left;">Treated</td>
+<td style="text-align: right;">0.6267683</td>
+<td style="text-align: right;">1.432582</td>
+<td style="text-align: right;">2.285664</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.1538462</td>
+<td style="text-align: right;">1.0112624</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mississippi</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">2.0235407</td>
+<td style="text-align: right;">3.908860</td>
+<td style="text-align: right;">1.931693</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.1794872</td>
+<td style="text-align: right;">0.6449247</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Texas</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1.5215707</td>
+<td style="text-align: right;">2.776115</td>
+<td style="text-align: right;">1.824506</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.2051282</td>
+<td style="text-align: right;">0.5339924</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nebraska</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1.1685162</td>
+<td style="text-align: right;">1.842674</td>
+<td style="text-align: right;">1.576935</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.2307692</td>
+<td style="text-align: right;">0.2777719</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Arkansas</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1.4714305</td>
+<td style="text-align: right;">2.305012</td>
+<td style="text-align: right;">1.566511</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.2564103</td>
+<td style="text-align: right;">0.2669838</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p>6番目に大きい<code>California</code>のp_valueは<code>0.1538</code>で、処置効果があるとは言えない結果となっている。</p>
+<p>以上の手続きを関数化したもの↓</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect_check <span class="ot">&lt;-</span> </span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  CausalInferenceTextbook<span class="sc">::</span><span class="fu">call_synthetic_control</span>(</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> smoking_fake_factor_no_effect,</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">name_treated =</span> name_treated,</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_start =</span> year_start,</span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_income_age =</span> window_income_age,</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_beer =</span> window_beer,</span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale1 =</span> window_cigsale1,</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale2 =</span> window_cigsale2,</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale3 =</span> window_cigsale3,</span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">margin_ipop =</span> margin_ipop,</span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">sigf_ipop =</span> sigf_ipop,</span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">bound_ipop =</span> bound_ipop</span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>推定結果の一致を確認。</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect_check <span class="sc">%&gt;%</span> </span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">grab_balance_table</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">variable</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">California</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">synthetic_California</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">donor_sample</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">ln_income</td>
+<td style="text-align: right;">10.0765586</td>
+<td style="text-align: right;">9.9507206</td>
+<td style="text-align: right;">9.8291968</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">youth</td>
+<td style="text-align: right;">0.1735324</td>
+<td style="text-align: right;">0.1730182</td>
+<td style="text-align: right;">0.1725101</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">beer_sales</td>
+<td style="text-align: right;">24.2800003</td>
+<td style="text-align: right;">28.5184480</td>
+<td style="text-align: right;">23.6552632</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cigsale_1</td>
+<td style="text-align: right;">137.8555014</td>
+<td style="text-align: right;">138.5129916</td>
+<td style="text-align: right;">140.0848534</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cigsale_2</td>
+<td style="text-align: right;">135.9694223</td>
+<td style="text-align: right;">135.8295657</td>
+<td style="text-align: right;">136.4325736</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cigsale_3</td>
+<td style="text-align: right;">135.6485199</td>
+<td style="text-align: right;">136.0652810</td>
+<td style="text-align: right;">135.9853657</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>smoking_out_factor_noeffect_check <span class="sc">%&gt;%</span> </span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">grab_significance</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">unit_name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">type</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pre_mspe</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">post_mspe</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mspe_ratio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">rank</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">fishers_exact_pvalue</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">z_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">New Mexico</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.6187232</td>
+<td style="text-align: right;">3.520239</td>
+<td style="text-align: right;">5.689521</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0256410</td>
+<td style="text-align: right;">4.5340434</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Maine</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.5947365</td>
+<td style="text-align: right;">1.670436</td>
+<td style="text-align: right;">2.808699</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.0512821</td>
+<td style="text-align: right;">1.5525712</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Wisconsin</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.5834910</td>
+<td style="text-align: right;">1.563416</td>
+<td style="text-align: right;">2.679417</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.0769231</td>
+<td style="text-align: right;">1.4187727</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Ohio</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.8438535</td>
+<td style="text-align: right;">2.164614</td>
+<td style="text-align: right;">2.565154</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.1025641</td>
+<td style="text-align: right;">1.3005173</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Vermont</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.5580264</td>
+<td style="text-align: right;">1.338843</td>
+<td style="text-align: right;">2.399247</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.1282051</td>
+<td style="text-align: right;">1.1288134</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">California</td>
+<td style="text-align: left;">Treated</td>
+<td style="text-align: right;">0.6267683</td>
+<td style="text-align: right;">1.432582</td>
+<td style="text-align: right;">2.285664</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.1538462</td>
+<td style="text-align: right;">1.0112624</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mississippi</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">2.0235407</td>
+<td style="text-align: right;">3.908860</td>
+<td style="text-align: right;">1.931693</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.1794872</td>
+<td style="text-align: right;">0.6449247</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Texas</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1.5215707</td>
+<td style="text-align: right;">2.776115</td>
+<td style="text-align: right;">1.824506</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.2051282</td>
+<td style="text-align: right;">0.5339924</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nebraska</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1.1685162</td>
+<td style="text-align: right;">1.842674</td>
+<td style="text-align: right;">1.576935</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.2307692</td>
+<td style="text-align: right;">0.2777719</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Arkansas</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1.4714305</td>
+<td style="text-align: right;">2.305012</td>
+<td style="text-align: right;">1.566511</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.2564103</td>
+<td style="text-align: right;">0.2669838</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p><br></p>
+</section>
+<section id="ファクターモデル処置効果があるケース" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="ファクターモデル処置効果があるケース"><span class="header-section-number">2.2.2</span> ファクターモデル：処置効果があるケース</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>smoking_out_some_effect <span class="ot">&lt;-</span> </span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  CausalInferenceTextbook<span class="sc">::</span><span class="fu">call_synthetic_control</span>(</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> smoking_fake_factor_some_effect,</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">name_treated =</span> name_treated,</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_start =</span> year_start,</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_income_age =</span> window_income_age,</span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_beer =</span> window_beer,</span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale1 =</span> window_cigsale1,</span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale2 =</span> window_cigsale2,</span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale3 =</span> window_cigsale3,</span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">margin_ipop =</span> margin_ipop,</span>
+<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">sigf_ipop =</span> sigf_ipop,</span>
+<span id="cb68-13"><a href="#cb68-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">bound_ipop =</span> bound_ipop</span>
+<span id="cb68-14"><a href="#cb68-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>smoking_out_some_effect <span class="sc">%&gt;%</span> </span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_trends</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>smoking_out_some_effect <span class="sc">%&gt;%</span> </span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_placebos</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>smoking_out_some_effect <span class="sc">%&gt;%</span> </span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_mspe_ratio</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>smoking_out_some_effect <span class="sc">%&gt;%</span> </span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">grab_significance</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">unit_name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">type</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pre_mspe</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">post_mspe</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mspe_ratio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">rank</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">fishers_exact_pvalue</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">z_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">California</td>
+<td style="text-align: left;">Treated</td>
+<td style="text-align: right;">1.4334040</td>
+<td style="text-align: right;">143.054243</td>
+<td style="text-align: right;">99.800368</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0256410</td>
+<td style="text-align: right;">5.7555262</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Connecticut</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">2.7982138</td>
+<td style="text-align: right;">96.288747</td>
+<td style="text-align: right;">34.410789</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.0512821</td>
+<td style="text-align: right;">1.8026246</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Wyoming</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.6725591</td>
+<td style="text-align: right;">3.186678</td>
+<td style="text-align: right;">4.738139</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.0769231</td>
+<td style="text-align: right;">0.0088667</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Texas</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.6423494</td>
+<td style="text-align: right;">1.746848</td>
+<td style="text-align: right;">2.719467</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.1025641</td>
+<td style="text-align: right;">-0.1131651</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Delaware</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1.9539715</td>
+<td style="text-align: right;">3.948555</td>
+<td style="text-align: right;">2.020785</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.1282051</td>
+<td style="text-align: right;">-0.1554015</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missouri</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1.5299024</td>
+<td style="text-align: right;">2.926263</td>
+<td style="text-align: right;">1.912712</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.1538462</td>
+<td style="text-align: right;">-0.1619347</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1.4943709</td>
+<td style="text-align: right;">2.836098</td>
+<td style="text-align: right;">1.897854</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.1794872</td>
+<td style="text-align: right;">-0.1628329</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">South Carolina</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">2.0733659</td>
+<td style="text-align: right;">3.726453</td>
+<td style="text-align: right;">1.797296</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.2051282</td>
+<td style="text-align: right;">-0.1689118</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Oklahoma</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">0.8766306</td>
+<td style="text-align: right;">1.555503</td>
+<td style="text-align: right;">1.774411</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.2307692</td>
+<td style="text-align: right;">-0.1702952</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">South Dakota</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">1.5629471</td>
+<td style="text-align: right;">2.540791</td>
+<td style="text-align: right;">1.625641</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.2564103</td>
+<td style="text-align: right;">-0.1792886</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p><br></p>
+</section>
+<section id="自己回帰モデルでの挙動処置効果がないケース" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="自己回帰モデルでの挙動処置効果がないケース"><span class="header-section-number">2.2.3</span> 自己回帰モデルでの挙動：処置効果がないケース</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>smoking_out_ar_noeffect <span class="ot">&lt;-</span> </span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>    CausalInferenceTextbook<span class="sc">::</span><span class="fu">call_synthetic_control</span>(</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> smoking_fake_ar_no_effect,</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">name_treated =</span> name_treated,</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_start =</span> year_start,</span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_income_age =</span> window_income_age,</span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_beer =</span> window_beer,</span>
+<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale1 =</span> window_cigsale1,</span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale2 =</span> window_cigsale2,</span>
+<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale3 =</span> window_cigsale3,</span>
+<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">margin_ipop =</span> margin_ipop,</span>
+<span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">sigf_ipop =</span> sigf_ipop,</span>
+<span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">bound_ipop =</span> bound_ipop</span>
+<span id="cb73-14"><a href="#cb73-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>smoking_out_ar_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_trends</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>smoking_out_ar_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_placebos</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>smoking_out_ar_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_mspe_ratio</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-64-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>smoking_out_ar_noeffect <span class="sc">%&gt;%</span> </span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">grab_significance</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">unit_name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">type</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pre_mspe</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">post_mspe</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mspe_ratio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">rank</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">fishers_exact_pvalue</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">z_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Kansas</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">3.780183</td>
+<td style="text-align: right;">15.656657</td>
+<td style="text-align: right;">4.1417726</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0256410</td>
+<td style="text-align: right;">4.1753404</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">West Virginia</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">9.596066</td>
+<td style="text-align: right;">25.520837</td>
+<td style="text-align: right;">2.6595104</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.0512821</td>
+<td style="text-align: right;">2.3714579</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Illinois</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">8.323906</td>
+<td style="text-align: right;">19.351049</td>
+<td style="text-align: right;">2.3247559</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.0769231</td>
+<td style="text-align: right;">1.9640685</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tennessee</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">16.603856</td>
+<td style="text-align: right;">26.226590</td>
+<td style="text-align: right;">1.5795481</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.1025641</td>
+<td style="text-align: right;">1.0571661</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Virginia</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">11.399555</td>
+<td style="text-align: right;">14.305395</td>
+<td style="text-align: right;">1.2549082</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.1282051</td>
+<td style="text-align: right;">0.6620860</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">California</td>
+<td style="text-align: left;">Treated</td>
+<td style="text-align: right;">6.602983</td>
+<td style="text-align: right;">8.284861</td>
+<td style="text-align: right;">1.2547149</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.1538462</td>
+<td style="text-align: right;">0.6618507</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Georgia</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">9.795919</td>
+<td style="text-align: right;">11.062974</td>
+<td style="text-align: right;">1.1293453</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.1794872</td>
+<td style="text-align: right;">0.5092785</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Louisiana</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">8.517692</td>
+<td style="text-align: right;">9.190666</td>
+<td style="text-align: right;">1.0790089</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.2051282</td>
+<td style="text-align: right;">0.4480201</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Arkansas</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">16.971218</td>
+<td style="text-align: right;">15.502556</td>
+<td style="text-align: right;">0.9134616</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.2307692</td>
+<td style="text-align: right;">0.2465524</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missouri</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">10.405400</td>
+<td style="text-align: right;">9.258251</td>
+<td style="text-align: right;">0.8897544</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.2564103</td>
+<td style="text-align: right;">0.2177013</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<p><br></p>
+</section>
+<section id="自己回帰モデルでの挙動処置効果があるケース" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="自己回帰モデルでの挙動処置効果があるケース"><span class="header-section-number">2.2.4</span> 自己回帰モデルでの挙動：処置効果があるケース</h3>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>smoking_out_ar_some_effect <span class="ot">&lt;-</span> </span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>    CausalInferenceTextbook<span class="sc">::</span><span class="fu">call_synthetic_control</span>(</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> smoking_fake_ar_some_effect,</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">name_treated =</span> name_treated,</span>
+<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">year_start =</span> year_start,</span>
+<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_income_age =</span> window_income_age,</span>
+<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_beer =</span> window_beer,</span>
+<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale1 =</span> window_cigsale1,</span>
+<span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale2 =</span> window_cigsale2,</span>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_cigsale3 =</span> window_cigsale3,</span>
+<span id="cb78-11"><a href="#cb78-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">margin_ipop =</span> margin_ipop,</span>
+<span id="cb78-12"><a href="#cb78-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">sigf_ipop =</span> sigf_ipop,</span>
+<span id="cb78-13"><a href="#cb78-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">bound_ipop =</span> bound_ipop</span>
+<span id="cb78-14"><a href="#cb78-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>smoking_out_ar_some_effect <span class="sc">%&gt;%</span> </span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_trends</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-67-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>smoking_out_ar_some_effect <span class="sc">%&gt;%</span> </span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_placebos</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-68-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>smoking_out_ar_some_effect <span class="sc">%&gt;%</span> </span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">plot_mspe_ratio</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="第9章_files/figure-html/unnamed-chunk-69-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>smoking_out_ar_some_effect <span class="sc">%&gt;%</span> </span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>  tidysynth<span class="sc">::</span><span class="fu">grab_significance</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">unit_name</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">type</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pre_mspe</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">post_mspe</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mspe_ratio</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">rank</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">fishers_exact_pvalue</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">z_score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">California</td>
+<td style="text-align: left;">Treated</td>
+<td style="text-align: right;">6.723326</td>
+<td style="text-align: right;">242.99504</td>
+<td style="text-align: right;">36.142089</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.0256410</td>
+<td style="text-align: right;">5.6681645</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kansas</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">9.104785</td>
+<td style="text-align: right;">102.50484</td>
+<td style="text-align: right;">11.258348</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.0512821</td>
+<td style="text-align: right;">1.4996386</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Connecticut</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">10.101798</td>
+<td style="text-align: right;">82.02365</td>
+<td style="text-align: right;">8.119708</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.0769231</td>
+<td style="text-align: right;">0.9738533</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vermont</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">15.470557</td>
+<td style="text-align: right;">62.86965</td>
+<td style="text-align: right;">4.063826</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.1025641</td>
+<td style="text-align: right;">0.2944117</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Colorado</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">10.376025</td>
+<td style="text-align: right;">31.57988</td>
+<td style="text-align: right;">3.043543</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.1282051</td>
+<td style="text-align: right;">0.1234939</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Texas</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">5.655715</td>
+<td style="text-align: right;">14.81507</td>
+<td style="text-align: right;">2.619486</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.1538462</td>
+<td style="text-align: right;">0.0524558</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Louisiana</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">10.620340</td>
+<td style="text-align: right;">22.36307</td>
+<td style="text-align: right;">2.105683</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.1794872</td>
+<td style="text-align: right;">-0.0336164</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rhode Island</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">15.695695</td>
+<td style="text-align: right;">32.05287</td>
+<td style="text-align: right;">2.042144</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">0.2051282</td>
+<td style="text-align: right;">-0.0442606</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Iowa</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">11.573409</td>
+<td style="text-align: right;">21.04892</td>
+<td style="text-align: right;">1.818731</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.2307692</td>
+<td style="text-align: right;">-0.0816866</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">West Virginia</td>
+<td style="text-align: left;">Donor</td>
+<td style="text-align: right;">11.716885</td>
+<td style="text-align: right;">20.41109</td>
+<td style="text-align: right;">1.742023</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.2564103</td>
+<td style="text-align: right;">-0.0945368</td>
 </tr>
 </tbody>
 </table>

@@ -16,6 +16,7 @@ date: "最終更新: `r Sys.Date()`"
 ```{r setup, include=FALSE}
 rm(list = ls())
 knitr::opts_chunk$set(cache = FALSE, echo = TRUE, fig.align = "center", warning = FALSE)
+library(tidysynth)
 library(magrittr)
 library(ggplot2)
 library(kableExtra)
@@ -676,22 +677,618 @@ df_compare %>%
   kable_styling()
 ```
 
+<br>
 
+# 合成コントロール法：標準的デザインにおける推計
 
+参照：[因果推論の計量経済学（川口、澤田）：第9章　差の差法の基礎](https://github.com/keisemi/EconometriciansGuide_CausalInference/blob/main/main/difference_in_differences_synthetic_control.html)
 
+処置群の数が限られる場合における手法としての合成コントロール法を、`tidysynth`パッケージを使い実装する。
 
+分析には`tidysynth`パッケージに含まれる、`smoking`データを使う。
+```{r}
+data(
+  "smoking",
+  package = "tidysynth"
+)
 
+smoking %>% 
+  summary()
+```
 
+## データの生成
 
+### 定数とパラメータの設定
 
+仮想的な処置タイミングと処置群の設定。
+```{r}
+year_start <- 1988
+name_treated <- "California"
+year_init <- min(smoking$year)
+year_end <- max(smoking$year)
+total_years <- year_end - year_init
+```
 
+```{r}
+# 切片項
+alpha0_retprice <- 35
+alpha0_cigsale <- 140
 
+# 時間効果パラメータ
+delta_mean <- 0
+delta_sd <- 2
 
+# ファクターのパラメータ
+mu_mean <- 0
+mu_sd <- 2
+```
 
+`cigsale`を減らす処置効果を決定するパラメータ
+```{r}
+te_unif_lower <- 0.05
+te_unif_upper <- 0.1
+```
 
+自己回帰モデルのパラメータ
+```{r}
+# 誤差項分布パラメータ
+eta_mean <- 0
+eta_sd <- 3
 
+# 自己回帰係数パラメータ
+rho <- -0.1
+rho_zy <- 0.01
+rho_zz <- 0.5
+rho_yy <- 0.5
+```
 
+合成コントロール法で合わせる期間の設定
+```{r}
+# 使用する共変量と顕在結果の時点の設定
+window_income_age <- 1980:1988
+window_beer <- 1984:1988
+window_cigsale1 <- 1975
+window_cigsale2 <- 1980
+window_cigsale3 <- 1988
 
+# ウェイトの計算に用いる期間の設定
+window_fit <- 1970:1988
+```
+
+最適化にあたって使用する、二次計画ソルバーに渡すチューニングパラメータの設定。
+```{r}
+margin_ipop <- 0.02
+sigf_ipop <- 7
+bound_ipop <- 6
+```
+
+### データの生成
+```{r}
+set.seed(1)
+```
+
+<u>**ファクターモデル：処置効果がないケース**</u>
+
+`retprice`と`cigsale`が以下の位置変量ファクターモデルで生成でされていると想定。
+共に平均0の乱数で生成し、処置効果が無い設定とする。
+
+$$
+Y_{it} = \alpha_0 + \delta_t + \lambda_t \mu_i + \epsilon_{it}
+$$
+
+```{r}
+smoking_fake_factor_no_effect <- 
+  smoking %>% 
+  dplyr::group_by(state) %>% 
+  dplyr::mutate(
+    mu_i_retprice = 
+      rnorm(n = 1,
+            mean = mu_mean,
+            sd = mu_sd),
+    mu_i_cisale = 
+      rnorm(n = 1,
+            mean = mu_mean,
+            sd = mu_sd)
+  ) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::group_by(year) %>% 
+  dplyr::mutate(
+    retprice = 
+      alpha0_retprice +                # 切片$\alpha_0$
+      rnorm(n = 1,                    
+            mean = delta_mean,
+            sd = delta_sd) +           # $delta_t$
+      runif(n = 1) * mu_i_retprice +   # $\lambda_t \mu_i
+      rnorm(n = length(state)),        # $\eplison_{it}$
+    cigsale = 
+      alpha0_cigsale +
+      rnorm(n = 1,
+            mean = delta_mean,
+            sd = delta_sd) +
+      runif(n = 1) * mu_i_cisale +
+      rnorm(n = length(state))
+    ) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::select(
+    -mu_i_retprice,
+    -mu_i_cisale
+  )
+```
+
+<br>
+
+<u>**ファクターモデル：処置効果があるケース**</u>
+
+カリフォルニアでは処置期以降に販売量が減少する状況を想定したデータを生成。
+```{r}
+smoking_fake_factor_some_effect <- 
+  smoking %>% 
+  dplyr::group_by(state) %>% 
+  dplyr::mutate(
+    mu_i_retprice = 
+      rnorm(n = 1,
+            mean = mu_mean,
+            sd = mu_sd),
+    mu_i_cigsale = 
+      rnorm(n = 1,
+            mean = mu_mean,
+            sd = mu_sd)
+  ) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::group_by(year) %>% 
+  dplyr::mutate(
+    retprice = 
+      alpha0_retprice +                # 切片$\alpha_0$
+      rnorm(n = 1,                    
+            mean = delta_mean,
+            sd = delta_sd) +           # $delta_t$
+      runif(n = 1) * mu_i_retprice +   # $\lambda_t \mu_i
+      rnorm(n = length(state)),        # $\eplison_{it}$
+    cigsale = 
+      alpha0_cigsale +
+      rnorm(n = 1,
+            mean = delta_mean,
+            sd = delta_sd) +
+      runif(n = 1) * mu_i_cigsale +
+      rnorm(n = length(state))
+  ) %>% 
+  dplyr::ungroup() %>% 
+  dplyr::select(
+    -mu_i_retprice,
+    -mu_i_cigsale
+  ) %>% 
+  dplyr::mutate(
+    cigsale = 
+      ifelse(
+        state == name_treated & year > year_start,
+        cigsale * (
+          1 - runif(n = 1,
+                    te_unif_lower,
+                    te_unif_upper)
+        ),
+        cigsale
+      )
+  )
+```
+
+<br>
+
+<u>**自己回帰モデル：処置効果がないケース**</u>
+
+時間を通じて一定の自己回帰係数$\rho_{zz}$と$\rho_{yy}$を持つ自己回帰モデルを想定したデータの生成。（モデルの詳細は参照サイトを参照）
+
+※なお、参照サイトでは`year_start`を`year_init + 10`と計算しているが、定義上の`year_start`と一致しない。このようになっている理由は不明だが、以下では参照サイトの計算式に従う。
+```{r}
+smoking_fake <- smoking
+years <- unique(smoking_fake$year)
+
+smoking_fake$retprice[smoking_fake$year == 1] <- 
+  alpha0_retprice + 
+  rnorm(
+    n = sum(smoking_fake$year == 1),
+    mean = eta_mean,
+    sd = eta_sd
+  )
+
+smoking_fake$cigsale[smoking_fake$year == 1] <- 
+  alpha0_cigsale + 
+  rho * smoking_fake$retprice[smoking_fake$year == 1] +
+  rnorm(
+    n = sum(smoking_fake$year == 1),
+    mean = eta_mean,
+    sd = eta_sd
+  )  
+
+for (
+  t in years[2:length(years)]
+) {
+  smoking_fake$retprice[smoking_fake$year == t] <- 
+    alpha0_retprice + 
+    rho_zy*(
+      (t - (year_init + 10)) / total_years
+    )^2 * smoking_fake$cigsale[smoking_fake$year == t - 1] +
+    rho_zz * (
+      (t - year_init) / total_years
+    ) * smoking_fake$retprice[smoking_fake$year == t - 1] + 
+    rnorm(
+      n = sum(smoking_fake$year == t),
+      mean = eta_mean,
+      sd = eta_sd
+    )
+  smoking_fake$cigsale[smoking_fake$year == t] <- 
+    alpha0_cigsale + 
+    rho * smoking_fake$retprice[smoking_fake$year == t] +
+    rho_yy * (
+      (t - year_init) / total_years
+    )^2 * smoking_fake$cigsale[smoking_fake$year == t - 1] + 
+    rnorm(
+      n = sum(smoking_fake$year == t),
+      mean = eta_mean,
+      sd = eta_sd
+    )  
+}
+
+smoking_fake_ar_no_effect <- smoking_fake
+```
+
+<br>
+
+<u>**自己回帰モデル：処置効果があるケース**</u>
+
+処置群のみ、処置発生の翌年以降、毎年比例的に減少する場合のデータを生成。
+```{r}
+smoking_fake <- smoking
+years <- unique(smoking_fake$year)
+
+smoking_fake$retprice[smoking_fake$year == 1] <- 
+  alpha0_retprice + 
+  rnorm(
+    n = sum(smoking_fake$year == 1),
+    mean = eta_mean,
+    sd = eta_sd
+  )
+
+smoking_fake$cigsale[smoking_fake$year == 1] <- 
+  alpha0_cigsale + 
+  rho * smoking_fake$retprice[smoking_fake$year == 1] +
+  rnorm(
+    n = sum(smoking_fake$year == 1),
+    mean = eta_mean,
+    sd = eta_sd
+  )
+
+for (
+  t in years[2:length(years)]
+) {
+  smoking_fake$retprice[smoking_fake$year == t] <- 
+    alpha0_retprice + 
+    rho_zy*((t - (year_init+10))/total_years)^2 *
+    smoking_fake$cigsale[smoking_fake$year == t - 1] +
+    rho_zz* ((t - year_init)/total_years) *
+    smoking_fake$retprice[smoking_fake$year == t - 1] + 
+    rnorm(
+      n = sum(smoking_fake$year == t),
+      mean = eta_mean,
+      sd = eta_sd
+    )
+  smoking_fake$cigsale[smoking_fake$year == t] <- 
+    alpha0_cigsale + 
+    rho * smoking_fake$retprice[smoking_fake$year == t] +
+    rho_yy * ((t - year_init)/total_years)^2 *
+    smoking_fake$cigsale[smoking_fake$year == t - 1] + 
+    rnorm(
+      n = sum(smoking_fake$year == t),
+      mean = eta_mean,
+      sd = eta_sd
+    )
+  smoking_fake$cigsale[smoking_fake$year == t &
+                         smoking_fake$state == 'California'] <- 
+    smoking_fake$cigsale[smoking_fake$year == t &
+                           smoking_fake$state == 'California'] * (
+      1 - 
+      runif(
+        n = 1,
+        te_unif_lower,
+        te_unif_upper
+      ) * (
+        t > year_start
+      )
+    )
+}
+
+smoking_fake_ar_some_effect <- smoking_fake
+```
+
+## 分析と推計
+
+### ファクターモデル：処置効果がないケース
+
+関数の設定内容の詳細は参照サイトを参照。（以下、事前に定義した変数の再掲）
+```{r}
+# 合成コントロール法で合わせる期間の設定
+# ・使用する共変量と顕在結果の時点の設定
+# window_income_age <- 1980:1988
+# window_beer <- 1984:1988
+# # window_cigsale1 <- 1975
+# # window_cigsale2 <- 1980
+# # window_cigsale3 <- 1988
+# ・ウェイトの計算に用いる期間の設定
+# window_fit <- 1970:1988
+
+# 最適化にあたって使用する、二次計画ソルバーに渡すチューニングパラメータの設定。
+# margin_ipop <- 0.02
+# sigf_ipop <- 7
+# bound_ipop <- 6
+```
+
+```{r cache=TRUE}
+smoking_out_factor_noeffect <- 
+  smoking_fake_factor_no_effect %>% 
+  tidysynth::synthetic_control(
+    outcome = cigsale,
+    unit = state,
+    time = year,
+    i_unit = name_treated,
+    i_time = year_start,
+    generate_placebos = TRUE
+  ) %>% 
+  tidysynth::generate_predictor(
+    time_window = window_income_age,
+    lnincome = mean(lnincome, na.rm = TRUE),
+    youth = mean(age15to24, na.rm = TRUE)
+  ) %>% 
+  tidysynth::generate_predictor(
+    time_window = window_beer,
+    beer_sales = mean(beer, na.rm = TRUE)
+  ) %>% 
+  tidysynth::generate_predictor(
+    time_window = window_cigsale1,
+    cigsale1 = cigsale
+  ) %>% 
+  tidysynth::generate_predictor(
+    time_window = window_cigsale2,
+    cigsale2 = cigsale
+  ) %>% 
+  tidysynth::generate_predictor(
+    time_window = window_cigsale3,
+    cigsale3 = cigsale
+  ) %>% 
+  tidysynth::generate_weights(
+    optimization_window = window_fit,
+    margin_ipop = margin_ipop,
+    sigf_ipop = sigf_ipop,
+    bound_ipop = bound_ipop
+  ) %>% 
+  tidysynth::generate_control()
+```
+
+<U>**推定結果の表示**</u>
+
+`plot_trends`で、合成コントロール系列と観測系列を比較するプロットを生成。
+```{r}
+smoking_out_factor_noeffect %>% 
+  tidysynth::plot_trends()
+```
+
+`plot_differences`で、それらを差分として表示。
+```{r}
+smoking_out_factor_noeffect %>% 
+  tidysynth::plot_differences()
+```
+
+`plot_weights`で、どの統制群とどの変数が予測に寄与しているかを表示。
+```{r}
+smoking_out_factor_noeffect %>% 
+  tidysynth::plot_weights()
+```
+
+`grab_balance_table`で、予測に用いた変数の合成コントロールと実際の観測における類似の程度を表示。
+```{r}
+smoking_out_factor_noeffect %>% 
+  tidysynth::grab_balance_table() %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+<br>
+
+<u>**プラセボ分析と推測統計**</u>
+
+推計において`generate_placebos`をTRUEにすることで、統制群の各個体についても同様のウェイトが計算され、`plot_placebos`で全個体に対する予測と合成コントロール予測を可視化できる。
+```{r}
+smoking_out_factor_noeffect %>% 
+  tidysynth::plot_placebos()
+```
+
+`prune = FALSE`とすることで、（予測がうまくいかず）自動で排除されていた個体も含む全ての個体を表示。
+```{r}
+smoking_out_factor_noeffect %>% 
+  tidysynth::plot_placebos(
+    prune = FALSE
+  )
+```
+
+`plot_mspe_ratio`で、統制群のプラセボ予測誤差に比べて、処置群の予測誤差が 何番目に大きいかを表示。
+```{r}
+smoking_out_factor_noeffect %>% 
+  tidysynth::plot_mspe_ratio()
+```
+
+`grab_significance`で、処置個体と他の全てのプラセボ個体が同じ予測誤差を持っている場合の帰無仮説において、特定の順位が生じる確率が`fishers_exac_pvalue`として得られる。
+```{r}
+smoking_out_factor_noeffect %>% 
+  tidysynth::grab_significance() %>% 
+  head(10) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+6番目に大きい`California`のp_valueは`0.1538`で、処置効果があるとは言えない結果となっている。
+
+以上の手続きを関数化したもの↓
+```{r cache=TRUE}
+smoking_out_factor_noeffect_check <- 
+  CausalInferenceTextbook::call_synthetic_control(
+    data = smoking_fake_factor_no_effect,
+    name_treated = name_treated,
+    year_start = year_start,
+    window_income_age = window_income_age,
+    window_beer = window_beer,
+    window_cigsale1 = window_cigsale1,
+    window_cigsale2 = window_cigsale2,
+    window_cigsale3 = window_cigsale3,
+    margin_ipop = margin_ipop,
+    sigf_ipop = sigf_ipop,
+    bound_ipop = bound_ipop
+  )
+```
+
+推定結果の一致を確認。
+```{r}
+smoking_out_factor_noeffect_check %>% 
+  tidysynth::grab_balance_table() %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+```{r}
+smoking_out_factor_noeffect_check %>% 
+  tidysynth::grab_significance() %>% 
+  head(10) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+<br>
+
+### ファクターモデル：処置効果があるケース
+
+```{r cache=TRUE}
+smoking_out_some_effect <- 
+  CausalInferenceTextbook::call_synthetic_control(
+    data = smoking_fake_factor_some_effect,
+    name_treated = name_treated,
+    year_start = year_start,
+    window_income_age = window_income_age,
+    window_beer = window_beer,
+    window_cigsale1 = window_cigsale1,
+    window_cigsale2 = window_cigsale2,
+    window_cigsale3 = window_cigsale3,
+    margin_ipop = margin_ipop,
+    sigf_ipop = sigf_ipop,
+    bound_ipop = bound_ipop
+  )
+```
+
+```{r}
+smoking_out_some_effect %>% 
+  tidysynth::plot_trends()
+```
+
+```{r}
+smoking_out_some_effect %>% 
+  tidysynth::plot_placebos()
+```
+
+```{r}
+smoking_out_some_effect %>% 
+  tidysynth::plot_mspe_ratio()
+```
+
+```{r}
+smoking_out_some_effect %>% 
+  tidysynth::grab_significance() %>% 
+  head(10) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+<br>
+
+### 自己回帰モデルでの挙動：処置効果がないケース
+
+```{r cache=TRUE}
+smoking_out_ar_noeffect <- 
+    CausalInferenceTextbook::call_synthetic_control(
+    data = smoking_fake_ar_no_effect,
+    name_treated = name_treated,
+    year_start = year_start,
+    window_income_age = window_income_age,
+    window_beer = window_beer,
+    window_cigsale1 = window_cigsale1,
+    window_cigsale2 = window_cigsale2,
+    window_cigsale3 = window_cigsale3,
+    margin_ipop = margin_ipop,
+    sigf_ipop = sigf_ipop,
+    bound_ipop = bound_ipop
+  )
+```
+
+```{r}
+smoking_out_ar_noeffect %>% 
+  tidysynth::plot_trends()
+```
+
+```{r}
+smoking_out_ar_noeffect %>% 
+  tidysynth::plot_placebos()
+```
+
+```{r}
+smoking_out_ar_noeffect %>% 
+  tidysynth::plot_mspe_ratio()
+```
+
+```{r}
+smoking_out_ar_noeffect %>% 
+  tidysynth::grab_significance() %>% 
+  head(10) %>% 
+  kbl() %>% 
+  kable_styling()
+```
+
+<br>
+
+### 自己回帰モデルでの挙動：処置効果があるケース
+
+```{r}
+smoking_out_ar_some_effect <- 
+    CausalInferenceTextbook::call_synthetic_control(
+    data = smoking_fake_ar_some_effect,
+    name_treated = name_treated,
+    year_start = year_start,
+    window_income_age = window_income_age,
+    window_beer = window_beer,
+    window_cigsale1 = window_cigsale1,
+    window_cigsale2 = window_cigsale2,
+    window_cigsale3 = window_cigsale3,
+    margin_ipop = margin_ipop,
+    sigf_ipop = sigf_ipop,
+    bound_ipop = bound_ipop
+  )
+```
+
+```{r}
+smoking_out_ar_some_effect %>% 
+  tidysynth::plot_trends()
+```
+
+```{r}
+smoking_out_ar_some_effect %>% 
+  tidysynth::plot_placebos()
+```
+
+```{r}
+smoking_out_ar_some_effect %>% 
+  tidysynth::plot_mspe_ratio()
+```
+
+```{r}
+smoking_out_ar_some_effect %>% 
+  tidysynth::grab_significance() %>% 
+  head(10) %>% 
+  kbl() %>% 
+  kable_styling()
+```
 
 
 
